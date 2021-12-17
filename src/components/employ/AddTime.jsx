@@ -1,33 +1,31 @@
-import moment from 'moment'
 import React, { useEffect, useState } from 'react'
-import Swal from 'sweetalert2'
-import { randomId } from '../../helper'
+import moment from "moment"
+
+
 const { bootstrap } = window
 
-export const AddEmployer = ({ showModal, setShowModal }) => {
+export const AddTime = ({ employeeKey, showModal, setShowModal }) => {
 
     const initialState = {
-        name: "",
-        department: "",
         day: "",
         start: "",
         end: "",
         used: false
     }
 
-    const [addEmploy, setAddEmploy] = useState(initialState)
+    const [addEmployTime, setAddEmployTime] = useState(initialState)
 
     useEffect(() => {
-        document.querySelector('#addEmploy')
+        document.querySelector('#addEmployTime')
             .addEventListener('hidden.bs.modal', () => {
                 setShowModal(false)
             })
-    }, [setShowModal])
+    }, [])
 
     const handleInputChange = (e) => {
 
-        setAddEmploy({
-            ...addEmploy,
+        setAddEmployTime({
+            ...addEmployTime,
             [e.target.name]: e.target.value
         })
     }
@@ -35,78 +33,51 @@ export const AddEmployer = ({ showModal, setShowModal }) => {
     const handleInfoSave = () => {
 
         const duration = moment.duration(
-            moment(addEmploy.end, "hh:mm").diff(
-                moment(addEmploy.start, "hh:mm")
+            moment(addEmployTime.end, "hh:mm").diff(
+                moment(addEmployTime.start, "hh:mm")
             )
         )
 
-        let key = randomId()
-        let exit = false
+        if (localStorage.hasOwnProperty(employeeKey)) {
+            const info = JSON.parse(localStorage.getItem(employeeKey))
 
-        do {
-            if (localStorage.hasOwnProperty(key)) {
-                exit = true
-                key = randomId()
-            } else {
-                exit = false
-            }
+            info.time.push({
+                day: addEmployTime.day,
+                start: addEmployTime.start,
+                end: addEmployTime.end,
+                hourTotal: duration.hours()
+            })
 
-        } while (exit);
+            localStorage.setItem(employeeKey, JSON.stringify(info))
+        } else {
 
-        localStorage.setItem(key, JSON.stringify({
-            name: addEmploy.name,
-            department: addEmploy.department,
-            time: [{
-                day: addEmploy.day,
-                start: addEmploy.start,
-                end: addEmploy.end,
-                hourTotal: duration.hours(),
-                used: addEmploy.used
-            }]
-        }))
+        }
 
-        Swal.fire({
-            position: 'top-end',
-            icon: 'success',
-            title: 'Funcionario gurdado',
-            showConfirmButton: false,
-            timer: 1000
-        })
+        // } while (exit);
 
-        document.querySelector("#addEmployForm").reset()
-        bootstrap.Modal.getInstance(document.querySelector('#addEmploy'), {}).hide()
+
+        // Swal.fire({
+        //     position: 'top-end',
+        //     icon: 'success',
+        //     title: 'Funcionario gurdado',
+        //     showConfirmButton: false,
+        //     timer: 1000
+        // })
+
+        document.querySelector("#addEmployTimeForm").reset()
+        bootstrap.Modal.getInstance(document.querySelector('#addEmployTime'), {}).hide()
     }
 
     return (
-        <div className="modal fade" id="addEmploy"  >
+        <div className="modal fade" id="addEmployTime"  >
             <div className="modal-dialog">
                 <div className="modal-content">
                     <div className="modal-header">
                         <h5 className="modal-title">Agregar funcionario</h5>
-                        <button type="button" className="btn-close" aria-label="Close"></button>
+                        <button type="button" className="btn-close" aria-label="Close" data-bs-dismiss="modal"></button>
                     </div>
                     <div className="modal-body">
-                        <form id="addEmployForm">
-                            <div className="mb-3">
-                                <label htmlFor="name" className="form-label">Funcionario</label>
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    id="name"
-                                    onChange={handleInputChange}
-                                    name="name"
-                                />
-                            </div>
-                            <div className="mb-3">
-                                <label htmlFor="department" className="form-label">Departamento</label>
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    id="department"
-                                    onChange={handleInputChange}
-                                    name="department"
-                                />
-                            </div>
+                        <form id="addEmployTimeForm">
                             <div className="mb-3">
                                 <label htmlFor="day" className="form-label">Día</label>
                                 <input
