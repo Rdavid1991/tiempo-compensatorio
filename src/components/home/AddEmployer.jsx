@@ -1,8 +1,9 @@
 import moment from 'moment'
 import React, { useEffect, useState } from 'react'
+import { useLocation } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import { randomId } from '../../helper'
-const { bootstrap } = window
+const { bootstrap, location } = window
 
 export const AddEmployer = ({ showModal, setShowModal }) => {
 
@@ -65,16 +66,19 @@ export const AddEmployer = ({ showModal, setShowModal }) => {
             }]
         }))
 
+
+        document.querySelector("#addEmployForm").reset()
+        bootstrap.Modal.getInstance(document.querySelector('#addEmploy'), {}).hide()
+
         Swal.fire({
             position: 'top-end',
             icon: 'success',
             title: 'Funcionario gurdado',
             showConfirmButton: false,
             timer: 1000
+        }).then(() => {
+            location.reload()
         })
-
-        document.querySelector("#addEmployForm").reset()
-        bootstrap.Modal.getInstance(document.querySelector('#addEmploy'), {}).hide()
     }
 
     return (
@@ -83,7 +87,7 @@ export const AddEmployer = ({ showModal, setShowModal }) => {
                 <div className="modal-content">
                     <div className="modal-header">
                         <h5 className="modal-title">Agregar funcionario</h5>
-                        <button type="button" className="btn-close" aria-label="Close"></button>
+                        <button type="button" className="btn-close" aria-label="Close" data-bs-dismiss="modal"></button>
                     </div>
                     <div className="modal-body">
                         <form id="addEmployForm">

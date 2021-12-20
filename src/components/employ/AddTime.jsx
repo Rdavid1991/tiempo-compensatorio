@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import moment from "moment"
+import Swal from 'sweetalert2'
 
 
-const { bootstrap } = window
+const { bootstrap, location } = window
 
 export const AddTime = ({ employeeKey, showModal, setShowModal }) => {
 
@@ -45,10 +46,12 @@ export const AddTime = ({ employeeKey, showModal, setShowModal }) => {
                 day: addEmployTime.day,
                 start: addEmployTime.start,
                 end: addEmployTime.end,
-                hourTotal: duration.hours()
+                hourTotal: duration.hours(),
+                used: addEmployTime.used
             })
 
             localStorage.setItem(employeeKey, JSON.stringify(info))
+
         } else {
 
         }
@@ -56,16 +59,19 @@ export const AddTime = ({ employeeKey, showModal, setShowModal }) => {
         // } while (exit);
 
 
-        // Swal.fire({
-        //     position: 'top-end',
-        //     icon: 'success',
-        //     title: 'Funcionario gurdado',
-        //     showConfirmButton: false,
-        //     timer: 1000
-        // })
+
 
         document.querySelector("#addEmployTimeForm").reset()
         bootstrap.Modal.getInstance(document.querySelector('#addEmployTime'), {}).hide()
+        Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: 'Horas guardadas',
+            showConfirmButton: false,
+            timer: 1000
+        }).then(() => {
+            location.reload()
+        })
     }
 
     return (
