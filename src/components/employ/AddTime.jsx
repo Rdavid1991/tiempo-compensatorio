@@ -47,19 +47,12 @@ export const AddTime = ({ employeeKey, showModal, setShowModal }) => {
                 start: addEmployTime.start,
                 end: addEmployTime.end,
                 hourTotal: duration.hours(),
+                hourLeft: duration.hours(),
+                hourUsed: 0,
                 used: addEmployTime.used
             })
-
             localStorage.setItem(employeeKey, JSON.stringify(info))
-
-        } else {
-
-        }
-
-        // } while (exit);
-
-
-
+        } 
 
         document.querySelector("#addEmployTimeForm").reset()
         bootstrap.Modal.getInstance(document.querySelector('#addEmployTime'), {}).hide()

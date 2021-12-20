@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import { AddTime } from './AddTime'
 import moment from 'moment'
 import 'moment/locale/es-us'
+import { PopulateTable } from './helper/PopulateTable'
 const { DataTable, $, location } = window
 
 moment.locale("es")
@@ -11,73 +12,19 @@ export const EmployeeTable = () => {
 
     const useLocationHook = useLocation()
     const { employeeKey } = useLocationHook.state
+    const data = JSON.parse(localStorage.getItem(employeeKey))
 
     const [showModal, setShowModal] = useState(false)
 
-    const data = JSON.parse(localStorage.getItem(employeeKey))
-
     useEffect(() => {
+
         $("#notUsed").DataTable();
-        $("#used").DataTable();
+        //$("#used").DataTable();
     }, [])
-
-    /*  useEffect(() => {
-         data.current = JSON.parse(localStorage.getItem(employeeKey))
-     }, [showModal]) */
-
-    const handleUseHours = (e) => {
-        data.time[e.target.id].used = true
-        localStorage.setItem(employeeKey, JSON.stringify(data))
-        location.reload()
-    }
-
-    const populateTable = (state) => {
-        let rows = [];
-
-        for (let i = 0; i < data.time.length; i++) {
-
-            if (state === data.time[i].used) {
-                rows.push(
-                    <tr key={i}>
-                        <td>{moment(data.time[i].day).format("dddd LL")}</td>
-                        <td>{moment(data.time[i].start, "hh:mm").format("LT")}</td>
-                        <td>{moment(data.time[i].end, "hh:mm").format("LT")}</td>
-                        <td>{data.time[i].hourTotal}</td>
-                        {
-                            data.time[i].used ?
-                                null
-                                :
-                                <td>
-                                    <div className="d-flex">
-                                        <div className="input-group-sm d-flex">
-                                            <input type="number"
-                                                className="form-control form-control-sm"
-                                                min="0"
-                                            />
-                                            <div class="input-group-text">Hora/s</div>
-
-                                        </div>
-                                        <button
-                                            className="btn btn-sm btn-secondary"
-                                            onClick={handleUseHours}
-                                            id={i}
-                                        >
-                                            usar
-                                        </button>
-                                    </div>
-                                </td>
-                        }
-                    </tr>
-                )
-            }
-        }
-        return rows;
-    }
 
     return (
         <div>
             <>
-
                 <AddTime
                     employeeKey={employeeKey}
                     showModal={showModal}
@@ -87,7 +34,6 @@ export const EmployeeTable = () => {
                 <Link to="/" className="btn btn-primary mx-3">Atras</Link>
 
                 <button className="btn btn-success" data-bs-toggle="modal" data-bs-target="#addEmployTime" onClick={() => setShowModal(true)}>Agregar hora</button>
-
 
                 <h1>Funcionario: {data.name}</h1>
 
@@ -107,15 +53,17 @@ export const EmployeeTable = () => {
                                     <th>Dia</th>
                                     <th>Desde</th>
                                     <th>Hasta</th>
-                                    <th>Horas totales</th>
+                                    <th>Horas restantes</th>
                                     <th>Horas usadas</th>
+                                    <th>Horas totales</th>
                                     <th>Acción</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {
-                                    populateTable(false)
-                                }
+                                <PopulateTable
+                                    data={data}
+                                    employeeKey={employeeKey}
+                                    state={false} />
                             </tbody>
                         </table>
                     </div>
@@ -131,7 +79,7 @@ export const EmployeeTable = () => {
                             </thead>
                             <tbody>
                                 {
-                                    populateTable(true)
+                                    //PopulateTable(data, employeeKey, true)
                                 }
                             </tbody>
                         </table>

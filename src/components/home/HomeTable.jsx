@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom';
 import { dataTableSpanish } from '../../helper';
 import { AddEmployer } from './AddEmployer';
+import { PopulateTable } from './PopulateTable';
 const { DataTable, $ } = window
 
 export const HomeTable = () => {
@@ -15,41 +16,6 @@ export const HomeTable = () => {
             language: { ...dataTableSpanish }
         })
     }, [])
-
-    const populateTable = () => {
-        const rows = []
-        let items = ""
-        for (const key in localStorage) {
-
-            if (localStorage.hasOwnProperty(key)) {
-                items = JSON.parse(localStorage.getItem(key))
-
-                let sum = 0, used = 0
-                items.time.map((item) => {
-                    if (item.used) {
-                        used += item.hourTotal
-                    } else {
-                        sum += item.hourTotal
-                        return true
-                    }
-                })
-
-                rows.push(
-                    <tr key={key}>
-                        <td>
-                            <Link to="/employed" state={{ employeeKey: key }} >{items.name}</Link>
-                        </td>
-                        <td>{items.department}</td>
-                        <td >{used + sum}</td>
-                        <td>{used}</td>
-                        <td>{sum}</td>
-                    </tr>
-                )
-            }
-        }
-
-        return rows;
-    }
 
     return (
         <>
@@ -73,7 +39,7 @@ export const HomeTable = () => {
                     </thead>
                     <tbody>
                         {
-                            populateTable()
+                            <PopulateTable />
                         }
                     </tbody>
                 </table>

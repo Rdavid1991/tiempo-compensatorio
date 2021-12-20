@@ -1,11 +1,10 @@
-import moment from 'moment'
+
 import React, { useEffect, useState } from 'react'
-import { useLocation } from 'react-router-dom'
-import Swal from 'sweetalert2'
-import { randomId } from '../../helper'
-const { bootstrap, location } = window
+import { handlerFunctions } from './helper/handlerFunctions'
 
 export const AddEmployer = ({ showModal, setShowModal }) => {
+
+    const { handleInfoSave } = handlerFunctions()
 
     const initialState = {
         name: "",
@@ -13,6 +12,9 @@ export const AddEmployer = ({ showModal, setShowModal }) => {
         day: "",
         start: "",
         end: "",
+        hourTotal: 0,
+        hourLeft: 0,
+        hourUsed: 0,
         used: false
     }
 
@@ -33,54 +35,6 @@ export const AddEmployer = ({ showModal, setShowModal }) => {
         })
     }
 
-    const handleInfoSave = () => {
-
-        const duration = moment.duration(
-            moment(addEmploy.end, "hh:mm").diff(
-                moment(addEmploy.start, "hh:mm")
-            )
-        )
-
-        let key = randomId()
-        let exit = false
-
-        do {
-            if (localStorage.hasOwnProperty(key)) {
-                exit = true
-                key = randomId()
-            } else {
-                exit = false
-            }
-
-        } while (exit);
-
-        localStorage.setItem(key, JSON.stringify({
-            name: addEmploy.name,
-            department: addEmploy.department,
-            time: [{
-                day: addEmploy.day,
-                start: addEmploy.start,
-                end: addEmploy.end,
-                hourTotal: duration.hours(),
-                used: addEmploy.used
-            }]
-        }))
-
-
-        document.querySelector("#addEmployForm").reset()
-        bootstrap.Modal.getInstance(document.querySelector('#addEmploy'), {}).hide()
-
-        Swal.fire({
-            position: 'top-end',
-            icon: 'success',
-            title: 'Funcionario gurdado',
-            showConfirmButton: false,
-            timer: 1000
-        }).then(() => {
-            location.reload()
-        })
-    }
-
     return (
         <div className="modal fade" id="addEmploy"  >
             <div className="modal-dialog">
@@ -89,8 +43,11 @@ export const AddEmployer = ({ showModal, setShowModal }) => {
                         <h5 className="modal-title">Agregar funcionario</h5>
                         <button type="button" className="btn-close" aria-label="Close" data-bs-dismiss="modal"></button>
                     </div>
-                    <div className="modal-body">
-                        <form id="addEmployForm">
+                    <form
+                        id="addEmployForm"
+                        onSubmit={(e) => handleInfoSave(e, addEmploy)}
+                    >
+                        <div className="modal-body">
                             <div className="mb-3">
                                 <label htmlFor="name" className="form-label">Funcionario</label>
                                 <input
@@ -99,6 +56,7 @@ export const AddEmployer = ({ showModal, setShowModal }) => {
                                     id="name"
                                     onChange={handleInputChange}
                                     name="name"
+                                    required
                                 />
                             </div>
                             <div className="mb-3">
@@ -109,6 +67,7 @@ export const AddEmployer = ({ showModal, setShowModal }) => {
                                     id="department"
                                     onChange={handleInputChange}
                                     name="department"
+                                    required
                                 />
                             </div>
                             <div className="mb-3">
@@ -141,17 +100,17 @@ export const AddEmployer = ({ showModal, setShowModal }) => {
                                     name="end"
                                 />
                             </div>
-                        </form>
-                    </div>
-                    <div className="modal-footer">
-                        <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button
-                            onClick={handleInfoSave}
-                            type="button"
-                            className="btn btn-primary">
-                            Guardar
-                        </button>
-                    </div>
+                        </div>
+                        <div className="modal-footer">
+                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button
+                                type="submit"
+                                className="btn btn-primary"
+                            >
+                                Guardar
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
