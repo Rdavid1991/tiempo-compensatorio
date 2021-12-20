@@ -2,8 +2,11 @@ import React, { useEffect, useRef, useState } from 'react'
 import { useLocation } from 'react-router'
 import { Link } from 'react-router-dom'
 import { AddTime } from './AddTime'
+import moment from 'moment'
+import 'moment/locale/es-us'
 const { DataTable, $, location } = window
 
+moment.locale("es")
 export const EmployeeTable = () => {
 
     const useLocationHook = useLocation()
@@ -36,22 +39,32 @@ export const EmployeeTable = () => {
             if (state === data.time[i].used) {
                 rows.push(
                     <tr key={i}>
-                        <td>{data.time[i].day}</td>
-                        <td>{data.time[i].start}</td>
-                        <td>{data.time[i].end}</td>
+                        <td>{moment(data.time[i].day).format("dddd LL")}</td>
+                        <td>{moment(data.time[i].start, "hh:mm").format("LT")}</td>
+                        <td>{moment(data.time[i].end, "hh:mm").format("LT")}</td>
                         <td>{data.time[i].hourTotal}</td>
                         {
                             data.time[i].used ?
                                 null
                                 :
                                 <td>
-                                    <button
-                                        className="btn btn-secondary"
-                                        onClick={handleUseHours}
-                                        id={i}
-                                    >
-                                        usar
-                                    </button>
+                                    <div className="d-flex">
+                                        <div className="input-group-sm d-flex">
+                                            <input type="number"
+                                                className="form-control form-control-sm"
+                                                min="0"
+                                            />
+                                            <div class="input-group-text">Hora/s</div>
+
+                                        </div>
+                                        <button
+                                            className="btn btn-sm btn-secondary"
+                                            onClick={handleUseHours}
+                                            id={i}
+                                        >
+                                            usar
+                                        </button>
+                                    </div>
                                 </td>
                         }
                     </tr>
@@ -71,9 +84,10 @@ export const EmployeeTable = () => {
                     setShowModal={setShowModal}
                 />
 
+                <Link to="/" className="btn btn-primary mx-3">Atras</Link>
+
                 <button className="btn btn-success" data-bs-toggle="modal" data-bs-target="#addEmployTime" onClick={() => setShowModal(true)}>Agregar hora</button>
 
-                <Link to="/" className="btn btn-primary">Atras</Link>
 
                 <h1>Funcionario: {data.name}</h1>
 
@@ -93,7 +107,8 @@ export const EmployeeTable = () => {
                                     <th>Dia</th>
                                     <th>Desde</th>
                                     <th>Hasta</th>
-                                    <th>Horas</th>
+                                    <th>Horas totales</th>
+                                    <th>Horas usadas</th>
                                     <th>Acción</th>
                                 </tr>
                             </thead>
