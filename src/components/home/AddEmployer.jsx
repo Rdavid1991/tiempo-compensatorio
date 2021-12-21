@@ -52,7 +52,7 @@ export const AddEmployer = ({ showModal, setShowModal }) => {
                                 <label htmlFor="name" className="form-label">Funcionario</label>
                                 <input
                                     type="text"
-                                    className="form-control"
+                                    className="form-control form-control-sm"
                                     id="name"
                                     onChange={handleInputChange}
                                     name="name"
@@ -61,20 +61,24 @@ export const AddEmployer = ({ showModal, setShowModal }) => {
                             </div>
                             <div className="mb-3">
                                 <label htmlFor="department" className="form-label">Departamento</label>
-                                <input
-                                    type="text"
-                                    className="form-control"
+                                <select
+                                    className="form-select form-select-sm"
                                     id="department"
                                     onChange={handleInputChange}
                                     name="department"
                                     required
-                                />
+                                >
+                                    <option selected>Selecciona un departamento</option>
+                                    <option value="Desarrollo">Desarrollo</option>
+                                    <option value="Soporte">Soporte</option>
+                                    <option value="Infraestructura">Infraestructura</option>
+                                </select>
                             </div>
                             <div className="mb-3">
                                 <label htmlFor="day" className="form-label">Día</label>
                                 <input
                                     type="date"
-                                    className="form-control"
+                                    className="form-control form-control-sm"
                                     id="day"
                                     onChange={handleInputChange}
                                     name="day"
@@ -84,7 +88,7 @@ export const AddEmployer = ({ showModal, setShowModal }) => {
                                 <label className="form-label" htmlFor="start">Desde</label>
                                 <input
                                     type="time"
-                                    className="form-input"
+                                    className="form-control form-control-sm"
                                     id="start"
                                     onChange={handleInputChange}
                                     name="start"
@@ -94,7 +98,7 @@ export const AddEmployer = ({ showModal, setShowModal }) => {
                                 <label className="form-label" htmlFor="end">Hasta</label>
                                 <input
                                     type="time"
-                                    className="form-input"
+                                    className="form-control form-control-sm"
                                     id="end"
                                     onChange={handleInputChange}
                                     name="end"
@@ -102,10 +106,15 @@ export const AddEmployer = ({ showModal, setShowModal }) => {
                             </div>
                         </div>
                         <div className="modal-footer">
-                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button
+                                type="button"
+                                className="btn btn-sm btn-secondary"
+                                data-bs-dismiss="modal">
+                                Close
+                            </button>
                             <button
                                 type="submit"
-                                className="btn btn-primary"
+                                className="btn btn-sm  btn-primary"
                             >
                                 Guardar
                             </button>

@@ -24,7 +24,15 @@ export const HomeTable = () => {
                 setShowModal={setShowModal}
             />
 
-            <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addEmploy" onClick={() => setShowModal(true)}>Nuevo funcionario</button>
+            <button
+                type="button"
+                className="btn btn-sm  btn-primary"
+                data-bs-toggle="modal"
+                data-bs-target="#addEmploy"
+                onClick={() => setShowModal(true)}
+            >
+                Nuevo funcionario
+            </button>
 
             <div className="mt-5">
                 <table id="example" className="table table-striped" style={{ width: "100%" }}>
