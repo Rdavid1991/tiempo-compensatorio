@@ -36,9 +36,21 @@ export const EmployeeTable = () => {
                     setShowModal={setShowModal}
                 />
 
-                <Link to="/" className="btn btn-primary">Atras</Link>
+                <Link
+                    to="/"
+                    className="btn btn-sm btn-primary"
+                >
+                    Atras
+                </Link>
 
-                <button className="btn btn-success mx-3" data-bs-toggle="modal" data-bs-target="#addEmployTime" onClick={() => setShowModal(true)}>Agregar hora</button>
+                <button
+                    className="btn btn-sm btn-success mx-3"
+                    data-bs-toggle="modal"
+                    data-bs-target="#addEmployTime"
+                    onClick={() => setShowModal(true)}
+                >
+                    Agregar hora
+                </button>
 
                 <div className='mt-3'>
                     <h1>Funcionario: {data.name}</h1>
@@ -51,7 +63,7 @@ export const EmployeeTable = () => {
                             <button className="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#usedPane" type="button" role="tab" aria-controls="profile" aria-selected="false">Horas usadas</button>
                         </li>
                     </ul>
-                    <div className="tab-content" id="myTabContent">
+                    <div className="tab-content mt-4" id="myTabContent">
                         <div className="tab-pane fade show active" id="NotUsedPane" role="tabpanel" aria-labelledby="home-tab">
                             <table id="notUsed" className="table table-striped" style={{ width: "100%" }} aria-describedby="example_info">
                                 <thead>
@@ -59,9 +71,9 @@ export const EmployeeTable = () => {
                                         <th>Dia</th>
                                         <th>Desde</th>
                                         <th>Hasta</th>
-                                        <th>Horas restantes</th>
-                                        <th>Horas usadas</th>
-                                        <th>Horas totales</th>
+                                        <th>Tiempo restante</th>
+                                        <th>Tiempo usado</th>
+                                        <th>Tiempo total</th>
                                         <th>Acción</th>
                                     </tr>
                                 </thead>
@@ -80,9 +92,9 @@ export const EmployeeTable = () => {
                                         <th>Dia</th>
                                         <th>Desde</th>
                                         <th>Hasta</th>
-                                        <th>Horas restantes</th>
-                                        <th>Horas usadas</th>
-                                        <th>Horas totales</th>
+                                        <th>Tiempo restante</th>
+                                        <th>Tiempo usado</th>
+                                        <th>Tiempo total</th>
                                     </tr>
                                 </thead>
                                 <tbody>

@@ -1,8 +1,8 @@
 const path = require('path');
-const { app, BrowserWindow, Menu, webContents } = require('electron');
+const { app, BrowserWindow, Menu } = require('electron');
 
 function createWindow() {
-    const win = new BrowserWindow({
+    let win = new BrowserWindow({
         minWidth: 800,
         minHeight: 600,
         webPreferences: {
@@ -26,7 +26,6 @@ function createWindow() {
 
     Menu.setApplicationMenu(menu);
     win.loadFile(path.join(__dirname, '/build/index.html'));
-
 }
 
 app.whenReady().then(createWindow);

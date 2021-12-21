@@ -1,3 +1,5 @@
+import moment from "moment"
+
 const randomId = () => {
     const str = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890"
     let ranId = "";
@@ -5,6 +7,15 @@ const randomId = () => {
         ranId += str.charAt(Math.floor(Math.random() * str.length));
     }
     return ranId;
+}
+
+const evalTime = (start, end) => {
+    const duration = moment.duration(
+        moment(end, "hh:mm").diff(
+            moment(start, "hh:mm")
+        )
+    )
+    return duration.hours() < 0 ? false : true;
 }
 
 const dataTableSpanish = {
@@ -194,5 +205,6 @@ const dataTableSpanish = {
 
 export {
     randomId,
-    dataTableSpanish
+    dataTableSpanish,
+    evalTime
 }

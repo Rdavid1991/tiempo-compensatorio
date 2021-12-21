@@ -1,6 +1,7 @@
 import moment from 'moment'
 import { useState } from 'react';
 import { handlerFunctions } from './handlerFunctions';
+import { timeToString } from './timeString';
 
 export const PopulateTable = ({ data, employeeKey, state }) => {
     const { handlerUsedTime, handlerUseHours } = handlerFunctions(data, employeeKey)
@@ -11,14 +12,18 @@ export const PopulateTable = ({ data, employeeKey, state }) => {
         for (let i = 0; i < data.time.length; i++) {
 
             if (state === data.time[i].used) {
+
+                let total = data.time[i].hourTotal.toString().split(":")
+                let left = data.time[i].hourTotal.toString().split(":")
+
                 rows.push(
                     <tr key={i}>
                         <td>{moment(data.time[i].day).format("dddd LL")}</td>
                         <td>{moment(data.time[i].start, "hh:mm").format("LT")}</td>
                         <td>{moment(data.time[i].end, "hh:mm").format("LT")}</td>
-                        <td>{data.time[i].hourLeft}</td>
-                        <td>{data.time[i].hourUsed}</td>
-                        <td>{data.time[i].hourTotal}</td>
+                        <td>{timeToString(data.time[i].hourLeft)}</td>
+                        <td>{timeToString(data.time[i].hourUsed)}</td>
+                        <td>{timeToString(data.time[i].hourTotal)}</td>
                         {
                             data.time[i].used ?
                                 null

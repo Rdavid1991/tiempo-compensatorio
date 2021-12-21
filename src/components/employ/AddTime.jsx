@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import moment from "moment"
 import Swal from 'sweetalert2'
-
+import { evalTime } from '../../helper'
 
 const { bootstrap, location } = window
 
@@ -31,40 +31,51 @@ export const AddTime = ({ employeeKey, showModal, setShowModal }) => {
         })
     }
 
-    const handleInfoSave = () => {
+    const handleInfoSave = (e) => {
+        e.preventDefault()
 
-        const duration = moment.duration(
-            moment(addEmployTime.end, "hh:mm").diff(
-                moment(addEmployTime.start, "hh:mm")
+        if (evalTime(addEmployTime.start, addEmployTime.end)) {
+
+            const duration = moment.duration(
+                moment(addEmployTime.end, "hh:mm").diff(
+                    moment(addEmployTime.start, "hh:mm")
+                )
             )
-        )
 
-        if (localStorage.hasOwnProperty(employeeKey)) {
-            const info = JSON.parse(localStorage.getItem(employeeKey))
+            if (localStorage.hasOwnProperty(employeeKey)) {
+                const info = JSON.parse(localStorage.getItem(employeeKey))
 
-            info.time.push({
-                day: addEmployTime.day,
-                start: addEmployTime.start,
-                end: addEmployTime.end,
-                hourTotal: duration.hours(),
-                hourLeft: duration.hours(),
-                hourUsed: 0,
-                used: addEmployTime.used
+                info.time.push({
+                    day: addEmployTime.day,
+                    start: addEmployTime.start,
+                    end: addEmployTime.end,
+                    hourTotal: `${duration.hours()}${duration.minutes() > 0 ? `:${duration.minutes()}` : ""}`,
+                    hourLeft: `${duration.hours()}${duration.minutes() > 0 ? `:${duration.minutes()}` : ""}`,
+                    hourUsed: 0,
+                    used: addEmployTime.used
+                })
+                localStorage.setItem(employeeKey, JSON.stringify(info))
+            }
+
+            document.querySelector("#addEmployTimeForm").reset()
+            bootstrap.Modal.getInstance(document.querySelector('#addEmployTime'), {}).hide()
+            Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: 'Horas guardadas',
+                showConfirmButton: false,
+                timer: 1000
+            }).then(() => {
+                location.reload()
             })
-            localStorage.setItem(employeeKey, JSON.stringify(info))
-        } 
-
-        document.querySelector("#addEmployTimeForm").reset()
-        bootstrap.Modal.getInstance(document.querySelector('#addEmployTime'), {}).hide()
-        Swal.fire({
-            position: 'top-end',
-            icon: 'success',
-            title: 'Horas guardadas',
-            showConfirmButton: false,
-            timer: 1000
-        }).then(() => {
-            location.reload()
-        })
+        } else {
+            Swal.fire(
+                'Lo siento',
+                `No puede ingresar las horas en ese orden. <br>
+                    Desde ${moment(addEmployTime.start, "hh:mm").format("LT")} es menor que, Hasta ${moment(addEmployTime.end, "hh:mm").format("LT")}`,
+                'error'
+            )
+        }
     }
 
     return (
@@ -75,8 +86,11 @@ export const AddTime = ({ employeeKey, showModal, setShowModal }) => {
                         <h5 className="modal-title">Agregar funcionario</h5>
                         <button type="button" className="btn-close" aria-label="Close" data-bs-dismiss="modal"></button>
                     </div>
-                    <div className="modal-body">
-                        <form id="addEmployTimeForm">
+                    <form
+                        id="addEmployTimeForm"
+                        onSubmit={handleInfoSave}
+                    >
+                        <div className="modal-body">
                             <div className="mb-3">
                                 <label htmlFor="day" className="form-label">Día</label>
                                 <input
@@ -85,6 +99,7 @@ export const AddTime = ({ employeeKey, showModal, setShowModal }) => {
                                     id="day"
                                     onChange={handleInputChange}
                                     name="day"
+                                    required
                                 />
                             </div>
                             <div className="mb-3">
@@ -95,6 +110,7 @@ export const AddTime = ({ employeeKey, showModal, setShowModal }) => {
                                     id="start"
                                     onChange={handleInputChange}
                                     name="start"
+                                    required
                                 />
                             </div>
                             <div className="mb-3">
@@ -105,19 +121,26 @@ export const AddTime = ({ employeeKey, showModal, setShowModal }) => {
                                     id="end"
                                     onChange={handleInputChange}
                                     name="end"
+                                    required
                                 />
                             </div>
-                        </form>
-                    </div>
-                    <div className="modal-footer">
-                        <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button
-                            onClick={handleInfoSave}
-                            type="button"
-                            className="btn btn-primary">
-                            Guardar
-                        </button>
-                    </div>
+
+                        </div>
+                        <div className="modal-footer">
+                            <button
+                                type="button"
+                                className="btn btn-secondary"
+                                data-bs-dismiss="modal"
+                            >
+                                Cerrar
+                            </button>
+                            <button
+                                type="submit"
+                                className="btn btn-primary">
+                                Guardar
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
