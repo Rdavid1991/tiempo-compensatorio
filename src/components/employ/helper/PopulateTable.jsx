@@ -1,7 +1,8 @@
 import moment from 'moment'
 import { useState } from 'react';
+import { timeToString } from '../../../helper';
 import { handlerFunctions } from './handlerFunctions';
-import { timeToString } from './timeString';
+
 
 export const PopulateTable = ({ data, employeeKey, state }) => {
     const { handlerUsedTime, handlerUseHours } = handlerFunctions(data, employeeKey)

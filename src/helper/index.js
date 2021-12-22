@@ -9,6 +9,12 @@ const randomId = () => {
     return ranId;
 }
 
+/**
+ * Evalua si el tiempo ingresado es correcto
+ * @param {String} start Hora mas temprana
+ * @param {String} end Hora mas tardia
+ * @returns 
+ */
 const evalTime = (start, end) => {
     const duration = moment.duration(
         moment(end, "hh:mm").diff(
@@ -16,6 +22,29 @@ const evalTime = (start, end) => {
         )
     )
     return duration.hours() < 0 ? false : true;
+}
+
+const timeToString = (time) => {
+
+    let str = "";
+    const arrayTime = time.toString().split(":")
+
+    switch (arrayTime.length) {
+        case 1:
+            str = `${arrayTime[0]} ${(parseInt(arrayTime[0]) === 1)
+                ? "hora"
+                : "horas"}`
+            break;
+        case 2:
+            str = `${arrayTime[0]} ${(parseInt(arrayTime[0]) === 1)
+                ? "hora"
+                : "horas"} ${arrayTime[1] === "00" ? "" : `y ${arrayTime[1]} minutos`}`
+            break;
+        default:
+            break;
+    }
+
+    return str
 }
 
 const dataTableSpanish = {
@@ -206,5 +235,6 @@ const dataTableSpanish = {
 export {
     randomId,
     dataTableSpanish,
-    evalTime
+    evalTime,
+    timeToString
 }

@@ -9,11 +9,12 @@ export const handlerFunctions = () => {
             e.preventDefault()
 
             const duration = moment.duration(
-                moment(addEmploy.end, "hh").diff(
-                    moment(addEmploy.start, "hh")
+                moment(addEmploy.end, "hh:mm").diff(
+                    moment(addEmploy.start, "hh:mm")
                 )
-            )
+            ).asMilliseconds()
 
+            debugger
             let key = randomId()
             let exit = false
 
@@ -34,9 +35,9 @@ export const handlerFunctions = () => {
                     day: addEmploy.day,
                     start: addEmploy.start,
                     end: addEmploy.end,
-                    hourTotal: duration.hours(),
+                    hourTotal: moment.utc(duration).format("H:mm"),
                     hourUsed: 0,
-                    hourLeft: duration.hours(),
+                    hourLeft: moment.utc(duration).format("H:mm"),
                     used: addEmploy.used
                 }]
             }))
