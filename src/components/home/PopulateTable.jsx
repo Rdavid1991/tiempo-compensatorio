@@ -14,9 +14,8 @@ export const PopulateTable = () => {
                 items = JSON.parse(localStorage.getItem(key))
 
                 let leftOver = 0, used = 0, total = 0
+                let totalInMilliseconds = 0, usedInMilliseconds = 0, leftOverInMilliseconds = 0;
                 items.time.map((item) => {
-
-                    let totalInMilliseconds = 0, usedInMilliseconds = 0, leftOverInMilliseconds = 0;
 
                     totalInMilliseconds += moment.duration(item.hourTotal, "hours").asMilliseconds();
                     usedInMilliseconds += moment.duration(item.hourUsed, "hours").asMilliseconds()

@@ -52,7 +52,8 @@ export const AddTime = ({ employeeKey, showModal, setShowModal }) => {
                     hourTotal: `${duration.hours()}${duration.minutes() > 0 ? `:${duration.minutes()}` : ""}`,
                     hourLeft: `${duration.hours()}${duration.minutes() > 0 ? `:${duration.minutes()}` : ""}`,
                     hourUsed: 0,
-                    used: addEmployTime.used
+                    used: addEmployTime.used,
+                    usedHourHistory: []
                 })
                 localStorage.setItem(employeeKey, JSON.stringify(info))
             }

@@ -1,20 +1,24 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useLocation } from 'react-router'
 import { Link } from 'react-router-dom'
 import { AddTime } from './AddTime'
 import moment from 'moment'
 import 'moment/locale/es-us'
-import { PopulateTable } from './helper/PopulateTable'
+import { PopulateTable } from './PopulateTable'
 import { dataTableSpanish } from '../../helper'
+import { DetailsTime } from './DetailsTime'
+import { UseTime } from './UseTime'
 const { $ } = window
 
 moment.locale("es")
 export const EmployeeTable = () => {
 
+
     const useLocationHook = useLocation()
     const { employeeKey } = useLocationHook.state
     const data = JSON.parse(localStorage.getItem(employeeKey))
 
+    const [idTime, setIdTime] = useState()
     const [showModal, setShowModal] = useState(false)
 
     useEffect(() => {
@@ -30,6 +34,15 @@ export const EmployeeTable = () => {
     return (
         <div>
             <>
+                <UseTime
+                    idTime={idTime}
+                    employeeKey={employeeKey}
+                    data={data}
+                />
+                <DetailsTime
+                    idTime={idTime}
+                    data={data}
+                />
                 <AddTime
                     employeeKey={employeeKey}
                     showModal={showModal}
@@ -71,9 +84,9 @@ export const EmployeeTable = () => {
                                         <th>Dia</th>
                                         <th>Desde</th>
                                         <th>Hasta</th>
-                                        <th>Tiempo restante</th>
-                                        <th>Tiempo usado</th>
                                         <th>Tiempo total</th>
+                                        <th>Tiempo usado</th>
+                                        <th>Tiempo restante</th>
                                         <th>Acción</th>
                                     </tr>
                                 </thead>
@@ -81,7 +94,9 @@ export const EmployeeTable = () => {
                                     <PopulateTable
                                         data={data}
                                         employeeKey={employeeKey}
-                                        state={false} />
+                                        state={false}
+                                        setIdTime={setIdTime}
+                                    />
                                 </tbody>
                             </table>
                         </div>
@@ -92,9 +107,9 @@ export const EmployeeTable = () => {
                                         <th>Dia</th>
                                         <th>Desde</th>
                                         <th>Hasta</th>
-                                        <th>Tiempo restante</th>
-                                        <th>Tiempo usado</th>
                                         <th>Tiempo total</th>
+                                        <th>Tiempo usado</th>
+                                        <th>Tiempo restante</th>
                                     </tr>
                                 </thead>
                                 <tbody>

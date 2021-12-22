@@ -40,9 +40,9 @@ export const HomeTable = () => {
                         <tr>
                             <th>Nombre</th>
                             <th>Departamento</th>
-                            <th>Total horas</th>
-                            <th>Horas usadas</th>
-                            <th>Horas restantes</th>
+                            <th>Tiempo total</th>
+                            <th>Tiempo usadas</th>
+                            <th>Tiempo restante</th>
                         </tr>
                     </thead>
                     <tbody>

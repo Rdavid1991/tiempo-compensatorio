@@ -4,6 +4,11 @@ import moment from "moment"
 
 export const handlerFunctions = (data, employeeKey) => {
 
+    /**
+     * Convierte los numeros en string de horas ejemplo: 1 en 1:00, 1.25 en 1:25 
+     * @param {number|string} time 
+     * @returns {String} Texto en hora ejemplo entrada 1, salida 1:00
+     */
     const timeToString = (time) => {
         let timeStr = "";
         let timeArray = ""
@@ -70,29 +75,41 @@ export const handlerFunctions = (data, employeeKey) => {
     }
 
     return {
-        handlerUsedTime: ({ target }, setUsedTime) => {
-            setUsedTime(target.value)
+        handlerUsedTime: ({ target }, setUsedTime, usedTime) => {
+            setUsedTime({
+                ...usedTime,
+                [target.name]: target.value
+            })
         },
 
-        handlerUseHours: (e, usedTime) => {
-            if (evalTime(data.time[e.target.id].hourLeft, usedTime)) {
+        handlerUseHours: (index, usedTime) => {
+
+            debugger
+
+            if (evalTime(data.time[index].hourLeft, usedTime.hourToUse)) {
                 Swal.fire(
                     'Lo siento',
                     'No tienes suficientes horas para usar',
                     'error'
                 )
             } else {
-                data.time[e.target.id].hourUsed = addTime(data.time[e.target.id].hourUsed, usedTime)
-                data.time[e.target.id].hourLeft = substractTime(data.time[e.target.id].hourLeft, usedTime)
 
-                if (moment.duration(data.time[e.target.id].hourLeft).asMilliseconds() <= 0) {
-                    data.time[e.target.id].used = true
+                data.time[index].hourUsed = addTime(data.time[index].hourUsed, usedTime.hourToUse)
+                data.time[index].hourLeft = substractTime(data.time[index].hourLeft, usedTime.hourToUse)
+
+                if (moment.duration(data.time[index].hourLeft).asMilliseconds() <= 0) {
+                    data.time[index].used = true
                 }
+
+                data.time[index].usedHourHistory.push({
+                    "date": usedTime.dateOfUse
+                })
+
                 localStorage.setItem(employeeKey, JSON.stringify(data))
                 Swal.fire({
                     position: 'top-end',
                     icon: 'success',
-                    title: `Se ${parseInt(usedTime) === 1 ? "ha" : "han"} descontado ${usedTime} ${moment.duration(timeToString(usedTime)).asHours() === 1 ? "hora" : "horas"} de ${data.name}`,
+                    title: `Se ${parseInt(usedTime.hourToUse) === 1 ? "ha" : "han"} descontado ${usedTime.hourToUse} ${moment.duration(timeToString(usedTime.hourToUse)).asHours() === 1 ? "hora" : "horas"} de ${data.name}`,
                     showConfirmButton: false,
                     timer: 2000
                 }).then(() => {

@@ -14,7 +14,6 @@ export const handlerFunctions = () => {
                 )
             ).asMilliseconds()
 
-            debugger
             let key = randomId()
             let exit = false
 
@@ -38,7 +37,8 @@ export const handlerFunctions = () => {
                     hourTotal: moment.utc(duration).format("H:mm"),
                     hourUsed: 0,
                     hourLeft: moment.utc(duration).format("H:mm"),
-                    used: addEmploy.used
+                    used: addEmploy.used,
+                    usedHourHistory: []
                 }]
             }))
 
