@@ -4,37 +4,69 @@ import moment from "moment"
 
 export const handlerFunctions = (data, employeeKey) => {
 
+    const timeToString = (time) => {
+        let timeStr = "";
+        let timeArray = ""
 
-    const evalTime = (left, used) => {
-        let leftStr = "", usedStr = "";
-        let leftArray = left.toString().split(":");
-        let usedArray = used.toString().split(".");
+        if (new RegExp("\\.").test(time)) {
+            timeArray = time.toString().split(".");
+        } else if (new RegExp("\\:").test(time)) {
+            timeArray = time.toString().split(":");
+        } else {
+            timeArray = [time]
+        }
 
-        switch (leftArray.length) {
+        switch (timeArray.length) {
             case 1:
-                leftStr = `${leftArray[0]}:00`
+                timeStr = `${timeArray[0]}:00`
                 break;
             case 2:
-                leftStr = `${leftArray[0]}:${leftArray[1]}`
+                let digit = timeArray[1].toString().length === 1 ? `0${timeArray[1]}` : timeArray[1]
+                timeStr = `${timeArray[0]}:${digit}`
                 break;
             default:
                 break;
         }
-        switch (usedArray.length) {
-            case 1:
-                usedStr = `${usedArray[0]}:00`
-                break;
-            case 2:
-                usedStr = `${usedArray[0]}:${usedArray[1]}`
-                break;
-            default:
-                break;
-        }
 
-        console.log("restante", moment.duration(leftStr).asMinutes());
-        console.log("usar", moment.duration(usedStr).asMinutes());
+        return timeStr
+    }
 
-        return moment.duration(leftStr).asMinutes() < moment.duration(usedStr).asMinutes() ? false : true
+    /**
+     * Evalua si el tiempo a usar es mayor al tiempo restante
+     * @param {String} leftover Valor menor, con formato hora ejemplo: 12:00
+     * @param {String} used Valor mayor, con formato hora ejemplo: 12:00
+     * @returns {boolean}
+     */
+    const evalTime = (leftover, used) => {
+        let leftStr = timeToString(leftover)
+        let usedStr = timeToString(used);
+        return moment.duration(leftStr).asMinutes() < moment.duration(usedStr).asMinutes() ? true : false
+    }
+
+    const substractTime = (leftover, used) => {
+        let leftStr = timeToString(leftover)
+        let usedStr = timeToString(used);
+
+        let leftMinutes = moment.duration(leftStr).asMinutes()
+        let usedMinutes = moment.duration(usedStr).asMinutes()
+
+        let timeResult = moment.duration(leftMinutes - usedMinutes, "minutes").asMilliseconds()
+
+        return moment.utc(timeResult).format("H:mm")
+
+    }
+
+    const addTime = (leftover, used) => {
+        let leftStr = leftover
+        let usedStr = timeToString(used);
+
+        let leftMinutes = moment.duration(leftStr).asMinutes()
+        let usedMinutes = moment.duration(usedStr).asMinutes()
+
+        let timeResult = moment.duration(leftMinutes + usedMinutes, "minutes").asMilliseconds()
+
+
+        return moment.utc(timeResult).format("H:mm")
     }
 
     return {
@@ -43,23 +75,24 @@ export const handlerFunctions = (data, employeeKey) => {
         },
 
         handlerUseHours: (e, usedTime) => {
-            if (evalTime(data.time[e.target.id].hourLeft, parseInt(usedTime))) {
+            if (evalTime(data.time[e.target.id].hourLeft, usedTime)) {
                 Swal.fire(
                     'Lo siento',
                     'No tienes suficientes horas para usar',
                     'error'
                 )
             } else {
-                data.time[e.target.id].hourUsed = data.time[e.target.id].hourUsed + parseInt(usedTime)
-                data.time[e.target.id].hourLeft = data.time[e.target.id].hourLeft - parseInt(usedTime)
-                if (data.time[e.target.id].hourLeft <= 0) {
+                data.time[e.target.id].hourUsed = addTime(data.time[e.target.id].hourUsed, usedTime)
+                data.time[e.target.id].hourLeft = substractTime(data.time[e.target.id].hourLeft, usedTime)
+
+                if (moment.duration(data.time[e.target.id].hourLeft).asMilliseconds() <= 0) {
                     data.time[e.target.id].used = true
                 }
                 localStorage.setItem(employeeKey, JSON.stringify(data))
                 Swal.fire({
                     position: 'top-end',
                     icon: 'success',
-                    title: `Se ${parseInt(usedTime) === 1 ? "ha" : "han"} descontado ${parseInt(usedTime)} ${parseInt(usedTime) === 1 ? "hora" : "horas"} de ${data.name}`,
+                    title: `Se ${parseInt(usedTime) === 1 ? "ha" : "han"} descontado ${usedTime} ${moment.duration(timeToString(usedTime)).asHours() === 1 ? "hora" : "horas"} de ${data.name}`,
                     showConfirmButton: false,
                     timer: 2000
                 }).then(() => {

@@ -1,5 +1,6 @@
 
 export const timeToString = (time) => {
+
     let str = "";
     const arrayTime = time.toString().split(":")
 
@@ -12,7 +13,7 @@ export const timeToString = (time) => {
         case 2:
             str = `${arrayTime[0]} ${(parseInt(arrayTime[0]) === 1)
                 ? "hora"
-                : "horas"} y ${arrayTime[1]} minutos`
+                : "horas"} ${arrayTime[1] === "00" ? "" : `y ${arrayTime[1]} minutos`}`
             break;
         default:
             break;
