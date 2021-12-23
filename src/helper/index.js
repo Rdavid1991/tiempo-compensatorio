@@ -26,34 +26,40 @@ const evalTime = (start, end) => {
 };
 
 const timeToString = (milliseconds) => {
-    let realMinutes = 0, realHours = 0, realDays = 0;
-    let seconds = milliseconds / 1000;
+    if (milliseconds > 0) {
 
-    let totalMinutes = (seconds / 60);
 
-    let hours = (totalMinutes / 60).toString().split(".");
+        let realMinutes = 0, realHours = 0, realDays = 0;
+        let seconds = milliseconds / 1000;
 
-    if (hours.length > 1) {
-        realMinutes = (Number(`0.${hours[1]}`) * 60);
-    }
+        let totalMinutes = (seconds / 60);
 
-    if (hours[0] > 24) {
-        let days = (hours[0] / 24).toString().split(".");
+        let hours = (totalMinutes / 60).toString().split(".");
 
-        realDays = days[0];
-
-        if (days.length > 1) {
-            realHours = (Number(`0.${days[1]}`) * 24);
+        if (hours.length > 1) {
+            realMinutes = (Number(`0.${hours[1]}`) * 60);
         }
+
+        if (hours[0] > 24) {
+            let days = (hours[0] / 24).toString().split(".");
+
+            realDays = days[0];
+
+            if (days.length > 1) {
+                realHours = (Number(`0.${days[1]}`) * 24);
+            }
+        } else {
+            realHours = hours[0];
+        }
+
+        let stringDays = realDays > 0 ? `${realDays[0]} días ` : "";
+        let stringHours = realHours > 0 ? `${Math.round(realHours)} horas ` : "";
+        let stringMinutes = realMinutes > 0 ? `${Math.round(realMinutes)} minutos` : "";
+
+        return `${stringDays}${stringHours}${stringMinutes}`;
     } else {
-        realHours = hours[0];
+        return "no tiene tiempo";
     }
-
-    let stringDays = realDays > 0 ? `${realDays[0]} días ` : "";
-    let stringHours = realHours > 0 ? `${Math.round(realHours)} horas ` : "";
-    let stringMinutes = realMinutes > 0 ? `${Math.round(realMinutes)} minutos` : "";
-
-    return `${stringDays}${stringHours}${stringMinutes}`;
 };
 
 // eslint-disable-next-line no-unused-vars

@@ -25,10 +25,6 @@ export const PopulateTable = () => {
                 return true;
                 
             });
-            //total = timeToString(totalInMilliseconds);
-            //debugger;
-            //used = moment.utc(usedInMilliseconds).format("H:mm");
-            //leftOver = moment.utc(leftOverInMilliseconds).format("H:mm");
 
             rows.push(
                 <tr key={key}>

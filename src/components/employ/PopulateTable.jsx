@@ -21,7 +21,7 @@ export const PopulateTable = ({ data, state, setIdTime }) => {
                 totalInMilliseconds = moment.duration(data.time[i].hourTotal, "hours").asMilliseconds();
                 usedInMilliseconds = moment.duration(data.time[i].hourUsed, "hours").asMilliseconds();
                 leftOverInMilliseconds = moment.duration(data.time[i].hourLeft, "hours").asMilliseconds();
-
+          
                 rows.push(
                     <tr
                         key={i}

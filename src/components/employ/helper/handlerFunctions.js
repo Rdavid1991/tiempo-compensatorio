@@ -85,8 +85,6 @@ export const handlerFunctions = (data, employeeKey) => {
 
         handlerUseHours: (index, usedTime) => {
 
-            debugger;
-
             if (evalTime(data.time[index].hourLeft, usedTime.hourToUse)) {
                 Swal.fire(
                     'Lo siento',
