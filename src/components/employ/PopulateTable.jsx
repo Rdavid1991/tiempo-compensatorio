@@ -13,11 +13,14 @@ export const PopulateTable = ({ data, state, setIdTime }) => {
     };
 
     const iterateInfo = () => {
-        let rows = [];
+        let rows = [], totalInMilliseconds, usedInMilliseconds, leftOverInMilliseconds;
         for (let i = 0; i < data.time.length; i++) {
 
             if (state === data.time[i].used) {
 
+                totalInMilliseconds = moment.duration(data.time[i].hourTotal, "hours").asMilliseconds();
+                usedInMilliseconds = moment.duration(data.time[i].hourUsed, "hours").asMilliseconds();
+                leftOverInMilliseconds = moment.duration(data.time[i].hourLeft, "hours").asMilliseconds();
 
                 rows.push(
                     <tr
@@ -29,9 +32,9 @@ export const PopulateTable = ({ data, state, setIdTime }) => {
                         >{moment(data.time[i].day).format("dddd LL")}</td>
                         <td>{moment(data.time[i].start, "hh:mm").format("LT")}</td>
                         <td>{moment(data.time[i].end, "hh:mm").format("LT")}</td>
-                        <td>{timeToString(data.time[i].hourTotal)}</td>
-                        <td>{timeToString(data.time[i].hourUsed)}</td>
-                        <td>{timeToString(data.time[i].hourLeft)}</td>
+                        <td>{timeToString(totalInMilliseconds)}</td>
+                        <td>{timeToString(usedInMilliseconds)}</td>
+                        <td>{timeToString(leftOverInMilliseconds)}</td>
                         {
                             data.time[i].used ?
                                 null

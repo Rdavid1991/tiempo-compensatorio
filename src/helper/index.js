@@ -4,8 +4,8 @@ import moment from "moment";
 const randomId = () => {
     const str = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
     let ranId = "";
-    for ( let i = 0; i < 6; i++ ) {
-        ranId += str.charAt( Math.floor( Math.random() * str.length ));
+    for (let i = 0; i < 6; i++) {
+        ranId += str.charAt(Math.floor(Math.random() * str.length));
     }
     return ranId;
 };
@@ -16,28 +16,60 @@ const randomId = () => {
  * @param {String} end Hora mas tardia
  * @returns 
  */
-const evalTime = ( start, end ) => {
+const evalTime = (start, end) => {
     const duration = moment.duration(
-        moment( end, "hh:mm" ).diff(
-            moment( start, "hh:mm" )
+        moment(end, "hh:mm").diff(
+            moment(start, "hh:mm")
         )
     );
     return duration.hours() < 0 ? false : true;
 };
 
-const timeToString = ( time ) => {
+const timeToString = (milliseconds) => {
+    let realMinutes = 0, realHours = 0, realDays = 0;
+    let seconds = milliseconds / 1000;
+
+    let totalMinutes = (seconds / 60);
+
+    let hours = (totalMinutes / 60).toString().split(".");
+
+    if (hours.length > 1) {
+        realMinutes = (Number(`0.${hours[1]}`) * 60);
+    }
+
+    if (hours[0] > 24) {
+        let days = (hours[0] / 24).toString().split(".");
+
+        realDays = days[0];
+
+        if (days.length > 1) {
+            realHours = (Number(`0.${days[1]}`) * 24);
+        }
+    } else {
+        realHours = hours[0];
+    }
+
+    let stringDays = realDays > 0 ? `${realDays[0]} días ` : "";
+    let stringHours = realHours > 0 ? `${Math.round(realHours)} horas ` : "";
+    let stringMinutes = realMinutes > 0 ? `${Math.round(realMinutes)} minutos` : "";
+
+    return `${stringDays}${stringHours}${stringMinutes}`;
+};
+
+// eslint-disable-next-line no-unused-vars
+const timeToString2 = (time) => {
 
     let str = "";
-    const arrayTime = time.toString().split( ":" );
+    const arrayTime = time.toString().split(":");
 
-    switch ( arrayTime.length ) {
+    switch (arrayTime.length) {
         case 1:
-            str = `${arrayTime[0]} ${( parseInt( arrayTime[0]) === 1 )
+            str = `${arrayTime[0]} ${(parseInt(arrayTime[0]) === 1)
                 ? "hora"
                 : "horas"}`;
             break;
         case 2:
-            str = `${arrayTime[0]} ${( parseInt( arrayTime[0]) === 1 )
+            str = `${arrayTime[0]} ${(parseInt(arrayTime[0]) === 1)
                 ? "hora"
                 : "horas"} ${arrayTime[1] === "00" ? "" : `y ${arrayTime[1]} minutos`}`;
             break;
