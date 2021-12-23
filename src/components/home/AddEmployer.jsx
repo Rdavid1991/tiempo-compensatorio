@@ -1,39 +1,39 @@
 
-import React, { useEffect, useState } from 'react'
-import { handlerFunctions } from './helper/handlerFunctions'
+import React, { useEffect, useState } from 'react';
+import { handlerFunctions } from './helper/handlerFunctions';
 
-export const AddEmployer = ({ showModal, setShowModal }) => {
+export const AddEmployer = ({ setShowModal }) => {
 
-    const { handleInfoSave } = handlerFunctions()
+    const { handleInfoSave } = handlerFunctions();
 
     const initialState = {
-        name: "",
+        name      : "",
         department: "",
-        day: "",
-        start: "",
-        end: "",
-        hourTotal: 0,
-        hourLeft: 0,
-        hourUsed: 0,
-        used: false
-    }
+        day       : "",
+        start     : "",
+        end       : "",
+        hourTotal : 0,
+        hourLeft  : 0,
+        hourUsed  : 0,
+        used      : false
+    };
 
-    const [addEmploy, setAddEmploy] = useState(initialState)
+    const [addEmploy, setAddEmploy] = useState(initialState);
 
     useEffect(() => {
         document.querySelector('#addEmploy')
             .addEventListener('hidden.bs.modal', () => {
-                setShowModal(false)
-            })
-    }, [setShowModal])
+                setShowModal(false);
+            });
+    }, [setShowModal]);
 
     const handleInputChange = (e) => {
 
         setAddEmploy({
             ...addEmploy,
             [e.target.name]: e.target.value
-        })
-    }
+        });
+    };
 
     return (
         <div className="modal fade" id="addEmploy"  >
@@ -123,5 +123,5 @@ export const AddEmployer = ({ showModal, setShowModal }) => {
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};

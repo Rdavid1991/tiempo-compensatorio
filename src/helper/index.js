@@ -1,13 +1,14 @@
-import moment from "moment"
+/* eslint-disable no-useless-escape */
+import moment from "moment";
 
 const randomId = () => {
-    const str = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890"
+    const str = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
     let ranId = "";
-    for (let i = 0; i < 6; i++) {
-        ranId += str.charAt(Math.floor(Math.random() * str.length));
+    for ( let i = 0; i < 6; i++ ) {
+        ranId += str.charAt( Math.floor( Math.random() * str.length ));
     }
     return ranId;
-}
+};
 
 /**
  * Evalua si el tiempo ingresado es correcto
@@ -15,142 +16,142 @@ const randomId = () => {
  * @param {String} end Hora mas tardia
  * @returns 
  */
-const evalTime = (start, end) => {
+const evalTime = ( start, end ) => {
     const duration = moment.duration(
-        moment(end, "hh:mm").diff(
-            moment(start, "hh:mm")
+        moment( end, "hh:mm" ).diff(
+            moment( start, "hh:mm" )
         )
-    )
+    );
     return duration.hours() < 0 ? false : true;
-}
+};
 
-const timeToString = (time) => {
+const timeToString = ( time ) => {
 
     let str = "";
-    const arrayTime = time.toString().split(":")
+    const arrayTime = time.toString().split( ":" );
 
-    switch (arrayTime.length) {
+    switch ( arrayTime.length ) {
         case 1:
-            str = `${arrayTime[0]} ${(parseInt(arrayTime[0]) === 1)
+            str = `${arrayTime[0]} ${( parseInt( arrayTime[0]) === 1 )
                 ? "hora"
-                : "horas"}`
+                : "horas"}`;
             break;
         case 2:
-            str = `${arrayTime[0]} ${(parseInt(arrayTime[0]) === 1)
+            str = `${arrayTime[0]} ${( parseInt( arrayTime[0]) === 1 )
                 ? "hora"
-                : "horas"} ${arrayTime[1] === "00" ? "" : `y ${arrayTime[1]} minutos`}`
+                : "horas"} ${arrayTime[1] === "00" ? "" : `y ${arrayTime[1]} minutos`}`;
             break;
         default:
             break;
     }
 
-    return str
-}
+    return str;
+};
 
 const dataTableSpanish = {
-    "processing": "Procesando...",
-    "lengthMenu": "Mostrar _MENU_ registros",
-    "zeroRecords": "" /* "No se encontraron resultados" */,
-    "emptyTable": "" /* "Ningún dato disponible en esta tabla" */,
-    "infoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
-    "infoFiltered": "(filtrado de un total de _MAX_ registros)",
-    "search": "Buscar:",
-    "infoThousands": ",",
+    "processing"    : "Procesando...",
+    "lengthMenu"    : "Mostrar _MENU_ registros",
+    "zeroRecords"   : "" /* "No se encontraron resultados" */,
+    "emptyTable"    : "" /* "Ningún dato disponible en esta tabla" */,
+    "infoEmpty"     : "Mostrando registros del 0 al 0 de un total de 0 registros",
+    "infoFiltered"  : "(filtrado de un total de _MAX_ registros)",
+    "search"        : "Buscar:",
+    "infoThousands" : ",",
     "loadingRecords": "Cargando...",
-    "paginate": {
-        "first": "Primero",
-        "last": "Último",
-        "next": "Siguiente",
+    "paginate"      : {
+        "first"   : "Primero",
+        "last"    : "Último",
+        "next"    : "Siguiente",
         "previous": "Anterior"
     },
     "aria": {
-        "sortAscending": ": Activar para ordenar la columna de manera ascendente",
+        "sortAscending" : ": Activar para ordenar la columna de manera ascendente",
         "sortDescending": ": Activar para ordenar la columna de manera descendente"
     },
     "buttons": {
-        "copy": "Copiar",
-        "colvis": "Visibilidad",
-        "collection": "Colección",
+        "copy"         : "Copiar",
+        "colvis"       : "Visibilidad",
+        "collection"   : "Colección",
         "colvisRestore": "Restaurar visibilidad",
-        "copyKeys": "Presione ctrl o u2318 + C para copiar los datos de la tabla al portapapeles del sistema. <br \/> <br \/> Para cancelar, haga clic en este mensaje o presione escape.",
-        "copySuccess": {
+        "copyKeys"     : "Presione ctrl o u2318 + C para copiar los datos de la tabla al portapapeles del sistema. <br \/> <br \/> Para cancelar, haga clic en este mensaje o presione escape.",
+        "copySuccess"  : {
             "1": "Copiada 1 fila al portapapeles",
             "_": "Copiadas %d fila al portapapeles"
         },
-        "copyTitle": "Copiar al portapapeles",
-        "csv": "CSV",
-        "excel": "Excel",
+        "copyTitle" : "Copiar al portapapeles",
+        "csv"       : "CSV",
+        "excel"     : "Excel",
         "pageLength": {
             "-1": "Mostrar todas las filas",
-            "1": "Mostrar 1 fila",
-            "_": "Mostrar %d filas"
+            "1" : "Mostrar 1 fila",
+            "_" : "Mostrar %d filas"
         },
-        "pdf": "PDF",
+        "pdf"  : "PDF",
         "print": "Imprimir"
     },
     "autoFill": {
-        "cancel": "Cancelar",
-        "fill": "Rellene todas las celdas con <i>%d<\/i>",
+        "cancel"        : "Cancelar",
+        "fill"          : "Rellene todas las celdas con <i>%d<\/i>",
         "fillHorizontal": "Rellenar celdas horizontalmente",
-        "fillVertical": "Rellenar celdas verticalmentemente"
+        "fillVertical"  : "Rellenar celdas verticalmentemente"
     },
-    "decimal": ",",
+    "decimal"      : ",",
     "searchBuilder": {
-        "add": "Añadir condición",
+        "add"   : "Añadir condición",
         "button": {
             "0": "Constructor de búsqueda",
             "_": "Constructor de búsqueda (%d)"
         },
-        "clearAll": "Borrar todo",
-        "condition": "Condición",
+        "clearAll"  : "Borrar todo",
+        "condition" : "Condición",
         "conditions": {
             "date": {
-                "after": "Despues",
-                "before": "Antes",
-                "between": "Entre",
-                "empty": "Vacío",
-                "equals": "Igual a",
+                "after"     : "Despues",
+                "before"    : "Antes",
+                "between"   : "Entre",
+                "empty"     : "Vacío",
+                "equals"    : "Igual a",
                 "notBetween": "No entre",
-                "notEmpty": "No Vacío",
-                "not": "Diferente de"
+                "notEmpty"  : "No Vacío",
+                "not"       : "Diferente de"
             },
             "number": {
-                "between": "Entre",
-                "empty": "Vacío",
-                "equals": "Igual a",
-                "gt": "Mayor a",
-                "gte": "Mayor o igual a",
-                "lt": "Menor que",
-                "lte": "Menor o igual que",
+                "between"   : "Entre",
+                "empty"     : "Vacío",
+                "equals"    : "Igual a",
+                "gt"        : "Mayor a",
+                "gte"       : "Mayor o igual a",
+                "lt"        : "Menor que",
+                "lte"       : "Menor o igual que",
                 "notBetween": "No entre",
-                "notEmpty": "No vacío",
-                "not": "Diferente de"
+                "notEmpty"  : "No vacío",
+                "not"       : "Diferente de"
             },
             "string": {
-                "contains": "Contiene",
-                "empty": "Vacío",
-                "endsWith": "Termina en",
-                "equals": "Igual a",
-                "notEmpty": "No Vacío",
+                "contains"  : "Contiene",
+                "empty"     : "Vacío",
+                "endsWith"  : "Termina en",
+                "equals"    : "Igual a",
+                "notEmpty"  : "No Vacío",
                 "startsWith": "Empieza con",
-                "not": "Diferente de"
+                "not"       : "Diferente de"
             },
             "array": {
-                "not": "Diferente de",
-                "equals": "Igual",
-                "empty": "Vacío",
+                "not"     : "Diferente de",
+                "equals"  : "Igual",
+                "empty"   : "Vacío",
                 "contains": "Contiene",
                 "notEmpty": "No Vacío",
-                "without": "Sin"
+                "without" : "Sin"
             }
         },
-        "data": "Data",
+        "data"       : "Data",
         "deleteTitle": "Eliminar regla de filtrado",
-        "leftTitle": "Criterios anulados",
-        "logicAnd": "Y",
-        "logicOr": "O",
-        "rightTitle": "Criterios de sangría",
-        "title": {
+        "leftTitle"  : "Criterios anulados",
+        "logicAnd"   : "Y",
+        "logicOr"    : "O",
+        "rightTitle" : "Criterios de sangría",
+        "title"      : {
             "0": "Constructor de búsqueda",
             "_": "Constructor de búsqueda (%d)"
         },
@@ -158,19 +159,19 @@ const dataTableSpanish = {
     },
     "searchPanes": {
         "clearMessage": "Borrar todo",
-        "collapse": {
+        "collapse"    : {
             "0": "Paneles de búsqueda",
             "_": "Paneles de búsqueda (%d)"
         },
-        "count": "{total}",
+        "count"        : "{total}",
         "countFiltered": "{shown} ({total})",
-        "emptyPanes": "Sin paneles de búsqueda",
-        "loadMessage": "Cargando paneles de búsqueda",
-        "title": "Filtros Activos - %d"
+        "emptyPanes"   : "Sin paneles de búsqueda",
+        "loadMessage"  : "Cargando paneles de búsqueda",
+        "title"        : "Filtros Activos - %d"
     },
     "select": {
-        "1": "%d fila seleccionada",
-        "_": "%d filas seleccionadas",
+        "1"    : "%d fila seleccionada",
+        "_"    : "%d filas seleccionadas",
         "cells": {
             "1": "1 celda seleccionada",
             "_": "$d celdas seleccionadas"
@@ -185,34 +186,34 @@ const dataTableSpanish = {
         }
     },
     "thousands": ".",
-    "datetime": {
+    "datetime" : {
         "previous": "Anterior",
-        "next": "Proximo",
-        "hours": "Horas",
-        "minutes": "Minutos",
-        "seconds": "Segundos",
-        "unknown": "-",
-        "amPm": [
+        "next"    : "Proximo",
+        "hours"   : "Horas",
+        "minutes" : "Minutos",
+        "seconds" : "Segundos",
+        "unknown" : "-",
+        "amPm"    : [
             "am",
             "pm"
         ]
     },
     "editor": {
-        "close": "Cerrar",
+        "close" : "Cerrar",
         "create": {
             "button": "Nuevo",
-            "title": "Crear Nuevo Registro",
+            "title" : "Crear Nuevo Registro",
             "submit": "Crear"
         },
         "edit": {
             "button": "Editar",
-            "title": "Editar Registro",
+            "title" : "Editar Registro",
             "submit": "Actualizar"
         },
         "remove": {
-            "button": "Eliminar",
-            "title": "Eliminar Registro",
-            "submit": "Eliminar",
+            "button" : "Eliminar",
+            "title"  : "Eliminar Registro",
+            "submit" : "Eliminar",
             "confirm": {
                 "_": "¿Está seguro que desea eliminar %d filas?",
                 "1": "¿Está seguro que desea eliminar 1 fila?"
@@ -222,14 +223,14 @@ const dataTableSpanish = {
             "system": "Ha ocurrido un error en el sistema (<a target=\"\\\" rel=\"\\ nofollow\" href=\"\\\">Más información&lt;\\\/a&gt;).<\/a>"
         },
         "multi": {
-            "title": "Múltiples Valores",
-            "info": "Los elementos seleccionados contienen diferentes valores para este registro. Para editar y establecer todos los elementos de este registro con el mismo valor, hacer click o tap aquí, de lo contrario conservarán sus valores individuales.",
+            "title"  : "Múltiples Valores",
+            "info"   : "Los elementos seleccionados contienen diferentes valores para este registro. Para editar y establecer todos los elementos de este registro con el mismo valor, hacer click o tap aquí, de lo contrario conservarán sus valores individuales.",
             "restore": "Deshacer Cambios",
             "noMulti": "Este registro puede ser editado individualmente, pero no como parte de un grupo."
         }
     },
     "info": "Mostrando de _START_ a _END_ de _TOTAL_ entradas"
-}
+};
 
 
 export {
@@ -237,4 +238,4 @@ export {
     dataTableSpanish,
     evalTime,
     timeToString
-}
+};

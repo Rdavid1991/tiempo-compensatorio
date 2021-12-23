@@ -1,16 +1,16 @@
-import moment from 'moment'
-import { useState } from 'react';
+import moment from 'moment';
+import React from 'react';
 import { timeToString } from '../../helper';
-import { handlerFunctions } from './helper/handlerFunctions';
-const { bootstrap } = window
+
+const { bootstrap } = window;
 
 
-export const PopulateTable = ({ data, employeeKey, state, setIdTime }) => {
+export const PopulateTable = ({ data, state, setIdTime }) => {
 
-    const showDetails = (iter) => {
-        var details = new bootstrap.Modal(document.querySelector('#details'), {})
+    const showDetails = () => {
+        var details = new bootstrap.Modal(document.querySelector('#details'), {});
         details.show();
-    }
+    };
 
     const iterateInfo = () => {
         let rows = [];
@@ -18,8 +18,6 @@ export const PopulateTable = ({ data, employeeKey, state, setIdTime }) => {
 
             if (state === data.time[i].used) {
 
-                let total = data.time[i].hourTotal.toString().split(":")
-                let left = data.time[i].hourTotal.toString().split(":")
 
                 rows.push(
                     <tr
@@ -27,7 +25,7 @@ export const PopulateTable = ({ data, employeeKey, state, setIdTime }) => {
                     >
                         <td
                             style={{ "cursor": "pointer" }}
-                            onClick={(e) => showDetails(i)}
+                            onClick={() => showDetails(i)}
                         >{moment(data.time[i].day).format("dddd LL")}</td>
                         <td>{moment(data.time[i].start, "hh:mm").format("LT")}</td>
                         <td>{moment(data.time[i].end, "hh:mm").format("LT")}</td>
@@ -44,7 +42,7 @@ export const PopulateTable = ({ data, employeeKey, state, setIdTime }) => {
                                         className="btn btn-sm btn-secondary"
                                         data-bs-toggle="modal"
                                         data-bs-target="#useTime"
-                                        onClick={() => { setIdTime(i) }}
+                                        onClick={() => { setIdTime(i); }}
                                     >
                                         usar
                                     </button>
@@ -52,12 +50,12 @@ export const PopulateTable = ({ data, employeeKey, state, setIdTime }) => {
                                 </td>
                         }
                     </tr>
-                )
+                );
             }
         }
 
-        return rows
-    }
+        return rows;
+    };
 
     return (
         <>
@@ -66,6 +64,6 @@ export const PopulateTable = ({ data, employeeKey, state, setIdTime }) => {
             }
         </>
     );
-}
+};
 
 

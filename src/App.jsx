@@ -1,4 +1,4 @@
-
+import React from "react";
 import { Route, Routes } from "react-router";
 import { HomeTable } from "./components/home/HomeTable";
 import { EmployeeTable } from "./components/employ/EmployeeTable";

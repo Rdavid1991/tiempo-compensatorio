@@ -1,25 +1,25 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { useLocation } from 'react-router'
-import { Link } from 'react-router-dom'
-import { AddTime } from './AddTime'
-import moment from 'moment'
-import 'moment/locale/es-us'
-import { PopulateTable } from './PopulateTable'
-import { dataTableSpanish } from '../../helper'
-import { DetailsTime } from './DetailsTime'
-import { UseTime } from './UseTime'
-const { $ } = window
+import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router';
+import { Link } from 'react-router-dom';
+import { AddTime } from './AddTime';
+import moment from 'moment';
+import 'moment/locale/es-us';
+import { PopulateTable } from './PopulateTable';
+import { dataTableSpanish } from '../../helper';
+import { DetailsTime } from './DetailsTime';
+import { UseTime } from './UseTime';
+const { $ } = window;
 
-moment.locale("es")
+moment.locale("es");
 export const EmployeeTable = () => {
 
 
-    const useLocationHook = useLocation()
-    const { employeeKey } = useLocationHook.state
-    const data = JSON.parse(localStorage.getItem(employeeKey))
+    const useLocationHook = useLocation();
+    const { employeeKey } = useLocationHook.state;
+    const data = JSON.parse(localStorage.getItem(employeeKey));
 
-    const [idTime, setIdTime] = useState()
-    const [showModal, setShowModal] = useState(false)
+    const [idTime, setIdTime] = useState();
+    const [showModal, setShowModal] = useState(false);
 
     useEffect(() => {
 
@@ -29,7 +29,7 @@ export const EmployeeTable = () => {
         $("#used").DataTable({
             language: { ...dataTableSpanish }
         });
-    }, [])
+    }, []);
 
     return (
         <div>
@@ -65,7 +65,7 @@ export const EmployeeTable = () => {
                     Agregar hora
                 </button>
 
-                <div className='mt-3'>
+                <div className="mt-3">
                     <h1>Funcionario: {data.name}</h1>
 
                     <ul className="nav nav-tabs" id="myTab" role="tablist">
@@ -125,5 +125,5 @@ export const EmployeeTable = () => {
 
             </>
         </div>
-    )
-}
+    );
+};

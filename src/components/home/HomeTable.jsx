@@ -1,21 +1,20 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { Link } from 'react-router-dom';
+import React, { useEffect, useRef, useState } from 'react';
 import { dataTableSpanish } from '../../helper';
 import { AddEmployer } from './AddEmployer';
 import { PopulateTable } from './PopulateTable';
-const { DataTable, $ } = window
+const { $ } = window;
 
 export const HomeTable = () => {
 
-    const table = useRef()
+    const table = useRef();
 
-    const [showModal, setShowModal] = useState(false)
+    const [showModal, setShowModal] = useState(false);
 
     useEffect(() => {
         table.current = $("#example").DataTable({
             language: { ...dataTableSpanish }
-        })
-    }, [])
+        });
+    }, []);
 
     return (
         <>
@@ -53,5 +52,5 @@ export const HomeTable = () => {
                 </table>
             </div>
         </>
-    )
-}
+    );
+};

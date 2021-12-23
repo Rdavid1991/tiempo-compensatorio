@@ -3,8 +3,8 @@ const { app, BrowserWindow, Menu } = require('electron');
 
 function createWindow() {
     let win = new BrowserWindow({
-        minWidth: 800,
-        minHeight: 600,
+        minWidth      : 800,
+        minHeight     : 600,
         webPreferences: {
             nodeIntegration: true,
         },
@@ -12,7 +12,7 @@ function createWindow() {
 
     const template = [
         {
-            label: "Desarrollador",
+            label  : "Desarrollador",
             submenu: [{
                 label: 'abrir',
                 click: () => {

@@ -1,38 +1,38 @@
-import React, { useEffect, useState } from 'react'
-import moment from "moment"
-import Swal from 'sweetalert2'
-import { evalTime } from '../../helper'
+import React, { useEffect, useState } from 'react';
+import moment from "moment";
+import Swal from 'sweetalert2';
+import { evalTime } from '../../helper';
 
-const { bootstrap, location } = window
+const { bootstrap, location } = window;
 
-export const AddTime = ({ employeeKey, showModal, setShowModal }) => {
+export const AddTime = ({ employeeKey, setShowModal }) => {
 
     const initialState = {
-        day: "",
+        day  : "",
         start: "",
-        end: "",
-        used: false
-    }
+        end  : "",
+        used : false
+    };
 
-    const [addEmployTime, setAddEmployTime] = useState(initialState)
+    const [addEmployTime, setAddEmployTime] = useState(initialState);
 
     useEffect(() => {
         document.querySelector('#addEmployTime')
             .addEventListener('hidden.bs.modal', () => {
-                setShowModal(false)
-            })
-    }, [])
+                setShowModal(false);
+            });
+    }, []);
 
     const handleInputChange = (e) => {
 
         setAddEmployTime({
             ...addEmployTime,
             [e.target.name]: e.target.value
-        })
-    }
+        });
+    };
 
     const handleInfoSave = (e) => {
-        e.preventDefault()
+        e.preventDefault();
 
         if (evalTime(addEmployTime.start, addEmployTime.end)) {
 
@@ -40,44 +40,45 @@ export const AddTime = ({ employeeKey, showModal, setShowModal }) => {
                 moment(addEmployTime.end, "hh:mm").diff(
                     moment(addEmployTime.start, "hh:mm")
                 )
-            )
+            );
 
+            // eslint-disable-next-line no-prototype-builtins
             if (localStorage.hasOwnProperty(employeeKey)) {
-                const info = JSON.parse(localStorage.getItem(employeeKey))
+                const info = JSON.parse(localStorage.getItem(employeeKey));
 
                 info.time.push({
-                    day: addEmployTime.day,
-                    start: addEmployTime.start,
-                    end: addEmployTime.end,
-                    hourTotal: `${duration.hours()}${duration.minutes() > 0 ? `:${duration.minutes()}` : ""}`,
-                    hourLeft: `${duration.hours()}${duration.minutes() > 0 ? `:${duration.minutes()}` : ""}`,
-                    hourUsed: 0,
-                    used: addEmployTime.used,
+                    day            : addEmployTime.day,
+                    start          : addEmployTime.start,
+                    end            : addEmployTime.end,
+                    hourTotal      : `${duration.hours()}${duration.minutes() > 0 ? `:${duration.minutes()}` : ""}`,
+                    hourLeft       : `${duration.hours()}${duration.minutes() > 0 ? `:${duration.minutes()}` : ""}`,
+                    hourUsed       : 0,
+                    used           : addEmployTime.used,
                     usedHourHistory: []
-                })
-                localStorage.setItem(employeeKey, JSON.stringify(info))
+                });
+                localStorage.setItem(employeeKey, JSON.stringify(info));
             }
 
-            document.querySelector("#addEmployTimeForm").reset()
-            bootstrap.Modal.getInstance(document.querySelector('#addEmployTime'), {}).hide()
+            document.querySelector("#addEmployTimeForm").reset();
+            bootstrap.Modal.getInstance(document.querySelector('#addEmployTime'), {}).hide();
             Swal.fire({
-                position: 'top-end',
-                icon: 'success',
-                title: 'Horas guardadas',
+                position         : 'top-end',
+                icon             : 'success',
+                title            : 'Horas guardadas',
                 showConfirmButton: false,
-                timer: 1000
+                timer            : 1000
             }).then(() => {
-                location.reload()
-            })
+                location.reload();
+            });
         } else {
             Swal.fire(
                 'Lo siento',
                 `No puede ingresar las horas en ese orden. <br>
                     Desde ${moment(addEmployTime.start, "hh:mm").format("LT")} es menor que, Hasta ${moment(addEmployTime.end, "hh:mm").format("LT")}`,
                 'error'
-            )
+            );
         }
-    }
+    };
 
     return (
         <div className="modal fade" id="addEmployTime"  >
@@ -145,5 +146,5 @@ export const AddTime = ({ employeeKey, showModal, setShowModal }) => {
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
