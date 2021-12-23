@@ -10,7 +10,7 @@ export const DetailsTime = ({ data }) => {
                         <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div className="modal-body">
-                        {data.time[0].usedHourHistory[0].date}
+                        {data.time[0].usedHourHistory.length > 0 ? data.time[0].usedHourHistory[0].date : ""}
                     </div>
                     <div className="modal-footer">
                         <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
