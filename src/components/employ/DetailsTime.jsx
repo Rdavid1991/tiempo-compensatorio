@@ -1,4 +1,6 @@
+import moment from 'moment';
 import React from 'react';
+import { timeToString } from '../../helper';
 
 export const DetailsTime = ({ data }) => {
     return (
@@ -6,15 +8,32 @@ export const DetailsTime = ({ data }) => {
             <div className="modal-dialog">
                 <div className="modal-content">
                     <div className="modal-header">
-                        <h5 className="modal-title" id="detailsLabel">Modal title</h5>
+                        <h5 className="modal-title" id="detailsLabel">Horas usadas del {moment(data.day).format("ddd LL")}</h5>
                         <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div className="modal-body">
-                        {data.time[0].usedHourHistory.length > 0 ? data.time[0].usedHourHistory[0].date : ""}
+                        <div className="row g-2">
+                            <div className="col-6">
+                                <div className="p-1 border border-dark rounded bg-dark">Fecha de uso</div>
+                            </div>
+                            <div className="col-6">
+                                <div className="p-1 border border-dark rounded bg-dark">Horas usadas</div>
+                            </div>
+                            {data.usedHourHistory.length > 0 ? data.usedHourHistory.map((item) => (
+
+                                <>
+                                    <div className="col-6">
+                                        <div className="p-1 border border-dark rounded bg-dark">{moment(item.date).format("ddd LL")}</div>
+                                    </div>
+                                    <div className="col-6">
+                                        <div className="p-1 border border-dark rounded bg-dark">{timeToString(moment.duration(item.hours, "hours").asMilliseconds())}</div>
+                                    </div>
+                                </>
+                            )) : "No hay nada que mostrar"}
+                        </div>
                     </div>
                     <div className="modal-footer">
-                        <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" className="btn btn-primary">Understood</button>
+                        <button type="button" className="btn btn-sm btn-secondary" data-bs-dismiss="modal">cerrar</button>
                     </div>
                 </div>
             </div>

@@ -5,11 +5,13 @@ import { timeToString } from '../../helper';
 const { bootstrap } = window;
 
 
-export const PopulateTable = ({ data, state, setIdTime }) => {
+export const PopulateTable = ({ data, state, setIdTime, setIndexDetails }) => {
 
-    const showDetails = () => {
+    const showDetails = (index) => {
+
         var details = new bootstrap.Modal(document.querySelector('#details'), {});
         details.show();
+        setIndexDetails(index);
     };
 
     const iterateInfo = () => {

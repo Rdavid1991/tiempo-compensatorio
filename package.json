@@ -35,7 +35,8 @@
     "files": [
       "./main.js",
       "*.map",
-      "icon.*"
+      "icon.*",
+      "script.js"
     ],
     "extraMetadata": {
       "main": "./main.js"

@@ -101,7 +101,8 @@ export const handlerFunctions = (data, employeeKey) => {
                 }
 
                 data.time[index].usedHourHistory.push({
-                    "date": usedTime.dateOfUse
+                    "date" : usedTime.dateOfUse,
+                    "hours": timeToString(usedTime.hourToUse)
                 });
 
                 localStorage.setItem(employeeKey, JSON.stringify(data));

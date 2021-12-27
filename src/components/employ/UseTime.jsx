@@ -14,7 +14,7 @@ export const UseTime = ({ idTime, employeeKey, data }) => {
             <div className="modal-dialog">
                 <div className="modal-content">
                     <div className="modal-header">
-                        <h5 className="modal-title" id="useTimeLabel">Modal title</h5>
+                        <h5 className="modal-title" id="useTimeLabel">Usar horas</h5>
                         <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
 
@@ -33,6 +33,7 @@ export const UseTime = ({ idTime, employeeKey, data }) => {
                                     step="0.01"
                                     min="0"
                                     onChange={(e) => handlerUsedTime(e, setUsedTime, usedTime)}
+                                    required
                                 />
                             </div>
                             <div className="mb-3">
@@ -42,6 +43,7 @@ export const UseTime = ({ idTime, employeeKey, data }) => {
                                     className="form-control form-control-sm"
                                     name="dateOfUse"
                                     onChange={(e) => handlerUsedTime(e, setUsedTime, usedTime)}
+                                    required
                                 />
                             </div>
 

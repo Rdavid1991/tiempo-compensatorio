@@ -20,6 +20,7 @@ export const EmployeeTable = () => {
 
     const [idTime, setIdTime] = useState();
     const [showModal, setShowModal] = useState(false);
+    const [indexDetails, setIndexDetails] = useState(0);
 
     useEffect(() => {
 
@@ -40,8 +41,8 @@ export const EmployeeTable = () => {
                     data={data}
                 />
                 <DetailsTime
-                    idTime={idTime}
-                    data={data}
+                    indexDetails={indexDetails}
+                    data={data.time[indexDetails]}
                 />
                 <AddTime
                     employeeKey={employeeKey}
@@ -49,6 +50,7 @@ export const EmployeeTable = () => {
                     setShowModal={setShowModal}
                 />
 
+                <h2>Funcionario: {data.name}</h2>
                 <Link
                     to="/"
                     className="btn btn-sm btn-primary"
@@ -66,7 +68,6 @@ export const EmployeeTable = () => {
                 </button>
 
                 <div className="mt-3">
-                    <h1>Funcionario: {data.name}</h1>
 
                     <ul className="nav nav-tabs" id="myTab" role="tablist">
                         <li className="nav-item" role="presentation">
@@ -96,6 +97,7 @@ export const EmployeeTable = () => {
                                         employeeKey={employeeKey}
                                         state={false}
                                         setIdTime={setIdTime}
+                                        setIndexDetails={setIndexDetails}
                                     />
                                 </tbody>
                             </table>
@@ -116,7 +118,9 @@ export const EmployeeTable = () => {
                                     <PopulateTable
                                         data={data}
                                         employeeKey={employeeKey}
-                                        state={true} />
+                                        state={true}
+                                        setIndexDetails={setIndexDetails}
+                                    />
                                 </tbody>
                             </table>
                         </div>

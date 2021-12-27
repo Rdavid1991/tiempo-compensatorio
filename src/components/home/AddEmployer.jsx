@@ -36,7 +36,7 @@ export const AddEmployer = ({ setShowModal }) => {
     };
 
     return (
-        <div className="modal fade" id="addEmploy"  >
+        <div className="modal fade"  data-bs-backdrop="static" id="addEmploy"  >
             <div className="modal-dialog">
                 <div className="modal-content">
                     <div className="modal-header">

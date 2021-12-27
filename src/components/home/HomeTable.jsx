@@ -23,6 +23,9 @@ export const HomeTable = () => {
                 setShowModal={setShowModal}
             />
 
+            <h1>Registro de tiempo compensatorio</h1>
+            <h2>Lista de funcionarios</h2>
+
             <button
                 type="button"
                 className="btn btn-sm  btn-primary"

@@ -9,7 +9,7 @@ export const AddTime = ({ employeeKey, setShowModal }) => {
 
     const initialState = {
         day  : "",
-        start: "",
+        start: "16:00",
         end  : "",
         used : false
     };
@@ -59,7 +59,7 @@ export const AddTime = ({ employeeKey, setShowModal }) => {
                 localStorage.setItem(employeeKey, JSON.stringify(info));
             }
 
-            document.querySelector("#addEmployTimeForm").reset();
+            setAddEmployTime(initialState);
             bootstrap.Modal.getInstance(document.querySelector('#addEmployTime'), {}).hide();
             Swal.fire({
                 position         : 'top-end',
@@ -81,7 +81,7 @@ export const AddTime = ({ employeeKey, setShowModal }) => {
     };
 
     return (
-        <div className="modal fade" id="addEmployTime"  >
+        <div className="modal fade"  data-bs-backdrop="static" id="addEmployTime"  >
             <div className="modal-dialog">
                 <div className="modal-content">
                     <div className="modal-header">
@@ -97,10 +97,11 @@ export const AddTime = ({ employeeKey, setShowModal }) => {
                                 <label htmlFor="day" className="form-label">Día</label>
                                 <input
                                     type="date"
-                                    className="form-control"
+                                    className="form-control form-control-sm"
                                     id="day"
                                     onChange={handleInputChange}
                                     name="day"
+                                    value={addEmployTime.day}
                                     required
                                 />
                             </div>
@@ -111,6 +112,7 @@ export const AddTime = ({ employeeKey, setShowModal }) => {
                                     className="form-input"
                                     id="start"
                                     onChange={handleInputChange}
+                                    value={addEmployTime.start}
                                     name="start"
                                     required
                                 />
@@ -122,6 +124,7 @@ export const AddTime = ({ employeeKey, setShowModal }) => {
                                     className="form-input"
                                     id="end"
                                     onChange={handleInputChange}
+                                    value={addEmployTime.end}
                                     name="end"
                                     required
                                 />
@@ -131,14 +134,14 @@ export const AddTime = ({ employeeKey, setShowModal }) => {
                         <div className="modal-footer">
                             <button
                                 type="button"
-                                className="btn btn-secondary"
+                                className="btn btn-sm btn-secondary"
                                 data-bs-dismiss="modal"
                             >
                                 Cerrar
                             </button>
                             <button
                                 type="submit"
-                                className="btn btn-primary">
+                                className="btn btn-sm btn-primary">
                                 Guardar
                             </button>
                         </div>

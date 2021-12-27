@@ -6,7 +6,7 @@ function createWindow() {
         minWidth      : 800,
         minHeight     : 600,
         webPreferences: {
-            nodeIntegration: true,
+            preload: path.join(__dirname, "script.js")
         },
     });
 
@@ -19,13 +19,27 @@ function createWindow() {
                     win.webContents.toggleDevTools();
                 }
             }]
+        },
+        {
+            label  : "Temas",
+            submenu: [{
+                label: 'Morph',
+                click: () => {
+                    win.webContents.send("tema", "morph");
+                }
+            }]
         }
     ];
+    Menu.setApplicationMenu(Menu.buildFromTemplate(template));
 
-    const menu = Menu.buildFromTemplate(template);
-
-    Menu.setApplicationMenu(menu);
     win.loadFile(path.join(__dirname, '/build/index.html'));
+    //win.loadURL(`http://localhost:3000`);
+    //win.reload();
+
+
+    win.on("closed", () => {
+        win = null;
+    });
 }
 
 app.whenReady().then(createWindow);
