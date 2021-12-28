@@ -10,7 +10,7 @@ export const AddEmployer = ({ setShowModal }) => {
         name      : "",
         department: "",
         day       : "",
-        start     : "",
+        start     : "16:00",
         end       : "",
         hourTotal : 0,
         hourLeft  : 0,
@@ -55,6 +55,7 @@ export const AddEmployer = ({ setShowModal }) => {
                                     className="form-control form-control-sm"
                                     id="name"
                                     onChange={handleInputChange}
+                                    value={addEmploy.name}
                                     name="name"
                                     required
                                 />
@@ -65,13 +66,15 @@ export const AddEmployer = ({ setShowModal }) => {
                                     className="form-select form-select-sm"
                                     id="department"
                                     onChange={handleInputChange}
+                                    value={addEmploy.department}
                                     name="department"
                                     required
                                 >
                                     <option selected>Selecciona un departamento</option>
+                                    <option value="Administración">Administración</option>
                                     <option value="Desarrollo">Desarrollo</option>
-                                    <option value="Soporte">Soporte</option>
                                     <option value="Infraestructura">Infraestructura</option>
+                                    <option value="Soporte">Soporte</option>
                                 </select>
                             </div>
                             <div className="mb-3">
@@ -82,6 +85,7 @@ export const AddEmployer = ({ setShowModal }) => {
                                     id="day"
                                     onChange={handleInputChange}
                                     name="day"
+                                    value={addEmploy.day}
                                 />
                             </div>
                             <div className="mb-3">
@@ -92,6 +96,7 @@ export const AddEmployer = ({ setShowModal }) => {
                                     id="start"
                                     onChange={handleInputChange}
                                     name="start"
+                                    value={addEmploy.start}
                                 />
                             </div>
                             <div className="mb-3">
@@ -102,6 +107,7 @@ export const AddEmployer = ({ setShowModal }) => {
                                     id="end"
                                     onChange={handleInputChange}
                                     name="end"
+                                    value={addEmploy.end}
                                 />
                             </div>
                         </div>

@@ -5,13 +5,12 @@ import { timeToString } from '../../helper';
 const { bootstrap } = window;
 
 
-export const PopulateTable = ({ data, state, setIdTime, setIndexDetails }) => {
+export const PopulateTable = ({ data, state, setIndexData }) => {
 
     const showDetails = (index) => {
-
         var details = new bootstrap.Modal(document.querySelector('#details'), {});
         details.show();
-        setIndexDetails(index);
+        setIndexData(index);
     };
 
     const iterateInfo = () => {
@@ -23,7 +22,7 @@ export const PopulateTable = ({ data, state, setIdTime, setIndexDetails }) => {
                 totalInMilliseconds = moment.duration(data.time[i].hourTotal, "hours").asMilliseconds();
                 usedInMilliseconds = moment.duration(data.time[i].hourUsed, "hours").asMilliseconds();
                 leftOverInMilliseconds = moment.duration(data.time[i].hourLeft, "hours").asMilliseconds();
-          
+
                 rows.push(
                     <tr
                         key={i}
@@ -47,9 +46,18 @@ export const PopulateTable = ({ data, state, setIdTime, setIndexDetails }) => {
                                         className="btn btn-sm btn-secondary"
                                         data-bs-toggle="modal"
                                         data-bs-target="#useTime"
-                                        onClick={() => { setIdTime(i); }}
+                                        onClick={() => setIndexData(i)}
                                     >
                                         usar
+                                    </button>
+
+                                    <button
+                                        className="btn btn-sm btn-secondary"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#editEmployTime"
+                                        onClick={() => setIndexData(i)}
+                                    >
+                                        editar
                                     </button>
 
                                 </td>

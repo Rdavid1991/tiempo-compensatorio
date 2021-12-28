@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { handlerFunctions } from './helper/handlerFunctions';
 
-export const UseTime = ({ idTime, employeeKey, data }) => {
+export const UseTime = ({ indexData, employeeKey, data }) => {
 
     const { handlerUsedTime, handlerUseHours } = handlerFunctions(data, employeeKey);
     const [usedTime, setUsedTime] = useState({
@@ -20,7 +20,7 @@ export const UseTime = ({ idTime, employeeKey, data }) => {
 
                     <form onSubmit={(e) => {
                         e.preventDefault();
-                        handlerUseHours(idTime, usedTime);
+                        handlerUseHours(indexData, usedTime);
                     }}>
                         <div className="modal-body">
 
@@ -49,7 +49,7 @@ export const UseTime = ({ idTime, employeeKey, data }) => {
 
                         </div>
                         <div className="modal-footer">
-                            <button type="button" className="btn btn-sm btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" className="btn btn-sm btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                             <button type="submit" className="btn btn-sm btn-primary">Usar horas</button>
                         </div>
                     </form>

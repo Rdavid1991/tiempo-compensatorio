@@ -8,19 +8,17 @@ import { PopulateTable } from './PopulateTable';
 import { dataTableSpanish } from '../../helper';
 import { DetailsTime } from './DetailsTime';
 import { UseTime } from './UseTime';
+import { EditTime } from './EditTime';
 const { $ } = window;
 
 moment.locale("es");
 export const EmployeeTable = () => {
 
-
     const useLocationHook = useLocation();
     const { employeeKey } = useLocationHook.state;
     const data = JSON.parse(localStorage.getItem(employeeKey));
 
-    const [idTime, setIdTime] = useState();
-    const [showModal, setShowModal] = useState(false);
-    const [indexDetails, setIndexDetails] = useState(0);
+    const [indexData, setIndexData] = useState(0);
 
     useEffect(() => {
 
@@ -36,18 +34,28 @@ export const EmployeeTable = () => {
         <div>
             <>
                 <UseTime
-                    idTime={idTime}
+                    indexData={indexData}
                     employeeKey={employeeKey}
                     data={data}
                 />
+
                 <DetailsTime
-                    indexDetails={indexDetails}
-                    data={data.time[indexDetails]}
+                    data={data.time[indexData]}
                 />
+
                 <AddTime
                     employeeKey={employeeKey}
-                    showModal={showModal}
-                    setShowModal={setShowModal}
+                />
+
+                <EditTime
+                    employeeKey={employeeKey}
+                    editState={{
+                        day  : data.time[indexData].day,
+                        start: data.time[indexData].start,
+                        end  : data.time[indexData].end,
+                        used : false
+                    }}
+                    indexData={indexData}
                 />
 
                 <h2>Funcionario: {data.name}</h2>
@@ -62,7 +70,6 @@ export const EmployeeTable = () => {
                     className="btn btn-sm btn-success mx-3"
                     data-bs-toggle="modal"
                     data-bs-target="#addEmployTime"
-                    onClick={() => setShowModal(true)}
                 >
                     Agregar hora
                 </button>
@@ -88,7 +95,7 @@ export const EmployeeTable = () => {
                                         <th>Tiempo total</th>
                                         <th>Tiempo usado</th>
                                         <th>Tiempo restante</th>
-                                        <th>Acción</th>
+                                        <th>Acciones</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -96,8 +103,7 @@ export const EmployeeTable = () => {
                                         data={data}
                                         employeeKey={employeeKey}
                                         state={false}
-                                        setIdTime={setIdTime}
-                                        setIndexDetails={setIndexDetails}
+                                        setIndexData={setIndexData}
                                     />
                                 </tbody>
                             </table>
@@ -119,7 +125,7 @@ export const EmployeeTable = () => {
                                         data={data}
                                         employeeKey={employeeKey}
                                         state={true}
-                                        setIndexDetails={setIndexDetails}
+                                        setIndexData={setIndexData}
                                     />
                                 </tbody>
                             </table>

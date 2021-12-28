@@ -1,21 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import moment from "moment";
 import Swal from 'sweetalert2';
 import { evalTime } from '../../helper';
 
 const { bootstrap, location } = window;
 
-export const AddTime = ({ employeeKey }) => {
+export const EditTime = ({ indexData, employeeKey, editState = {} }) => {
 
-
-    const initialState = {
-        day  : "",
-        start: "16:00",
-        end  : "",
-        used : false
-    };
-
-    const [addEmployTime, setAddEmployTime] = useState(initialState);
+    const [addEmployTime, setAddEmployTime] = useState(editState);
 
     const handleInputChange = (e) => {
 
@@ -24,6 +16,10 @@ export const AddTime = ({ employeeKey }) => {
             [e.target.name]: e.target.value
         });
     };
+
+    useEffect(() => {
+        setAddEmployTime(editState);
+    }, [editState]);
 
     const handleInfoSave = (e) => {
         e.preventDefault();
@@ -40,25 +36,24 @@ export const AddTime = ({ employeeKey }) => {
             if (localStorage.hasOwnProperty(employeeKey)) {
                 const info = JSON.parse(localStorage.getItem(employeeKey));
 
-                info.time.push({
+                info.time[indexData] = {
                     day            : addEmployTime.day,
                     start          : addEmployTime.start,
                     end            : addEmployTime.end,
                     hourTotal      : `${duration.hours()}${duration.minutes() > 0 ? `:${duration.minutes()}` : ""}`,
                     hourLeft       : `${duration.hours()}${duration.minutes() > 0 ? `:${duration.minutes()}` : ""}`,
-                    hourUsed       : 0,
+                    hourUsed       : info.time[indexData].hourUsed,
                     used           : addEmployTime.used,
                     usedHourHistory: []
-                });
+                };
                 localStorage.setItem(employeeKey, JSON.stringify(info));
             }
 
-            setAddEmployTime(initialState);
-            bootstrap.Modal.getInstance(document.querySelector('#addEmployTime'), {}).hide();
+            bootstrap.Modal.getInstance(document.querySelector('#editEmployTime'), {}).hide();
             Swal.fire({
                 position         : 'top-end',
                 icon             : 'success',
-                title            : 'Horas guardadas',
+                title            : 'Horas actualizadas',
                 showConfirmButton: false,
                 timer            : 1000
             }).then(() => {
@@ -75,7 +70,7 @@ export const AddTime = ({ employeeKey }) => {
     };
 
     return (
-        <div className="modal fade" data-bs-backdrop="static" id="addEmployTime"  >
+        <div className="modal fade" data-bs-backdrop="static" id="editEmployTime"  >
             <div className="modal-dialog">
                 <div className="modal-content">
                     <div className="modal-header">
