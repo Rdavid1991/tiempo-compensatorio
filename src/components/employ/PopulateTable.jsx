@@ -1,16 +1,23 @@
 import moment from 'moment';
 import React from 'react';
 import { timeToHumanize } from '../../helper';
+import db from '../../helper/db';
+
+const localDB = db();
 
 const { bootstrap } = window;
 
-
-export const PopulateTable = ({ data, state, setIndexData }) => {
+export const PopulateTable = ({ data, employeeKey , state, setIndexData }) => {
 
     const showDetails = (index) => {
         var details = new bootstrap.Modal(document.querySelector('#details'), {});
         details.show();
-        setIndexData(index);
+        setIndexData(index,);
+    };
+
+    const handleDelete = (index) => {
+        debugger;
+        localDB.drop(index, employeeKey);
     };
 
     const iterateInfo = () => {
@@ -58,6 +65,12 @@ export const PopulateTable = ({ data, state, setIndexData }) => {
                                         onClick={() => setIndexData(i)}
                                     >
                                         editar
+                                    </button>
+                                    <button
+                                        className="btn btn-sm btn-secondary"
+                                        onClick={() => handleDelete(i)}
+                                    >
+                                        borrar
                                     </button>
 
                                 </td>

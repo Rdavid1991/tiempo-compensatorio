@@ -4,6 +4,7 @@ import { compareDiffTime, compareDurationTime, randomId, substractTime } from ".
 const { bootstrap } = window;
 
 /* eslint-disable no-prototype-builtins */
+
 const db = () => {
 
     const __schemaFunctionary = {
@@ -110,7 +111,6 @@ const db = () => {
                 }
             }
 
-
         } else {
             Swal.fire(
                 'Lo siento',
@@ -118,6 +118,41 @@ const db = () => {
                     Desde ${moment(editEmployTime.start, "hh:mm").format("LT")} es menor que, Hasta ${moment(editEmployTime.end, "hh:mm").format("LT")}`,
                 'error'
             );
+        }
+
+    };
+
+    const drop = (indexData, employeeKey,) => {
+
+        if (localStorage.hasOwnProperty(employeeKey)) {
+
+            Swal.fire({
+                title             : '¿Estas seguro/a?',
+                text              : "Desea borrar el registro",
+                icon              : 'warning',
+                showCancelButton  : true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor : '#d33',
+                confirmButtonText : 'Si, borrar!',
+                cancelButtonText  : 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const info = JSON.parse(localStorage.getItem(employeeKey));
+
+                    const deleted = info.time.splice(indexData, indexData);
+
+                    if (deleted.length >= 1) {
+                        localStorage.setItem(employeeKey, JSON.stringify(info));
+                        Swal.fire(
+                            'Borrado!',
+                            'El registro a sido borrado!',
+                            'success'
+                        ).then(() => {
+                            location.reload();
+                        });
+                    }
+                }
+            });
         }
     };
 
@@ -137,7 +172,8 @@ const db = () => {
     return {
         getAll,
         insert,
-        update
+        update,
+        drop
     };
 };
 

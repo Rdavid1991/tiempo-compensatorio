@@ -7,7 +7,6 @@ const { bootstrap, location } = window;
 
 export const AddTime = ({ employeeKey }) => {
 
-
     const initialState = {
         day  : "",
         start: "16:00",

@@ -16,6 +16,7 @@ export const EmployeeTable = () => {
 
     const useLocationHook = useLocation();
     const { employeeKey } = useLocationHook.state;
+
     const data = JSON.parse(localStorage.getItem(employeeKey));
 
     const [indexData, setIndexData] = useState(0);
