@@ -14,6 +14,7 @@ export const HomeTable = () => {
         table.current = $("#example").DataTable({
             language: { ...dataTableSpanish }
         });
+        $(".pagination").addClass("pagination-sm");
     }, []);
 
     return (
@@ -37,7 +38,7 @@ export const HomeTable = () => {
             </button>
 
             <div className="mt-5">
-                <table id="example" className="table table-striped" style={{ width: "100%" }}>
+                <table id="example" className="table table-sm table-striped" style={{ width: "100%" }}>
                     <thead>
                         <tr>
                             <th>Nombre</th>

@@ -1,41 +1,9 @@
 /* eslint-disable no-case-declarations */
 import Swal from "sweetalert2";
 import moment from "moment";
-
+import { substractTime, timeToString } from "../../../helper";
 
 export const handlerFunctions = (data, employeeKey) => {
-
-    /**
-     * Convierte los numeros en string de horas ejemplo: 1 en 1:00, 1.25 en 1:25 
-     * @param {number|string} time 
-     * @returns {String} Texto en hora ejemplo entrada 1, salida 1:00
-     */
-    const timeToString = (time) => {
-        let timeStr = "";
-        let timeArray = "";
-
-        if (new RegExp("\\.").test(time)) {
-            timeArray = time.toString().split(".");
-        } else if (new RegExp("\\:").test(time)) {
-            timeArray = time.toString().split(":");
-        } else {
-            timeArray = [time];
-        }
-
-        switch (timeArray.length) {
-            case 1:
-                timeStr = `${timeArray[0]}:00`;
-                break;
-            case 2:
-                let digit = timeArray[1].toString().length === 1 ? `0${timeArray[1]}` : timeArray[1];
-                timeStr = `${timeArray[0]}:${digit}`;
-                break;
-            default:
-                break;
-        }
-
-        return timeStr;
-    };
 
     /**
      * Evalua si el tiempo a usar es mayor al tiempo restante
@@ -43,23 +11,10 @@ export const handlerFunctions = (data, employeeKey) => {
      * @param {String} used Valor mayor, con formato hora ejemplo: 12:00
      * @returns {boolean}
      */
-    const evalTime = (leftover, used) => {
+    const compareDiffTime = (leftover, used) => {
         let leftStr = timeToString(leftover);
         let usedStr = timeToString(used);
         return moment.duration(leftStr).asMinutes() < moment.duration(usedStr).asMinutes() ? true : false;
-    };
-
-    const substractTime = (leftover, used) => {
-        let leftStr = timeToString(leftover);
-        let usedStr = timeToString(used);
-
-        let leftMinutes = moment.duration(leftStr).asMinutes();
-        let usedMinutes = moment.duration(usedStr).asMinutes();
-
-        let timeResult = moment.duration(leftMinutes - usedMinutes, "minutes").asMilliseconds();
-
-        return moment.utc(timeResult).format("H:mm");
-
     };
 
     const addTime = (leftover, used) => {
@@ -85,7 +40,7 @@ export const handlerFunctions = (data, employeeKey) => {
 
         handlerUseHours: (index, usedTime) => {
 
-            if (evalTime(data.time[index].hourLeft, usedTime.hourToUse)) {
+            if (compareDiffTime(data.time[index].hourLeft, usedTime.hourToUse)) {
                 Swal.fire(
                     'Lo siento',
                     'No tienes suficientes horas para usar',

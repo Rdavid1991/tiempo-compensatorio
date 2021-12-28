@@ -1,6 +1,6 @@
 import moment from 'moment';
 import React from 'react';
-import { timeToString } from '../../helper';
+import { timeToHumanize } from '../../helper';
 
 export const DetailsTime = ({ data }) => {
     return (
@@ -26,7 +26,7 @@ export const DetailsTime = ({ data }) => {
                                         <div className="p-1 border border-dark rounded bg-dark">{moment(item.date).format("ddd LL")}</div>
                                     </div>
                                     <div className="col-6">
-                                        <div className="p-1 border border-dark rounded bg-dark">{timeToString(moment.duration(item.hours, "hours").asMilliseconds())}</div>
+                                        <div className="p-1 border border-dark rounded bg-dark">{timeToHumanize(moment.duration(item.hours, "hours").asMilliseconds())}</div>
                                     </div>
                                 </>
                             )) : "No hay nada que mostrar"}

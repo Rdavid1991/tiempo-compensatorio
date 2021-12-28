@@ -1,72 +1,26 @@
 import React, { useEffect, useState } from 'react';
-import moment from "moment";
-import Swal from 'sweetalert2';
-import { evalTime } from '../../helper';
+import db from '../../helper/db';
 
-const { bootstrap, location } = window;
 
 export const EditTime = ({ indexData, employeeKey, editState = {} }) => {
 
-    const [addEmployTime, setAddEmployTime] = useState(editState);
+    const [editEmployTime, setEditEmployTime] = useState({});
 
     const handleInputChange = (e) => {
-
-        setAddEmployTime({
-            ...addEmployTime,
+        setEditEmployTime({
+            ...editEmployTime,
             [e.target.name]: e.target.value
         });
     };
 
     useEffect(() => {
-        setAddEmployTime(editState);
+        setEditEmployTime(editState);
     }, [editState]);
 
     const handleInfoSave = (e) => {
         e.preventDefault();
 
-        if (evalTime(addEmployTime.start, addEmployTime.end)) {
-
-            const duration = moment.duration(
-                moment(addEmployTime.end, "hh:mm").diff(
-                    moment(addEmployTime.start, "hh:mm")
-                )
-            );
-
-            // eslint-disable-next-line no-prototype-builtins
-            if (localStorage.hasOwnProperty(employeeKey)) {
-                const info = JSON.parse(localStorage.getItem(employeeKey));
-
-                info.time[indexData] = {
-                    day            : addEmployTime.day,
-                    start          : addEmployTime.start,
-                    end            : addEmployTime.end,
-                    hourTotal      : `${duration.hours()}${duration.minutes() > 0 ? `:${duration.minutes()}` : ""}`,
-                    hourLeft       : `${duration.hours()}${duration.minutes() > 0 ? `:${duration.minutes()}` : ""}`,
-                    hourUsed       : info.time[indexData].hourUsed,
-                    used           : addEmployTime.used,
-                    usedHourHistory: []
-                };
-                localStorage.setItem(employeeKey, JSON.stringify(info));
-            }
-
-            bootstrap.Modal.getInstance(document.querySelector('#editEmployTime'), {}).hide();
-            Swal.fire({
-                position         : 'top-end',
-                icon             : 'success',
-                title            : 'Horas actualizadas',
-                showConfirmButton: false,
-                timer            : 1000
-            }).then(() => {
-                location.reload();
-            });
-        } else {
-            Swal.fire(
-                'Lo siento',
-                `No puede ingresar las horas en ese orden. <br>
-                    Desde ${moment(addEmployTime.start, "hh:mm").format("LT")} es menor que, Hasta ${moment(addEmployTime.end, "hh:mm").format("LT")}`,
-                'error'
-            );
-        }
+        db().update(indexData, employeeKey, editEmployTime);
     };
 
     return (
@@ -74,11 +28,11 @@ export const EditTime = ({ indexData, employeeKey, editState = {} }) => {
             <div className="modal-dialog">
                 <div className="modal-content">
                     <div className="modal-header">
-                        <h5 className="modal-title">Agregar funcionario</h5>
+                        <h5 className="modal-title">Agregar tiempo</h5>
                         <button type="button" className="btn-close" aria-label="Close" data-bs-dismiss="modal"></button>
                     </div>
                     <form
-                        id="addEmployTimeForm"
+                        id="editEmployTimeForm"
                         onSubmit={handleInfoSave}
                     >
                         <div className="modal-body">
@@ -90,7 +44,7 @@ export const EditTime = ({ indexData, employeeKey, editState = {} }) => {
                                     id="day"
                                     onChange={handleInputChange}
                                     name="day"
-                                    value={addEmployTime.day}
+                                    value={editEmployTime.day}
                                     required
                                 />
                             </div>
@@ -98,10 +52,10 @@ export const EditTime = ({ indexData, employeeKey, editState = {} }) => {
                                 <label className="form-label" htmlFor="start">Desde</label>
                                 <input
                                     type="time"
-                                    className="form-input"
+                                    className="form-control form-control-sm"
                                     id="start"
                                     onChange={handleInputChange}
-                                    value={addEmployTime.start}
+                                    value={editEmployTime.start}
                                     name="start"
                                     required
                                 />
@@ -110,15 +64,14 @@ export const EditTime = ({ indexData, employeeKey, editState = {} }) => {
                                 <label className="form-label" htmlFor="end">Hasta</label>
                                 <input
                                     type="time"
-                                    className="form-input"
+                                    className="form-control form-control-sm"
                                     id="end"
                                     onChange={handleInputChange}
-                                    value={addEmployTime.end}
+                                    value={editEmployTime.end}
                                     name="end"
                                     required
                                 />
                             </div>
-
                         </div>
                         <div className="modal-footer">
                             <button

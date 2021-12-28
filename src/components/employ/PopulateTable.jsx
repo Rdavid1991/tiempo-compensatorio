@@ -1,6 +1,6 @@
 import moment from 'moment';
 import React from 'react';
-import { timeToString } from '../../helper';
+import { timeToHumanize } from '../../helper';
 
 const { bootstrap } = window;
 
@@ -33,9 +33,9 @@ export const PopulateTable = ({ data, state, setIndexData }) => {
                         >{moment(data.time[i].day).format("dddd LL")}</td>
                         <td>{moment(data.time[i].start, "hh:mm").format("LT")}</td>
                         <td>{moment(data.time[i].end, "hh:mm").format("LT")}</td>
-                        <td>{timeToString(totalInMilliseconds)}</td>
-                        <td>{timeToString(usedInMilliseconds)}</td>
-                        <td>{timeToString(leftOverInMilliseconds)}</td>
+                        <td>{timeToHumanize(totalInMilliseconds)}</td>
+                        <td>{timeToHumanize(usedInMilliseconds)}</td>
+                        <td>{timeToHumanize(leftOverInMilliseconds)}</td>
                         {
                             data.time[i].used ?
                                 null

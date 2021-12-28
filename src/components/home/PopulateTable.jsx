@@ -1,7 +1,7 @@
 import moment from 'moment';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { timeToString } from '../../helper/';
+import { timeToHumanize } from '../../helper/';
 import db from '../../helper/db';
 
 export const PopulateTable = () => {
@@ -32,9 +32,9 @@ export const PopulateTable = () => {
                         <Link to="/employed" state={{ employeeKey: item.key }} >{item.data.name}</Link>
                     </td>
                     <td>{item.data.department}</td>
-                    <td>{timeToString(totalInMilliseconds)}</td>
-                    <td>{timeToString(usedInMilliseconds)}</td>
-                    <td>{timeToString(leftOverInMilliseconds)}</td>
+                    <td>{timeToHumanize(totalInMilliseconds)}</td>
+                    <td>{timeToHumanize(usedInMilliseconds)}</td>
+                    <td>{timeToHumanize(leftOverInMilliseconds)}</td>
                 </tr>
             );
 

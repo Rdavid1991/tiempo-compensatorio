@@ -1,5 +1,7 @@
 import moment from "moment";
-import { randomId } from ".";
+import Swal from "sweetalert2";
+import { compareDiffTime, compareDurationTime, randomId, substractTime } from ".";
+const { bootstrap } = window;
 
 /* eslint-disable no-prototype-builtins */
 const db = () => {
@@ -20,7 +22,6 @@ const db = () => {
         used           : "",
         usedHourHistory: []
     };
-
 
     const __data = [];
 
@@ -62,6 +63,64 @@ const db = () => {
         }));
     };
 
+    const update = (indexData, employeeKey, editEmployTime) => {
+        if (compareDiffTime(editEmployTime.start, editEmployTime.end)) {
+
+            const duration = moment.duration(
+                moment(editEmployTime.end, "hh:mm").diff(
+                    moment(editEmployTime.start, "hh:mm")
+                )
+            );
+
+            // eslint-disable-next-line no-prototype-builtins
+            if (localStorage.hasOwnProperty(employeeKey)) {
+                const info = JSON.parse(localStorage.getItem(employeeKey));
+
+                const [totalTime, leftTime] = Array(2).fill(`${duration.hours()}${duration.minutes() > 0 ? `:${duration.minutes()}` : ":00"}`);
+
+                if (compareDurationTime(leftTime, info.time[indexData].hourUsed)) {
+
+                    info.time[indexData] = {
+                        ...info.time[indexData],
+                        day      : editEmployTime.day,
+                        start    : editEmployTime.start,
+                        end      : editEmployTime.end,
+                        hourTotal: totalTime,
+                        hourLeft : substractTime(leftTime, info.time[indexData].hourUsed)
+                    };
+                    localStorage.setItem(employeeKey, JSON.stringify(info));
+
+                    bootstrap.Modal.getInstance(document.querySelector('#editEmployTime'), {}).hide();
+                    Swal.fire({
+                        position         : 'top-end',
+                        icon             : 'success',
+                        title            : 'Horas actualizadas',
+                        showConfirmButton: false,
+                        timer            : 1000
+                    }).then(() => {
+                        location.reload();
+                    });
+
+                } else {
+                    Swal.fire(
+                        'Lo siento',
+                        `Las horas restantes son menor al tiempo utilizado. <br>`,
+                        'error'
+                    );
+                }
+            }
+
+
+        } else {
+            Swal.fire(
+                'Lo siento',
+                `No puede ingresar las horas en ese orden. <br>
+                    Desde ${moment(editEmployTime.start, "hh:mm").format("LT")} es menor que, Hasta ${moment(editEmployTime.end, "hh:mm").format("LT")}`,
+                'error'
+            );
+        }
+    };
+
     const getAll = () => {
         for (const key in localStorage) {
             if (localStorage.hasOwnProperty(key)) {
@@ -77,7 +136,8 @@ const db = () => {
 
     return {
         getAll,
-        insert
+        insert,
+        update
     };
 };
 

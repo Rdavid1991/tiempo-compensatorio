@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import moment from "moment";
 import Swal from 'sweetalert2';
-import { evalTime } from '../../helper';
+import { compareDiffTime } from '../../helper';
 
 const { bootstrap, location } = window;
 
@@ -28,7 +28,7 @@ export const AddTime = ({ employeeKey }) => {
     const handleInfoSave = (e) => {
         e.preventDefault();
 
-        if (evalTime(addEmployTime.start, addEmployTime.end)) {
+        if (compareDiffTime(addEmployTime.start, addEmployTime.end)) {
 
             const duration = moment.duration(
                 moment(addEmployTime.end, "hh:mm").diff(

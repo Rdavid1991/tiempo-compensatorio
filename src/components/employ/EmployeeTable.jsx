@@ -28,6 +28,8 @@ export const EmployeeTable = () => {
         $("#used").DataTable({
             language: { ...dataTableSpanish }
         });
+
+        $(".pagination").addClass("pagination-sm");
     }, []);
 
     return (
@@ -86,7 +88,7 @@ export const EmployeeTable = () => {
                     </ul>
                     <div className="tab-content mt-4" id="myTabContent">
                         <div className="tab-pane fade show active" id="NotUsedPane" role="tabpanel" aria-labelledby="home-tab">
-                            <table id="notUsed" className="table table-striped" style={{ width: "100%" }} aria-describedby="example_info">
+                            <table id="notUsed" className="table table-sm table-striped" style={{ width: "100%" }} aria-describedby="example_info">
                                 <thead>
                                     <tr>
                                         <th>Dia</th>
@@ -109,7 +111,7 @@ export const EmployeeTable = () => {
                             </table>
                         </div>
                         <div className="tab-pane fade" id="usedPane" role="tabpanel" aria-labelledby="profile-tab">
-                            <table id="used" className="table table-striped" style={{ width: "100%" }} aria-describedby="example_info">
+                            <table id="used" className="table table-sm table-striped" style={{ width: "100%" }} aria-describedby="example_info">
                                 <thead>
                                     <tr>
                                         <th>Dia</th>

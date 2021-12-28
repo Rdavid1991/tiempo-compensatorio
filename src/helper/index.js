@@ -1,3 +1,4 @@
+/* eslint-disable no-case-declarations */
 /* eslint-disable no-useless-escape */
 import moment from "moment";
 
@@ -16,7 +17,7 @@ const randomId = () => {
  * @param {String} end Hora mas tardia
  * @returns 
  */
-const evalTime = (start, end) => {
+const compareDiffTime = (start, end) => {
     const duration = moment.duration(
         moment(end, "hh:mm").diff(
             moment(start, "hh:mm")
@@ -25,9 +26,14 @@ const evalTime = (start, end) => {
     return duration.hours() < 0 ? false : true;
 };
 
-const timeToString = (milliseconds) => {
-    if (milliseconds > 0) {
+const compareDurationTime = (olderTime, lessTime) => {
+    const older = moment.duration(olderTime, "hh:mm").asMilliseconds();
+    const less = moment.duration(lessTime, "hh:mm").asMilliseconds();
+    return older > less ? true : false;
+};
 
+const timeToHumanize = (milliseconds) => {
+    if (milliseconds > 0) {
 
         let realMinutes = 0, realHours = 0, realDays = 0;
         let seconds = milliseconds / 1000;
@@ -53,37 +59,17 @@ const timeToString = (milliseconds) => {
         }
 
         let stringDays = realDays > 0 ? `${realDays[0]} días ` : "";
-        let stringHours = realHours > 0 ? `${Math.round(realHours)} horas ` : "";
+        let stringHours = realHours > 0
+            ? Math.round(realHours) === 1
+                ? `${Math.round(realHours)} hora `
+                : `${Math.round(realHours)} horas `
+            : "";
         let stringMinutes = realMinutes > 0 ? `${Math.round(realMinutes)} minutos` : "";
 
         return `${stringDays}${stringHours}${stringMinutes}`;
     } else {
         return "no tiene tiempo";
     }
-};
-
-// eslint-disable-next-line no-unused-vars
-const timeToString2 = (time) => {
-
-    let str = "";
-    const arrayTime = time.toString().split(":");
-
-    switch (arrayTime.length) {
-        case 1:
-            str = `${arrayTime[0]} ${(parseInt(arrayTime[0]) === 1)
-                ? "hora"
-                : "horas"}`;
-            break;
-        case 2:
-            str = `${arrayTime[0]} ${(parseInt(arrayTime[0]) === 1)
-                ? "hora"
-                : "horas"} ${arrayTime[1] === "00" ? "" : `y ${arrayTime[1]} minutos`}`;
-            break;
-        default:
-            break;
-    }
-
-    return str;
 };
 
 const dataTableSpanish = {
@@ -270,10 +256,59 @@ const dataTableSpanish = {
     "info": "Mostrando de _START_ a _END_ de _TOTAL_ entradas"
 };
 
+/**
+    * Convierte los numeros en string de horas ejemplo: 1 en 1:00, 1.25 en 1:25 
+    * @param {number|string} time 
+    * @returns {String} Texto en hora ejemplo entrada 1, salida 1:00
+    */
+const timeToString = (time) => {
+    let timeStr = "";
+    let timeArray = "";
+
+    if (new RegExp("\\.").test(time)) {
+        timeArray = time.toString().split(".");
+    } else if (new RegExp("\\:").test(time)) {
+        timeArray = time.toString().split(":");
+    } else {
+        timeArray = [time];
+    }
+
+    switch (timeArray.length) {
+        case 1:
+            timeStr = `${timeArray[0]}:00`;
+            break;
+        case 2:
+            let digit = timeArray[1].toString().length === 1 ? `0${timeArray[1]}` : timeArray[1];
+            timeStr = `${timeArray[0]}:${digit}`;
+            break;
+        default:
+            break;
+    }
+
+    return timeStr;
+};
+
+const substractTime = (leftover, used) => {
+    let leftStr = timeToString(leftover);
+    let usedStr = timeToString(used);
+
+    let leftMinutes = moment.duration(leftStr).asMinutes();
+    let usedMinutes = moment.duration(usedStr).asMinutes();
+
+    let timeResult = moment.duration(leftMinutes - usedMinutes, "minutes").asMilliseconds();
+
+    return moment.utc(timeResult).format("H:mm");
+
+};
+
+
 
 export {
     randomId,
     dataTableSpanish,
-    evalTime,
+    compareDiffTime,
+    timeToHumanize,
+    compareDurationTime,
+    substractTime,
     timeToString
 };
