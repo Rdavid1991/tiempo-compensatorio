@@ -70,7 +70,7 @@ export const AddEmployer = ({ setShowModal }) => {
                                     name="department"
                                     required
                                 >
-                                    <option selected>Selecciona un departamento</option>
+                                    <option value={undefined}>Selecciona un departamento</option>
                                     <option value="Administración">Administración</option>
                                     <option value="Desarrollo">Desarrollo</option>
                                     <option value="Infraestructura">Infraestructura</option>

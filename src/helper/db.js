@@ -139,7 +139,7 @@ const db = () => {
                 if (result.isConfirmed) {
                     const info = JSON.parse(localStorage.getItem(employeeKey));
 
-                    const deleted = info.time.splice(indexData, indexData);
+                    const deleted = info.time.splice(indexData, 1);
 
                     if (deleted.length >= 1) {
                         localStorage.setItem(employeeKey, JSON.stringify(info));
@@ -148,8 +148,14 @@ const db = () => {
                             'El registro a sido borrado!',
                             'success'
                         ).then(() => {
-                            location.reload();
+                            window.location.reload();
                         });
+                    }else{
+                        Swal.fire(
+                            'Ooops!',
+                            'Algo a salido mal!',
+                            'error'
+                        );
                     }
                 }
             });

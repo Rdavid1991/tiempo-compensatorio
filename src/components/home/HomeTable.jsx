@@ -18,7 +18,7 @@ export const HomeTable = () => {
     }, []);
 
     return (
-        <>
+        <div className="animate__animated animate__bounce animate__fadeIn" style={{animationFillMode: "backwards"}} >
             <AddEmployer
                 showModal={showModal}
                 setShowModal={setShowModal}
@@ -55,6 +55,6 @@ export const HomeTable = () => {
                     </tbody>
                 </table>
             </div>
-        </>
+        </div>
     );
 };
