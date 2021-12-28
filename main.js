@@ -9,6 +9,7 @@ function createWindow() {
             preload: path.join(__dirname, "script.js")
         },
     });
+    
 
     const template = [
         {
@@ -27,8 +28,33 @@ function createWindow() {
                 click: () => {
                     win.webContents.send("tema", "morph");
                 }
+            },
+            {
+                label: 'Slate',
+                click: () => {
+                    win.webContents.send("tema", "slate");
+                }
+            },
+            {
+                label: 'Sketchy',
+                click: () => {
+                    win.webContents.send("tema", "sketchy");
+                }
+            },
+            {
+                label: 'Solar',
+                click: () => {
+                    win.webContents.send("tema", "solar");
+                }
+            },
+            {
+                label: 'Superhero',
+                click: () => {
+                    win.webContents.send("tema", "superhero");
+                }
             }]
         }
+
     ];
     Menu.setApplicationMenu(Menu.buildFromTemplate(template));
 

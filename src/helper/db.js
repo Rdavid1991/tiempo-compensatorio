@@ -158,7 +158,7 @@ const db = () => {
 
     const getAll = () => {
         for (const key in localStorage) {
-            if (localStorage.hasOwnProperty(key)) {
+            if (localStorage.hasOwnProperty(key) && key !== "style") {
                 __data.push({
                     key,
                     data: JSON.parse(localStorage.getItem(key))
