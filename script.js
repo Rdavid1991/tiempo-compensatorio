@@ -1,3 +1,4 @@
+/* eslint-disable no-prototype-builtins */
 /* eslint-disable no-extra-boolean-cast */
 /* eslint-disable no-case-declarations */
 const { ipcRenderer } = require("electron");
@@ -46,6 +47,11 @@ ipcRenderer.on("tema", (event, theme) => {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
-    applyTheme(localStorage.getItem("style"));
+    if (localStorage.hasOwnProperty("style")) {
+        applyTheme(localStorage.getItem("style"));
+    }else{
+        applyTheme("slate");
+    }
+
     ipcRenderer.send(localStorage.getItem("style"));
 });
