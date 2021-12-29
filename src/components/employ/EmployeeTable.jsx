@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router';
+import { useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import { AddTime } from './AddTime';
 import moment from 'moment';
@@ -14,8 +14,8 @@ const { $ } = window;
 moment.locale("es");
 export const EmployeeTable = () => {
 
-    const useLocationHook = useLocation();
-    const { employeeKey } = useLocationHook.state;
+  
+    const { employeeKey } = useParams();
     const data = JSON.parse(localStorage.getItem(employeeKey));
     const [indexData, setIndexData] = useState(0);
 

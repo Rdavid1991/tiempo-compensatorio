@@ -1,10 +1,12 @@
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
+import Swal from 'sweetalert2';
+import { ajax } from './helper/ajax';
 import { handlerFunctions } from './helper/handlerFunctions';
 
-export const AddEmployer = ({ setShowModal }) => {
+export const AddEmployer = ({ table }) => {
 
-    const { handleInfoSave } = handlerFunctions();
+    const { saveInfo } = handlerFunctions();
 
     const initialState = {
         name      : "",
@@ -20,18 +22,28 @@ export const AddEmployer = ({ setShowModal }) => {
 
     const [addEmploy, setAddEmploy] = useState(initialState);
 
-    useEffect(() => {
-        document.querySelector('#addEmploy')
-            .addEventListener('hidden.bs.modal', () => {
-                setShowModal(false);
-            });
-    }, [setShowModal]);
-
     const handleInputChange = (e) => {
 
         setAddEmploy({
             ...addEmploy,
             [e.target.name]: e.target.value
+        });
+    };
+
+    const handleSaveInfo = (e) => {
+        e.preventDefault();
+
+        saveInfo(addEmploy);
+
+        Swal.fire({
+            position         : 'top-end',
+            icon             : 'success',
+            title            : 'Funcionario gurdado',
+            showConfirmButton: false,
+            timer            : 1000
+        }).then(() => {
+            table.current.clear().rows.add(ajax().data).draw();
+            setAddEmploy(initialState);
         });
     };
 
@@ -45,10 +57,7 @@ export const AddEmployer = ({ setShowModal }) => {
                     </div>
                     <form
                         id="addEmployForm"
-                        onSubmit={(e) =>{
-                            e.preventDefault();
-                            handleInfoSave(addEmploy);
-                        }}
+                        onSubmit={handleSaveInfo}
                     >
                         <div className="modal-body">
                             <div className="mb-3">

@@ -1,29 +1,37 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
+//import { render } from 'react-dom';
+//import { Link } from 'react-router-dom';
 import { dataTableSpanish } from '../../helper';
 import { AddEmployer } from './AddEmployer';
 import { ajax } from './helper/ajax';
-//import { PopulateTable } from './PopulateTable';
 const { $ } = window;
 
 export const HomeTable = () => {
 
     const table = useRef();
 
-    const [showModal, setShowModal] = useState(false);
-
     useEffect(() => {
         table.current = $("#example").DataTable({
-            language: { ...dataTableSpanish },
-            "ajax"  : ajax
+            language    : { ...dataTableSpanish },
+            "aaData"    : ajax().data,
+            "retrieve"  : true,
+            "columnDefs": [
+                {
+                    targets: [0],
+                    render : function (data) {
+                        const index = data.split("|");
+                        return  `<a href="#/employed/${index[0]}">${index[1]}</a>`;  
+                    }
+                }
+            ]
         });
         $(".pagination").addClass("pagination-sm");
     }, []);
 
     return (
-        <div className="animate__animated animate__bounce animate__fadeIn" style={{animationFillMode: "backwards"}} >
+        <div className="animate__animated animate__bounce animate__fadeIn" style={{ animationFillMode: "backwards" }} >
             <AddEmployer
-                showModal={showModal}
-                setShowModal={setShowModal}
+                table={table}
             />
 
             <h1>Registro de tiempo compensatorio</h1>
@@ -34,7 +42,6 @@ export const HomeTable = () => {
                 className="btn btn-sm  btn-primary"
                 data-bs-toggle="modal"
                 data-bs-target="#addEmploy"
-                onClick={() => setShowModal(true)}
             >
                 Nuevo funcionario
             </button>
@@ -50,11 +57,6 @@ export const HomeTable = () => {
                             <th>Tiempo restante</th>
                         </tr>
                     </thead>
-                    {/* <tbody>
-                        {
-                            <PopulateTable />
-                        }
-                    </tbody> */}
                 </table>
             </div>
         </div>

@@ -12,7 +12,7 @@ function App() {
       <div className="mt-5">
         <Routes>
           <Route path="/" element={<HomeTable />} />
-          <Route path="/employed" element={<EmployeeTable />} />
+          <Route path="/employed/:employeeKey" element={<EmployeeTable />} />
         </Routes>
       </div>
     </div>

@@ -12,7 +12,7 @@ export const ajax = () => {
 
     for (const item of dbLocal.getAll()) {
 
-        let {  data } = item;
+        let { key ,data } = item;
 
         //let leftOver = 0, used = 0, total = 0;
         let totalInMilliseconds = 0, usedInMilliseconds = 0, leftOverInMilliseconds = 0;
@@ -24,13 +24,11 @@ export const ajax = () => {
         });
 
         sourse.data.push([
-            /*<Link to="/employed" state={{ employeeKey: key }} >{*/data.name/*}</Link>*/,
-
+            `${key}|${data.name}`,
             item.data.department,
             timeToHumanize(totalInMilliseconds),
             timeToHumanize(usedInMilliseconds),
             timeToHumanize(leftOverInMilliseconds),
-
         ]);
     }
 
