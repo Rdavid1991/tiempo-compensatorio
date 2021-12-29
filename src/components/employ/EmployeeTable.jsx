@@ -1,38 +1,118 @@
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react';
+import ReactDOM from 'react-dom';
 import { useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import { AddTime } from './AddTime';
 import moment from 'moment';
 import 'moment/locale/es-us';
-import { PopulateTable } from './PopulateTable';
 import { dataTableSpanish } from '../../helper';
 import { DetailsTime } from './DetailsTime';
 import { UseTime } from './UseTime';
 import { EditTime } from './EditTime';
-const { $ } = window;
+import { ajaxEmploy } from './helper/ajaxEmploy';
+import db from '../../helper/db';
+const { $, bootstrap } = window;
 
+const localDB = db();
 moment.locale("es");
 export const EmployeeTable = () => {
 
-  
+
+
     const { employeeKey } = useParams();
     const data = JSON.parse(localStorage.getItem(employeeKey));
     const [indexData, setIndexData] = useState(0);
 
     useEffect(() => {
 
-        $("#notUsed").DataTable({
-            language: { ...dataTableSpanish }
-        });
         $("#used").DataTable({
             language: { ...dataTableSpanish }
+        });
+        $("#notUsed").DataTable({
+            language    : { ...dataTableSpanish },
+            "aaData"    : ajaxEmploy(data).notUsed().data,
+            "columnDefs": [
+                {
+                    targets: [0],
+                    render : (item, a, b, c) => {
+
+                        let divElement = document.querySelector("#portals");
+                        const [index, data] = item.split("|");
+
+                        ReactDOM.createPortal(
+                            <>
+                                <button
+                                    style={{ "cursor": "pointer" }}
+                                    onClick={() => {
+                                        showDetails(index);
+                                        console.log("se ejecuta");
+                                    }}
+                                >
+                                    {data}
+                                </button>
+                            </>,
+                            document.getElementById("portals")
+                        );
+
+
+
+                        return divElement.outerHTML;
+                    }
+                },
+                {
+                    targets: [6],
+                    render : (index) => {
+                        const html = (
+                            <>
+                                <button
+                                    className="btn btn-sm btn-secondary"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#useTime"
+                                    onClick={() => setIndexData(index)}
+                                >
+                                    usar
+                                </button>
+
+                                <button
+                                    className="btn btn-sm btn-secondary"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#editEmployTime"
+                                    onClick={() => setIndexData(index)}
+                                >
+                                    editar
+                                </button>
+                                <button
+                                    className="btn btn-sm btn-secondary"
+                                    onClick={() => handleDelete(index)}
+                                >
+                                    borrar
+                                </button>
+                            </>
+                        );
+
+                        return html;
+                    }
+                }
+            ]
         });
 
         $(".pagination").addClass("pagination-sm");
     }, []);
 
+    const handleDelete = (index) => {
+        localDB.drop(index, employeeKey);
+    };
+
+    const showDetails = (index) => {
+        var details = new bootstrap.Modal(document.querySelector('#details'), {});
+        details.show();
+        console.log("se ejecuta");
+        setIndexData(index);
+    };
+
     return (
-        <div className="animate__animated animate__bounce animate__fadeIn" style={{animationFillMode: "backwards"}}>
+        <div className="animate__animated animate__bounce animate__fadeIn" style={{ animationFillMode: "backwards" }}>
             <UseTime
                 indexData={indexData}
                 employeeKey={employeeKey}
@@ -105,14 +185,6 @@ export const EmployeeTable = () => {
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <PopulateTable
-                                    data={data}
-                                    employeeKey={employeeKey}
-                                    state={false}
-                                    setIndexData={setIndexData}
-                                />
-                            </tbody>
                         </table>
                     </div>
                     <div className="tab-pane fade" id="usedPane" role="tabpanel" aria-labelledby="profile-tab">
@@ -127,14 +199,6 @@ export const EmployeeTable = () => {
                                     <th>Tiempo restante</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <PopulateTable
-                                    data={data}
-                                    employeeKey={employeeKey}
-                                    state={true}
-                                    setIndexData={setIndexData}
-                                />
-                            </tbody>
                         </table>
                     </div>
                 </div>

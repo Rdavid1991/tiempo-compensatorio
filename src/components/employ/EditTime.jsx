@@ -4,7 +4,13 @@ import db from '../../helper/db';
 
 export const EditTime = ({ indexData, employeeKey, editState = {} }) => {
 
-    const [editEmployTime, setEditEmployTime] = useState({});
+    const initialState = {
+        day  : "",
+        start: "",
+        end  : ""
+    };
+
+    const [editEmployTime, setEditEmployTime] = useState(initialState);
 
     const handleInputChange = (e) => {
         setEditEmployTime({

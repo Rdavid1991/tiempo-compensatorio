@@ -4,7 +4,7 @@ import { timeToHumanize } from '../../helper';
 
 export const DetailsTime = ({ data }) => {
     return (
-        <div className="modal fade" id="details" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="detailsLabel" aria-hidden="true">
+        <div className="modal fade" id="details" data-bs-backdrop="static" data-bs-keyboard="false">
             <div className="modal-dialog">
                 <div className="modal-content">
                     <div className="modal-header">
@@ -20,7 +20,6 @@ export const DetailsTime = ({ data }) => {
                                 <div className="p-1 border border-dark rounded bg-dark">Horas usadas</div>
                             </div>
                             {data.usedHourHistory.length > 0 ? data.usedHourHistory.map((item) => (
-
                                 <>
                                     <div className="col-6">
                                         <div className="p-1 border border-dark rounded bg-dark">{moment(item.date).format("ddd LL")}</div>
