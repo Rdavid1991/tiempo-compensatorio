@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { dataTableSpanish } from '../../helper';
 import { AddEmployer } from './AddEmployer';
-import { PopulateTable } from './PopulateTable';
+import { ajax } from './helper/ajax';
+//import { PopulateTable } from './PopulateTable';
 const { $ } = window;
 
 export const HomeTable = () => {
@@ -12,7 +13,8 @@ export const HomeTable = () => {
 
     useEffect(() => {
         table.current = $("#example").DataTable({
-            language: { ...dataTableSpanish }
+            language: { ...dataTableSpanish },
+            "ajax"  : ajax
         });
         $(".pagination").addClass("pagination-sm");
     }, []);
@@ -48,11 +50,11 @@ export const HomeTable = () => {
                             <th>Tiempo restante</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    {/* <tbody>
                         {
                             <PopulateTable />
                         }
-                    </tbody>
+                    </tbody> */}
                 </table>
             </div>
         </div>

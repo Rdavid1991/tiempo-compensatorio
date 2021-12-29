@@ -7,9 +7,8 @@ export const handlerFunctions = () => {
    
 
     return {
-        handleInfoSave: (e, addEmploy) => {
-            e.preventDefault();
-
+        handleInfoSave: (addEmploy) => {
+            
             db().insert(addEmploy);
 
             document.querySelector("#addEmployForm").reset();

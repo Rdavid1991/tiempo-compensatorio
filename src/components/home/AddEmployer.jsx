@@ -36,7 +36,7 @@ export const AddEmployer = ({ setShowModal }) => {
     };
 
     return (
-        <div className="modal fade"  data-bs-backdrop="static" id="addEmploy"  >
+        <div className="modal fade" data-bs-backdrop="static" id="addEmploy"  >
             <div className="modal-dialog">
                 <div className="modal-content">
                     <div className="modal-header">
@@ -45,7 +45,10 @@ export const AddEmployer = ({ setShowModal }) => {
                     </div>
                     <form
                         id="addEmployForm"
-                        onSubmit={(e) => handleInfoSave(e, addEmploy)}
+                        onSubmit={(e) =>{
+                            e.preventDefault();
+                            handleInfoSave(addEmploy);
+                        }}
                     >
                         <div className="modal-body">
                             <div className="mb-3">
