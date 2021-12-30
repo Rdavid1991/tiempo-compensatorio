@@ -8,7 +8,7 @@ const initialState = {
     dateOfUse: ""
 };
 
-export const UseTime = ({ indexData, employeeKey, notUsedTable }) => {
+export const UseTime = ({ indexData, employeeKey, notUsedTable, refreshHistoryUsedTime }) => {
     
     const { handlerUsedTime, handlerUseHours } = handlerFunctions(employeeKey);
     const [usedTime, setUsedTime] = useState(initialState);
@@ -30,6 +30,7 @@ export const UseTime = ({ indexData, employeeKey, notUsedTable }) => {
                             notUsedTable.current.columns.adjust().draw();
                             bootstrap.Modal.getInstance(document.querySelector('#useTime'), {}).hide();
                             setUsedTime(initialState);
+                            refreshHistoryUsedTime();
                         }
                     }}>
                         <div className="modal-body">

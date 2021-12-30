@@ -21,8 +21,8 @@ export const EmployeeTable = () => {
     const usedTable = useRef();
 
     const { employeeKey } = useParams();
-    const data = JSON.parse(localStorage.getItem(employeeKey));
     const [indexData, setIndexData] = useState(0);
+    const [data, setData] = useState(JSON.parse(localStorage.getItem(employeeKey)));
 
     useEffect(() => {
 
@@ -48,7 +48,7 @@ export const EmployeeTable = () => {
                     targets: [0],
                     render : (item) => {
                         const [index, data] = item.split("|");
-                        return `<div style="cursor:pointer" data-click="details" data-index="${index}">${data}</div>`;
+                        return `<div style="cursor:pointer" class="text-truncate" data-click="details" data-index="${index}">${data}</div>`;
                     }
                 },
                 {
@@ -68,7 +68,6 @@ export const EmployeeTable = () => {
 
     const handleDelete = async () => {
         const isDeleted = await localDB.drop(indexData, employeeKey);
-        console.log(isDeleted);
         if (isDeleted) {
             notUsedTable.current.clear().rows.add(ajaxEmploy(employeeKey).notUsed().data).draw();
             notUsedTable.current.columns.adjust().draw();
@@ -90,10 +89,16 @@ export const EmployeeTable = () => {
             case "useTime":
                 setIndexData(target.dataset.index);
                 break;
-
+            case "editTime":
+                setIndexData(target.dataset.index);
+                break;
             default:
                 break;
         }
+    };
+
+    const refreshHistoryUsedTime= () => {
+        setData(JSON.parse(localStorage.getItem(employeeKey)));
     };
 
     return (
@@ -104,6 +109,7 @@ export const EmployeeTable = () => {
                 indexData={indexData}
                 employeeKey={employeeKey}
                 notUsedTable={notUsedTable}
+                refreshHistoryUsedTime={refreshHistoryUsedTime}
             />
 
             <AddTime

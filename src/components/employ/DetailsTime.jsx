@@ -1,8 +1,13 @@
 import moment from 'moment';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { timeToHumanize } from '../../helper';
 
 export const DetailsTime = ({ data }) => {
+
+    useEffect(() => {
+
+    }, [data]);
+
     return (
         <div className="modal fade" id="details" data-bs-backdrop="static" data-bs-keyboard="false">
             <div className="modal-dialog">
@@ -19,17 +24,17 @@ export const DetailsTime = ({ data }) => {
                             <div className="col-6">
                                 <div className="p-1 border border-dark rounded bg-dark">Horas usadas</div>
                             </div>
-                            {data.usedHourHistory.length > 0 ? data.usedHourHistory.map((item,index) => (
-                                <div key={index}>
-                                    <div className="col-6">
-                                        <div className="p-1 border border-dark rounded bg-dark">{moment(item.date).format("ddd LL")}</div>
-                                    </div>
-                                    <div className="col-6">
-                                        <div className="p-1 border border-dark rounded bg-dark">{timeToHumanize(moment.duration(item.hours, "hours").asMilliseconds())}</div>
-                                    </div>
-                                </div>
-                            )) : "No hay nada que mostrar"}
                         </div>
+                        {data.usedHourHistory.length > 0 ? data.usedHourHistory.map((item, index) => (
+                            <div className="row g-2 mt-1" key={index}>
+                                <div className="col-6">
+                                    <div className="p-1 border border-dark rounded bg-dark">{moment(item.date).format("ddd LL")}</div>
+                                </div>
+                                <div className="col-6">
+                                    <div className="p-1 border border-dark rounded bg-dark">{timeToHumanize(moment.duration(item.hours, "hours").asMilliseconds())}</div>
+                                </div>
+                            </div>
+                        )) : "No hay nada que mostrar"}
                     </div>
                     <div className="modal-footer">
                         <button type="button" className="btn btn-sm btn-secondary" data-bs-dismiss="modal">cerrar</button>

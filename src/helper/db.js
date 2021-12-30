@@ -27,7 +27,7 @@ const db = () => {
 
     const __data = [];
 
-    const insert = (addEmploy) => {
+    const insert = async (addEmploy) => {
         const duration = moment.duration(
             moment(addEmploy.end, "hh:mm").diff(
                 moment(addEmploy.start, "hh:mm")
@@ -63,6 +63,16 @@ const db = () => {
                 usedHourHistory: []
             }]
         }));
+
+        await Swal.fire({
+            position         : 'top-end',
+            icon             : 'success',
+            title            : 'Funcionario guardado',
+            showConfirmButton: false,
+            timer            : 1000
+        });
+
+        return true;
     };
 
     const update = async (indexData, employeeKey, editEmployTime) => {
@@ -139,7 +149,7 @@ const db = () => {
                 confirmButtonText : 'Si, borrar!',
                 cancelButtonText  : 'Cancelar'
             }).then((result) => result);
-            
+
             if (sureToDelete.isConfirmed) {
                 const info = JSON.parse(localStorage.getItem(employeeKey));
 
@@ -161,9 +171,59 @@ const db = () => {
                     );
                 }
             }
-            
+
         }
         return false;
+    };
+
+    const dropEmploy = async (employeeKey) => {
+
+        if (localStorage.hasOwnProperty(employeeKey)) {
+
+            const sureToDelete = await Swal.fire({
+                title             : '¿Estas seguro/a?',
+                text              : "Desea borrar el registro",
+                icon              : 'warning',
+                showCancelButton  : true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor : '#d33',
+                confirmButtonText : 'Si, borrar!',
+                cancelButtonText  : 'Cancelar'
+            }).then((result) => result);
+
+            if (sureToDelete.isConfirmed) {
+                localStorage.removeItem(employeeKey);
+                await Swal.fire(
+                    'Borrado!',
+                    'El registro a sido borrado!',
+                    'success'
+                );
+                return true;
+            }
+        }
+        return false;
+    };
+
+    const updateEmploy = async (employeeKey, editEmploy) => {
+        const info = JSON.parse(localStorage.getItem(employeeKey));
+        info.name = editEmploy.name;
+        info.department = editEmploy.department;
+        localStorage.setItem(employeeKey, JSON.stringify(info));
+
+        await Swal.fire({
+            position         : 'top-end',
+            icon             : 'success',
+            title            : 'Funcionario Actualizado',
+            showConfirmButton: false,
+            timer            : 1000
+
+        });
+
+        return true;
+    };
+
+    const getOneEmploy = (key) => {
+        return JSON.parse(localStorage.getItem(key));
     };
 
     const getAll = () => {
@@ -183,7 +243,10 @@ const db = () => {
         getAll,
         insert,
         update,
-        drop
+        drop,
+        updateEmploy,
+        getOneEmploy,
+        dropEmploy
     };
 };
 

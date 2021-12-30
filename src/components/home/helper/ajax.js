@@ -29,6 +29,7 @@ export const ajax = () => {
             timeToHumanize(totalInMilliseconds),
             timeToHumanize(usedInMilliseconds),
             timeToHumanize(leftOverInMilliseconds),
+            key
         ]);
     }
 

@@ -1,12 +1,9 @@
 
 import React, { useState } from 'react';
-import Swal from 'sweetalert2';
+import db from '../../helper/db';
 import { ajax } from './helper/ajax';
-import { handlerFunctions } from './helper/handlerFunctions';
 
 export const AddEmployer = ({ table }) => {
-
-    const { saveInfo } = handlerFunctions();
 
     const initialState = {
         name      : "",
@@ -30,21 +27,14 @@ export const AddEmployer = ({ table }) => {
         });
     };
 
-    const handleSaveInfo = (e) => {
+    const handleSaveInfo = async (e) => {
         e.preventDefault();
 
-        saveInfo(addEmploy);
-
-        Swal.fire({
-            position         : 'top-end',
-            icon             : 'success',
-            title            : 'Funcionario gurdado',
-            showConfirmButton: false,
-            timer            : 1000
-        }).then(() => {
-            table.current.clear().rows.add(ajax().data).draw();
-            setAddEmploy(initialState);
-        });
+        await db().insert(addEmploy);
+        table.current.clear().rows.add(ajax().data).draw();
+        table.current.columns.adjust().draw();
+        window.bootstrap.Modal.getInstance(document.querySelector('#addEmploy'), {}).hide();
+        setAddEmploy(initialState);
     };
 
     return (
@@ -98,6 +88,7 @@ export const AddEmployer = ({ table }) => {
                                     onChange={handleInputChange}
                                     name="day"
                                     value={addEmploy.day}
+                                    required
                                 />
                             </div>
                             <div className="mb-3">
@@ -109,6 +100,7 @@ export const AddEmployer = ({ table }) => {
                                     onChange={handleInputChange}
                                     name="start"
                                     value={addEmploy.start}
+                                    required
                                 />
                             </div>
                             <div className="mb-3">
@@ -120,6 +112,7 @@ export const AddEmployer = ({ table }) => {
                                     onChange={handleInputChange}
                                     name="end"
                                     value={addEmploy.end}
+                                    required
                                 />
                             </div>
                         </div>

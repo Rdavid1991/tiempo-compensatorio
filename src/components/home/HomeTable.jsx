@@ -1,8 +1,8 @@
-import React, { useEffect, useRef } from 'react';
-//import { render } from 'react-dom';
-//import { Link } from 'react-router-dom';
+import React, { useEffect, useRef, useState } from 'react';
 import { dataTableSpanish } from '../../helper';
+import db from '../../helper/db';
 import { AddEmployer } from './AddEmployer';
+import { EditEmploy } from './EditEmploy';
 import { ajax } from './helper/ajax';
 const { $ } = window;
 
@@ -20,7 +20,15 @@ export const HomeTable = () => {
                     targets: [0],
                     render : function (data) {
                         const index = data.split("|");
-                        return  `<a href="#/employed/${index[0]}">${index[1]}</a>`;  
+                        return `<a href="#/employed/${index[0]}" class="text-truncate">${index[1]}</a>`;
+                    }
+                },
+                {
+                    targets: [5],
+                    render : (key) => {
+                        const html = `<button class="btn btn-sm btn-secondary" data-bs-toggle="modal" data-bs-target="#editEmploy" data-click="edit" data-index="${key}">editar</button>
+                                        <button class="btn btn-sm btn-secondary" data-click="delete" data-index="${key}">borrar</button>`;
+                        return html;
                     }
                 }
             ]
@@ -28,9 +36,33 @@ export const HomeTable = () => {
         $(".pagination").addClass("pagination-sm");
     }, []);
 
+    const [indexId, setIndexId] = useState("");
+
+    const handlerActions = async ({ target }) => {
+
+        switch (target.dataset.click) {
+            case "delete":
+                await db().dropEmploy(target.dataset.index);
+                table.current.clear().rows.add(ajax().data).draw();
+                table.current.columns.adjust().draw();
+                break;
+            case "edit":
+                setIndexId(target.dataset.index);
+                break;
+
+            default:
+                break;
+        }
+    };
+
     return (
         <div className="animate__animated animate__bounce animate__fadeIn" style={{ animationFillMode: "backwards" }} >
             <AddEmployer
+                table={table}
+            />
+
+            <EditEmploy
+                indexId={indexId}
                 table={table}
             />
 
@@ -47,14 +79,15 @@ export const HomeTable = () => {
             </button>
 
             <div className="mt-5">
-                <table id="example" className="table table-sm table-striped" style={{ width: "100%" }}>
-                    <thead>
+                <table id="example" className="table table-sm table-striped" style={{ width: "100%" }} onClick={handlerActions}>
+                    <thead >
                         <tr>
                             <th>Nombre</th>
                             <th>Departamento</th>
                             <th>Tiempo total</th>
                             <th>Tiempo usadas</th>
                             <th>Tiempo restante</th>
+                            <th>Acciones</th>
                         </tr>
                     </thead>
                 </table>
