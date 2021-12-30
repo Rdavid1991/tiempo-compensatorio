@@ -19,15 +19,15 @@ export const DetailsTime = ({ data }) => {
                             <div className="col-6">
                                 <div className="p-1 border border-dark rounded bg-dark">Horas usadas</div>
                             </div>
-                            {data.usedHourHistory.length > 0 ? data.usedHourHistory.map((item) => (
-                                <>
+                            {data.usedHourHistory.length > 0 ? data.usedHourHistory.map((item,index) => (
+                                <div key={index}>
                                     <div className="col-6">
                                         <div className="p-1 border border-dark rounded bg-dark">{moment(item.date).format("ddd LL")}</div>
                                     </div>
                                     <div className="col-6">
                                         <div className="p-1 border border-dark rounded bg-dark">{timeToHumanize(moment.duration(item.hours, "hours").asMilliseconds())}</div>
                                     </div>
-                                </>
+                                </div>
                             )) : "No hay nada que mostrar"}
                         </div>
                     </div>

@@ -1,6 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, { useEffect, useState } from 'react';
-import ReactDOM from 'react-dom';
+import React, { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import { AddTime } from './AddTime';
@@ -18,7 +17,7 @@ const localDB = db();
 moment.locale("es");
 export const EmployeeTable = () => {
 
-
+    const notUsed = useRef();
 
     const { employeeKey } = useParams();
     const data = JSON.parse(localStorage.getItem(employeeKey));
@@ -29,68 +28,24 @@ export const EmployeeTable = () => {
         $("#used").DataTable({
             language: { ...dataTableSpanish }
         });
-        $("#notUsed").DataTable({
+
+        notUsed.current = $("#notUsed").DataTable({
             language    : { ...dataTableSpanish },
             "aaData"    : ajaxEmploy(data).notUsed().data,
             "columnDefs": [
                 {
                     targets: [0],
-                    render : (item, a, b, c) => {
-
-                        let divElement = document.querySelector("#portals");
+                    render : (item) => {
                         const [index, data] = item.split("|");
-
-                        ReactDOM.createPortal(
-                            <>
-                                <button
-                                    style={{ "cursor": "pointer" }}
-                                    onClick={() => {
-                                        showDetails(index);
-                                        console.log("se ejecuta");
-                                    }}
-                                >
-                                    {data}
-                                </button>
-                            </>,
-                            document.getElementById("portals")
-                        );
-
-
-
-                        return divElement.outerHTML;
+                        return `<div style="cursor:pointer" data-click="details" data-index="${index}">${data}</div>`;
                     }
                 },
                 {
                     targets: [6],
                     render : (index) => {
-                        const html = (
-                            <>
-                                <button
-                                    className="btn btn-sm btn-secondary"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#useTime"
-                                    onClick={() => setIndexData(index)}
-                                >
-                                    usar
-                                </button>
-
-                                <button
-                                    className="btn btn-sm btn-secondary"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#editEmployTime"
-                                    onClick={() => setIndexData(index)}
-                                >
-                                    editar
-                                </button>
-                                <button
-                                    className="btn btn-sm btn-secondary"
-                                    onClick={() => handleDelete(index)}
-                                >
-                                    borrar
-                                </button>
-                            </>
-                        );
-
+                        const html = `<button class="btn btn-sm btn-secondary" data-bs-toggle="modal" data-bs-target="#useTime" data-click="useTime" data-index="${index}">usar</button>
+                        <button class="btn btn-sm btn-secondary" data-bs-toggle="modal" data-bs-target="#editEmployTime" data-click="editTime" data-index="${index}">editar</button>
+                        <button class="btn btn-sm btn-secondary" data-click="delete" data-index="${index}">borrar</button>`;
                         return html;
                     }
                 }
@@ -100,23 +55,40 @@ export const EmployeeTable = () => {
         $(".pagination").addClass("pagination-sm");
     }, []);
 
-    const handleDelete = (index) => {
-        localDB.drop(index, employeeKey);
+    const handleDelete = () => {
+        localDB.drop(indexData, employeeKey);
     };
 
-    const showDetails = (index) => {
-        var details = new bootstrap.Modal(document.querySelector('#details'), {});
-        details.show();
-        console.log("se ejecuta");
-        setIndexData(index);
+    const handleActionTable = ({ target }) => {
+
+        switch (target.dataset.click) {
+            case "details":
+                setIndexData(target.dataset.index);
+                var details = new bootstrap.Modal(document.querySelector('#details'), {});
+                details.show();
+                break;
+            case "delete":
+                setIndexData(target.dataset.index);
+                handleDelete();
+                break;
+            case "useTime":
+                setIndexData(target.dataset.index);
+                break;
+
+            default:
+                break;
+        }
     };
 
     return (
-        <div className="animate__animated animate__bounce animate__fadeIn" style={{ animationFillMode: "backwards" }}>
+
+        < div className="animate__animated animate__bounce animate__fadeIn" style={{ animationFillMode: "backwards" }}>
+
             <UseTime
                 indexData={indexData}
                 employeeKey={employeeKey}
                 data={data}
+                notUsed={notUsed}
             />
 
             <AddTime
@@ -150,7 +122,7 @@ export const EmployeeTable = () => {
                 to="/"
                 className="btn btn-sm btn-primary"
             >
-                Atras
+                Atrás
             </Link>
 
             <button
@@ -171,7 +143,7 @@ export const EmployeeTable = () => {
                         <button className="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#usedPane" type="button" role="tab" aria-controls="profile" aria-selected="false">Horas usadas</button>
                     </li>
                 </ul>
-                <div className="tab-content mt-4" id="myTabContent">
+                <div className="tab-content mt-4" id="myTabContent" onClick={handleActionTable}>
                     <div className="tab-pane fade show active" id="NotUsedPane" role="tabpanel" aria-labelledby="home-tab">
                         <table id="notUsed" className="table table-sm table-striped" style={{ width: "100%" }} aria-describedby="example_info">
                             <thead>
@@ -203,6 +175,8 @@ export const EmployeeTable = () => {
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
     );
 };
+
+

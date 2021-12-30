@@ -68,7 +68,7 @@ export const handlerFunctions = (data, employeeKey) => {
                     showConfirmButton: false,
                     timer            : 2000
                 }).then(() => {
-                    window.location.reload();
+                    
                 });
             }
         }

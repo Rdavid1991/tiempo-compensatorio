@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
+import { ajaxEmploy } from './helper/ajaxEmploy';
 import { handlerFunctions } from './helper/handlerFunctions';
 
-export const UseTime = ({ indexData, employeeKey, data }) => {
+export const UseTime = ({ indexData, employeeKey, data,notUsed }) => {
 
     const { handlerUsedTime, handlerUseHours } = handlerFunctions(data, employeeKey);
     const [usedTime, setUsedTime] = useState({
@@ -21,6 +22,7 @@ export const UseTime = ({ indexData, employeeKey, data }) => {
                     <form onSubmit={(e) => {
                         e.preventDefault();
                         handlerUseHours(indexData, usedTime);
+                        notUsed.current.clear().rows.add(ajaxEmploy().notUsed().data).draw();
                     }}>
                         <div className="modal-body">
 
