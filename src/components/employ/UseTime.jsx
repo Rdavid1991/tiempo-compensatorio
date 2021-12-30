@@ -2,13 +2,16 @@ import React, { useState } from 'react';
 import { ajaxEmploy } from './helper/ajaxEmploy';
 import { handlerFunctions } from './helper/handlerFunctions';
 
-export const UseTime = ({ indexData, employeeKey, data,notUsed }) => {
+const {bootstrap} = window;
+const initialState = {
+    hourToUse: "",
+    dateOfUse: ""
+};
 
-    const { handlerUsedTime, handlerUseHours } = handlerFunctions(data, employeeKey);
-    const [usedTime, setUsedTime] = useState({
-        hourToUse: "",
-        dateOfUse: ""
-    });
+export const UseTime = ({ indexData, employeeKey, notUsedTable }) => {
+    
+    const { handlerUsedTime, handlerUseHours } = handlerFunctions(employeeKey);
+    const [usedTime, setUsedTime] = useState(initialState);
 
     return (
         <div className="modal fade" id="useTime" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="useTimeLabel" aria-hidden="true">
@@ -19,10 +22,15 @@ export const UseTime = ({ indexData, employeeKey, data,notUsed }) => {
                         <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
 
-                    <form onSubmit={(e) => {
+                    <form onSubmit={async (e) => {
                         e.preventDefault();
-                        handlerUseHours(indexData, usedTime);
-                        notUsed.current.clear().rows.add(ajaxEmploy().notUsed().data).draw();
+                        const response = await handlerUseHours(indexData, usedTime);
+                        if (response) {
+                            notUsedTable.current.clear().rows.add(ajaxEmploy(employeeKey).notUsed().data).draw();
+                            notUsedTable.current.columns.adjust().draw();
+                            bootstrap.Modal.getInstance(document.querySelector('#useTime'), {}).hide();
+                            setUsedTime(initialState);
+                        }
                     }}>
                         <div className="modal-body">
 
@@ -35,6 +43,7 @@ export const UseTime = ({ indexData, employeeKey, data,notUsed }) => {
                                     step="0.01"
                                     min="0"
                                     onChange={(e) => handlerUsedTime(e, setUsedTime, usedTime)}
+                                    value={usedTime.hourToUse}
                                     required
                                 />
                             </div>
@@ -45,6 +54,7 @@ export const UseTime = ({ indexData, employeeKey, data,notUsed }) => {
                                     className="form-control form-control-sm"
                                     name="dateOfUse"
                                     onChange={(e) => handlerUsedTime(e, setUsedTime, usedTime)}
+                                    value={usedTime.dateOfUse}
                                     required
                                 />
                             </div>

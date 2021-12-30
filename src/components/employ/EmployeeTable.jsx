@@ -17,7 +17,8 @@ const localDB = db();
 moment.locale("es");
 export const EmployeeTable = () => {
 
-    const notUsed = useRef();
+    const notUsedTable = useRef();
+    const usedTable = useRef();
 
     const { employeeKey } = useParams();
     const data = JSON.parse(localStorage.getItem(employeeKey));
@@ -25,13 +26,23 @@ export const EmployeeTable = () => {
 
     useEffect(() => {
 
-        $("#used").DataTable({
-            language: { ...dataTableSpanish }
+        usedTable.current = $("#used").DataTable({
+            "language"  : { ...dataTableSpanish },
+            "aaData"    : ajaxEmploy(employeeKey).used().data,
+            "columnDefs": [
+                {
+                    targets: [0],
+                    render : (item) => {
+                        const [index, data] = item.split("|");
+                        return `<div style="cursor:pointer" data-click="details" data-index="${index}">${data}</div>`;
+                    }
+                }
+            ]
         });
 
-        notUsed.current = $("#notUsed").DataTable({
-            language    : { ...dataTableSpanish },
-            "aaData"    : ajaxEmploy(data).notUsed().data,
+        notUsedTable.current = $("#notUsed").DataTable({
+            "language"  : { ...dataTableSpanish },
+            "aaData"    : ajaxEmploy(employeeKey).notUsed().data,
             "columnDefs": [
                 {
                     targets: [0],
@@ -55,8 +66,13 @@ export const EmployeeTable = () => {
         $(".pagination").addClass("pagination-sm");
     }, []);
 
-    const handleDelete = () => {
-        localDB.drop(indexData, employeeKey);
+    const handleDelete = async () => {
+        const isDeleted = await localDB.drop(indexData, employeeKey);
+        console.log(isDeleted);
+        if (isDeleted) {
+            notUsedTable.current.clear().rows.add(ajaxEmploy(employeeKey).notUsed().data).draw();
+            notUsedTable.current.columns.adjust().draw();
+        }
     };
 
     const handleActionTable = ({ target }) => {
@@ -87,12 +103,12 @@ export const EmployeeTable = () => {
             <UseTime
                 indexData={indexData}
                 employeeKey={employeeKey}
-                data={data}
-                notUsed={notUsed}
+                notUsedTable={notUsedTable}
             />
 
             <AddTime
                 employeeKey={employeeKey}
+                notUsedTable={notUsedTable}
             />
 
             {
@@ -108,6 +124,7 @@ export const EmployeeTable = () => {
                                 used : false
                             }}
                             indexData={indexData}
+                            notUsedTable={notUsedTable}
                         />
                         <DetailsTime
                             data={data.time[indexData]}

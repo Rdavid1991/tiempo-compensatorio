@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import moment from "moment";
 import Swal from 'sweetalert2';
 import { compareDiffTime } from '../../helper';
+import { ajaxEmploy } from './helper/ajaxEmploy';
 
-const { bootstrap, location } = window;
+const { bootstrap } = window;
 
-export const AddTime = ({ employeeKey }) => {
+export const AddTime = ({ employeeKey,notUsedTable }) => {
 
     const initialState = {
         day  : "",
@@ -61,7 +62,8 @@ export const AddTime = ({ employeeKey }) => {
                 showConfirmButton: false,
                 timer            : 1000
             }).then(() => {
-                location.reload();
+                notUsedTable.current.clear().rows.add(ajaxEmploy(employeeKey).notUsed().data).draw();
+                notUsedTable.current.columns.adjust().draw();
             });
         } else {
             Swal.fire(

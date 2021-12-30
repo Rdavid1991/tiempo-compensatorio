@@ -3,7 +3,7 @@ import Swal from "sweetalert2";
 import moment from "moment";
 import { substractTime, timeToString } from "../../../helper";
 
-export const handlerFunctions = (data, employeeKey) => {
+export const handlerFunctions = (employeeKey) => {
 
     /**
      * Evalua si el tiempo a usar es mayor al tiempo restante
@@ -38,14 +38,17 @@ export const handlerFunctions = (data, employeeKey) => {
             });
         },
 
-        handlerUseHours: (index, usedTime) => {
+        handlerUseHours: async (index, usedTime) => {
+
+            const data = JSON.parse(localStorage.getItem(employeeKey));
 
             if (compareDiffTime(data.time[index].hourLeft, usedTime.hourToUse)) {
-                Swal.fire(
+                await Swal.fire(
                     'Lo siento',
                     'No tienes suficientes horas para usar',
                     'error'
                 );
+                return false;
             } else {
 
                 data.time[index].hourUsed = addTime(data.time[index].hourUsed, usedTime.hourToUse);
@@ -61,15 +64,16 @@ export const handlerFunctions = (data, employeeKey) => {
                 });
 
                 localStorage.setItem(employeeKey, JSON.stringify(data));
-                Swal.fire({
+
+                await Swal.fire({
                     position         : 'top-end',
                     icon             : 'success',
                     title            : `Se ${parseInt(usedTime.hourToUse) === 1 ? "ha" : "han"} descontado ${usedTime.hourToUse} ${moment.duration(timeToString(usedTime.hourToUse)).asHours() === 1 ? "hora" : "horas"} de ${data.name}`,
                     showConfirmButton: false,
                     timer            : 2000
-                }).then(() => {
-                    
                 });
+
+                return true;
             }
         }
     };

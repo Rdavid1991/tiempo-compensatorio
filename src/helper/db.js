@@ -1,3 +1,4 @@
+/* eslint-disable no-constant-condition */
 import moment from "moment";
 import Swal from "sweetalert2";
 import { compareDiffTime, compareDurationTime, randomId, substractTime } from ".";
@@ -64,7 +65,7 @@ const db = () => {
         }));
     };
 
-    const update = (indexData, employeeKey, editEmployTime) => {
+    const update = async (indexData, employeeKey, editEmployTime) => {
         if (compareDiffTime(editEmployTime.start, editEmployTime.end)) {
 
             const duration = moment.duration(
@@ -92,15 +93,15 @@ const db = () => {
                     localStorage.setItem(employeeKey, JSON.stringify(info));
 
                     bootstrap.Modal.getInstance(document.querySelector('#editEmployTime'), {}).hide();
-                    Swal.fire({
+                    await Swal.fire({
                         position         : 'top-end',
                         icon             : 'success',
                         title            : 'Horas actualizadas',
                         showConfirmButton: false,
                         timer            : 1000
-                    }).then(() => {
-                        location.reload();
                     });
+
+                    return true;
 
                 } else {
                     Swal.fire(
@@ -120,13 +121,15 @@ const db = () => {
             );
         }
 
+        return false;
+
     };
 
-    const drop = (indexData, employeeKey,) => {
+    const drop = async (indexData, employeeKey,) => {
 
         if (localStorage.hasOwnProperty(employeeKey)) {
 
-            Swal.fire({
+            const sureToDelete = await Swal.fire({
                 title             : '¿Estas seguro/a?',
                 text              : "Desea borrar el registro",
                 icon              : 'warning',
@@ -135,31 +138,32 @@ const db = () => {
                 cancelButtonColor : '#d33',
                 confirmButtonText : 'Si, borrar!',
                 cancelButtonText  : 'Cancelar'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    const info = JSON.parse(localStorage.getItem(employeeKey));
+            }).then((result) => result);
+            
+            if (sureToDelete.isConfirmed) {
+                const info = JSON.parse(localStorage.getItem(employeeKey));
 
-                    const deleted = info.time.splice(indexData, 1);
+                const deleted = info.time.splice(indexData, 1);
 
-                    if (deleted.length >= 1) {
-                        localStorage.setItem(employeeKey, JSON.stringify(info));
-                        Swal.fire(
-                            'Borrado!',
-                            'El registro a sido borrado!',
-                            'success'
-                        ).then(() => {
-                            window.location.reload();
-                        });
-                    }else{
-                        Swal.fire(
-                            'Ooops!',
-                            'Algo a salido mal!',
-                            'error'
-                        );
-                    }
+                if (deleted.length >= 1) {
+                    localStorage.setItem(employeeKey, JSON.stringify(info));
+                    Swal.fire(
+                        'Borrado!',
+                        'El registro a sido borrado!',
+                        'success'
+                    );
+                    return true;
+                } else {
+                    Swal.fire(
+                        'Ooops!',
+                        'Algo a salido mal!',
+                        'error'
+                    );
                 }
-            });
+            }
+            
         }
+        return false;
     };
 
     const getAll = () => {

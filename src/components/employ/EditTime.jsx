@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import db from '../../helper/db';
+import { ajaxEmploy } from './helper/ajaxEmploy';
+
+const { bootstrap } = window;
 
 
-export const EditTime = ({ indexData, employeeKey, editState = {} }) => {
+export const EditTime = ({ indexData, employeeKey, editState = {}, notUsedTable }) => {
 
     const initialState = {
         day  : "",
@@ -23,10 +26,15 @@ export const EditTime = ({ indexData, employeeKey, editState = {} }) => {
         setEditEmployTime(editState);
     }, [editState]);
 
-    const handleInfoSave = (e) => {
+    const handleInfoSave = async (e) => {
         e.preventDefault();
-
-        db().update(indexData, employeeKey, editEmployTime);
+        const response = await db().update(indexData, employeeKey, editEmployTime);
+        if (response) {
+            notUsedTable.current.clear().rows.add(ajaxEmploy(employeeKey).notUsed().data).draw();
+            notUsedTable.current.columns.adjust().draw();
+            bootstrap.Modal.getInstance(document.querySelector('#useTime'), {}).hide();
+            setEditEmployTime(initialState);
+        }
     };
 
     return (
