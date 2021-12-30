@@ -19,10 +19,10 @@ export const DetailsTime = ({ data }) => {
                     <div className="modal-body">
                         <div className="row g-2">
                             <div className="col-6">
-                                <div className="p-1 border border-dark rounded bg-dark">Fecha de uso</div>
+                                <div className="p-1 border border-dark rounded bg-dark fw-bold">Fecha de uso</div>
                             </div>
                             <div className="col-6">
-                                <div className="p-1 border border-dark rounded bg-dark">Horas usadas</div>
+                                <div className="p-1 border border-dark rounded bg-dark fw-bold">Horas usadas</div>
                             </div>
                         </div>
                         {data.usedHourHistory.length > 0 ? data.usedHourHistory.map((item, index) => (
