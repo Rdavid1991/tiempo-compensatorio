@@ -108,6 +108,7 @@ export const EmployeeTable = () => {
         < div className="animate__animated animate__bounce animate__fadeIn" style={{ animationFillMode: "backwards" }}>
 
             <UseTime
+                dateFrom={data.time[indexData].day}
                 indexData={indexData}
                 employeeKey={employeeKey}
                 notUsedTable={notUsedTable}
@@ -117,6 +118,7 @@ export const EmployeeTable = () => {
             <AddTime
                 employeeKey={employeeKey}
                 notUsedTable={notUsedTable}
+                refreshHistoryUsedTime={refreshHistoryUsedTime}
             />
 
             {

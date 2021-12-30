@@ -1,5 +1,8 @@
 
+import moment from 'moment';
 import React, { useState } from 'react';
+import Swal from 'sweetalert2';
+import { compareDiffTime } from '../../helper';
 import db from '../../helper/db';
 import { ajax } from './helper/ajax';
 
@@ -29,17 +32,25 @@ export const AddEmployer = ({ table }) => {
 
     const handleSaveInfo = async (e) => {
         e.preventDefault();
-
-        await db().insert(addEmploy);
-        table.current.clear().rows.add(ajax().data).draw();
-        table.current.columns.adjust().draw();
-        window.bootstrap.Modal.getInstance(document.querySelector('#addEmploy'), {}).hide();
-        setAddEmploy(initialState);
+        if(compareDiffTime(addEmploy.start, addEmploy.end)){
+            await db().insert(addEmploy);
+            table.current.clear().rows.add(ajax().data).draw();
+            table.current.columns.adjust().draw();
+            window.bootstrap.Modal.getInstance(document.querySelector('#addEmploy'), {}).hide();
+            setAddEmploy(initialState);
+        }else{
+            Swal.fire(
+                'Lo siento',
+                `No puede ingresar las horas en ese orden. <br>
+                    Desde ${moment(addEmploy.start, "hh:mm").format("LT")} es menor que, Hasta ${moment(addEmploy.end, "hh:mm").format("LT")}`,
+                'error'
+            );
+        }
     };
 
     return (
         <div className="modal fade" data-bs-backdrop="static" id="addEmploy"  >
-            <div className="modal-dialog">
+            <div className="modal-dialog modal-dialog-centered">
                 <div className="modal-content">
                     <div className="modal-header">
                         <h5 className="modal-title">Agregar funcionario</h5>
@@ -51,7 +62,7 @@ export const AddEmployer = ({ table }) => {
                     >
                         <div className="modal-body">
                             <div className="mb-3">
-                                <label htmlFor="name" className="form-label">Funcionario</label>
+                                <label htmlFor="name" className="form-label">Nombre</label>
                                 <input
                                     type="text"
                                     className="form-control form-control-sm"

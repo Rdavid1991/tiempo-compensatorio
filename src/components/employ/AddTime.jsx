@@ -6,7 +6,7 @@ import { ajaxEmploy } from './helper/ajaxEmploy';
 
 const { bootstrap } = window;
 
-export const AddTime = ({ employeeKey,notUsedTable }) => {
+export const AddTime = ({ employeeKey,notUsedTable, refreshHistoryUsedTime }) => {
 
     const initialState = {
         day  : "",
@@ -64,6 +64,7 @@ export const AddTime = ({ employeeKey,notUsedTable }) => {
             }).then(() => {
                 notUsedTable.current.clear().rows.add(ajaxEmploy(employeeKey).notUsed().data).draw();
                 notUsedTable.current.columns.adjust().draw();
+                refreshHistoryUsedTime();
             });
         } else {
             Swal.fire(
@@ -77,7 +78,7 @@ export const AddTime = ({ employeeKey,notUsedTable }) => {
 
     return (
         <div className="modal fade" data-bs-backdrop="static" id="addEmployTime"  >
-            <div className="modal-dialog">
+            <div className="modal-dialog modal-dialog-centered">
                 <div className="modal-content">
                     <div className="modal-header">
                         <h5 className="modal-title">Agregar funcionario</h5>

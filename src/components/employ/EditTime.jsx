@@ -1,3 +1,4 @@
+import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import db from '../../helper/db';
 import { ajaxEmploy } from './helper/ajaxEmploy';
@@ -39,10 +40,10 @@ export const EditTime = ({ indexData, employeeKey, editState = {}, notUsedTable 
 
     return (
         <div className="modal fade" data-bs-backdrop="static" id="editEmployTime"  >
-            <div className="modal-dialog">
+            <div className="modal-dialog modal-dialog-centered">
                 <div className="modal-content">
                     <div className="modal-header">
-                        <h5 className="modal-title">Agregar tiempo</h5>
+                        <h5 className="modal-title">Editar tiempo de - {moment(editEmployTime.day).format("ddd LL")}</h5>
                         <button type="button" className="btn-close" aria-label="Close" data-bs-dismiss="modal"></button>
                     </div>
                     <form

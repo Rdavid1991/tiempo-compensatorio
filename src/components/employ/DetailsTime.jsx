@@ -10,7 +10,7 @@ export const DetailsTime = ({ data }) => {
 
     return (
         <div className="modal fade" id="details" data-bs-backdrop="static" data-bs-keyboard="false">
-            <div className="modal-dialog">
+            <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                 <div className="modal-content">
                     <div className="modal-header">
                         <h5 className="modal-title" id="detailsLabel">Horas usadas del {moment(data.day).format("ddd LL")}</h5>

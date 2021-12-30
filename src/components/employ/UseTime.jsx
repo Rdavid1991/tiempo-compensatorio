@@ -1,3 +1,4 @@
+import moment from 'moment';
 import React, { useState } from 'react';
 import { ajaxEmploy } from './helper/ajaxEmploy';
 import { handlerFunctions } from './helper/handlerFunctions';
@@ -8,17 +9,17 @@ const initialState = {
     dateOfUse: ""
 };
 
-export const UseTime = ({ indexData, employeeKey, notUsedTable, refreshHistoryUsedTime }) => {
+export const UseTime = ({ indexData, employeeKey, notUsedTable, refreshHistoryUsedTime, dateFrom }) => {
     
     const { handlerUsedTime, handlerUseHours } = handlerFunctions(employeeKey);
     const [usedTime, setUsedTime] = useState(initialState);
 
     return (
         <div className="modal fade" id="useTime" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="useTimeLabel" aria-hidden="true">
-            <div className="modal-dialog">
+            <div className="modal-dialog modal-dialog-centered">
                 <div className="modal-content">
                     <div className="modal-header">
-                        <h5 className="modal-title" id="useTimeLabel">Usar horas</h5>
+                        <h5 className="modal-title" id="useTimeLabel">Usar horas del {moment(dateFrom).format("ddd LL")}</h5>
                         <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
 
