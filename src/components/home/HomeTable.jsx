@@ -26,8 +26,8 @@ export const HomeTable = () => {
                 {
                     targets: [5],
                     render : (key) => {
-                        const html = `<button class="btn btn-sm btn-secondary" data-bs-toggle="modal" data-bs-target="#editEmploy" data-click="edit" data-index="${key}">editar</button>
-                                        <button class="btn btn-sm btn-secondary" data-click="delete" data-index="${key}">borrar</button>`;
+                        const html = `<button class="btn btn-sm btn-secondary" data-bs-toggle="modal" data-bs-target="#editEmploy" data-click="edit" data-index="${key}"><i class="far fa-edit"></i></button>
+                                        <button class="btn btn-sm btn-secondary" data-click="delete" data-index="${key}"><i class="far fa-trash-alt"></i></button>`;
                         return html;
                     }
                 }
@@ -75,6 +75,7 @@ export const HomeTable = () => {
                 data-bs-toggle="modal"
                 data-bs-target="#addEmploy"
             >
+                <i className="fas fa-plus"></i>
                 Nuevo funcionario
             </button>
 

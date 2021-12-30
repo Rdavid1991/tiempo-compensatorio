@@ -54,9 +54,9 @@ export const EmployeeTable = () => {
                 {
                     targets: [6],
                     render : (index) => {
-                        const html = `<button class="btn btn-sm btn-secondary" data-bs-toggle="modal" data-bs-target="#useTime" data-click="useTime" data-index="${index}">usar</button>
-                        <button class="btn btn-sm btn-secondary" data-bs-toggle="modal" data-bs-target="#editEmployTime" data-click="editTime" data-index="${index}">editar</button>
-                        <button class="btn btn-sm btn-secondary" data-click="delete" data-index="${index}">borrar</button>`;
+                        const html = `<button class="btn btn-sm btn-secondary" data-bs-toggle="modal" data-bs-target="#useTime" data-click="useTime" data-index="${index}"><i class="fas fa-cogs"></i></button>
+                        <button class="btn btn-sm btn-secondary" data-bs-toggle="modal" data-bs-target="#editEmployTime" data-click="editTime" data-index="${index}"><i class="far fa-edit"></i></button>
+                        <button class="btn btn-sm btn-secondary" data-click="delete" data-index="${index}"><i class="far fa-trash-alt"></i></button>`;
                         return html;
                     }
                 }
@@ -74,7 +74,9 @@ export const EmployeeTable = () => {
         }
     };
 
-    const handleActionTable = ({ target }) => {
+    const handleActionTable = (e) => {
+
+        const {target} = e;
 
         switch (target.dataset.click) {
             case "details":
@@ -145,6 +147,7 @@ export const EmployeeTable = () => {
                 to="/"
                 className="btn btn-sm btn-primary"
             >
+                <i className="fas fa-arrow-left"></i>
                 Atrás
             </Link>
 
@@ -153,17 +156,18 @@ export const EmployeeTable = () => {
                 data-bs-toggle="modal"
                 data-bs-target="#addEmployTime"
             >
-                Agregar hora
+               <i className="fas fa-plus"></i>
+               Agregar hora
             </button>
 
             <div className="mt-3">
 
                 <ul className="nav nav-tabs" id="myTab" role="tablist">
                     <li className="nav-item" role="presentation">
-                        <button className="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#NotUsedPane" type="button" role="tab" aria-controls="home" aria-selected="true">Horas disponibles</button>
+                        <button className="btn-sm nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#NotUsedPane" type="button" role="tab" aria-controls="home" aria-selected="true">Horas disponibles</button>
                     </li>
                     <li className="nav-item" role="presentation">
-                        <button className="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#usedPane" type="button" role="tab" aria-controls="profile" aria-selected="false">Horas usadas</button>
+                        <button className="btn-sm nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#usedPane" type="button" role="tab" aria-controls="profile" aria-selected="false">Horas usadas</button>
                     </li>
                 </ul>
                 <div className="tab-content mt-4" id="myTabContent" onClick={handleActionTable}>
