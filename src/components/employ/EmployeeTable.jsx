@@ -134,6 +134,7 @@ export const EmployeeTable = () => {
                             }}
                             indexData={indexData}
                             notUsedTable={notUsedTable}
+                            refreshHistoryUsedTime={refreshHistoryUsedTime}
                         />
                         <DetailsTime
                             data={data.time[indexData]}

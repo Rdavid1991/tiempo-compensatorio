@@ -6,7 +6,7 @@ import { ajaxEmploy } from './helper/ajaxEmploy';
 const { bootstrap } = window;
 
 
-export const EditTime = ({ indexData, employeeKey, editState = {}, notUsedTable }) => {
+export const EditTime = ({ indexData, employeeKey, editState = {}, notUsedTable,refreshHistoryUsedTime }) => {
 
     const initialState = {
         day  : "",
@@ -34,6 +34,7 @@ export const EditTime = ({ indexData, employeeKey, editState = {}, notUsedTable 
             notUsedTable.current.clear().rows.add(ajaxEmploy(employeeKey).notUsed().data).draw();
             notUsedTable.current.columns.adjust().draw();
             bootstrap.Modal.getInstance(document.querySelector('#useTime'), {}).hide();
+            refreshHistoryUsedTime();
             setEditEmployTime(initialState);
         }
     };
