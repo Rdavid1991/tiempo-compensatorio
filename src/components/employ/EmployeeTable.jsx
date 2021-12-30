@@ -76,7 +76,7 @@ export const EmployeeTable = () => {
 
     const handleActionTable = (e) => {
 
-        const {target} = e;
+        const { target } = e;
 
         switch (target.dataset.click) {
             case "details":
@@ -99,21 +99,13 @@ export const EmployeeTable = () => {
         }
     };
 
-    const refreshHistoryUsedTime= () => {
+    const refreshHistoryUsedTime = () => {
         setData(JSON.parse(localStorage.getItem(employeeKey)));
     };
 
     return (
 
         < div className="animate__animated animate__bounce animate__fadeIn" style={{ animationFillMode: "backwards" }}>
-
-            <UseTime
-                dateFrom={data.time[indexData].day}
-                indexData={indexData}
-                employeeKey={employeeKey}
-                notUsedTable={notUsedTable}
-                refreshHistoryUsedTime={refreshHistoryUsedTime}
-            />
 
             <AddTime
                 employeeKey={employeeKey}
@@ -125,6 +117,13 @@ export const EmployeeTable = () => {
                 data.time.length > 0
                     ?
                     <>
+                        <UseTime
+                            dateFrom={data.time[indexData].day}
+                            indexData={indexData}
+                            employeeKey={employeeKey}
+                            notUsedTable={notUsedTable}
+                            refreshHistoryUsedTime={refreshHistoryUsedTime}
+                        />
                         <EditTime
                             employeeKey={employeeKey}
                             editState={{
@@ -158,8 +157,8 @@ export const EmployeeTable = () => {
                 data-bs-toggle="modal"
                 data-bs-target="#addEmployTime"
             >
-               <i className="fas fa-plus"></i>
-               Agregar hora
+                <i className="fas fa-plus"></i>
+                Agregar hora
             </button>
 
             <div className="mt-3">
