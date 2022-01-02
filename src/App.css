@@ -1,3 +1,8 @@
 i {
   pointer-events: none;
 } 
+
+.arrastre{
+  -webkit-user-select: none;
+  -webkit-app-region: drag;
+}

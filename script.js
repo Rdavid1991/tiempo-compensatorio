@@ -49,9 +49,22 @@ ipcRenderer.on("tema", (event, theme) => {
 document.addEventListener("DOMContentLoaded", () => {
     if (localStorage.hasOwnProperty("style")) {
         applyTheme(localStorage.getItem("style"));
-    }else{
+    } else {
         applyTheme("slate");
     }
 
-    ipcRenderer.send(localStorage.getItem("style"));
+    ipcRenderer.on("data", (event, array) => {
+
+        let __data = [];
+
+        for (const key in localStorage) {
+            if (localStorage.hasOwnProperty(key) && key !== "style") {
+                __data.push({
+                    key,
+                    data: JSON.parse(localStorage.getItem(key))
+                });
+            }
+        }
+        ipcRenderer.send("data", JSON.stringify(__data));
+    });
 });
