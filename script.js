@@ -4,6 +4,9 @@
 const { ipcRenderer } = require("electron");
 
 const applyTheme = (theme) => {
+
+    console.log({ theme });
+
     const themeElements = document.querySelectorAll("[class^='theme']");
     themeElements.forEach((element) => {
         if (!!element.className.match(theme)) {
@@ -20,6 +23,32 @@ const applyTheme = (theme) => {
     }, 500);
 
     localStorage.setItem("style", theme);
+};
+
+const compareKeyJson = (json) =>{
+
+    const __schemaFunctionary = JSON.stringify(["name","department","time"]);
+    const __schemaTime = JSON.stringify(["day","start","end","hourTotal","hourUsed","hourLeft","used","usedHourHistory",]);
+
+    if (JSON.stringify(Object.keys(Object.values(json)[1])) === __schemaFunctionary) {
+        for (const time of Object.values(json)[1].time) {
+            if (JSON.stringify(Object.keys(time)) !== __schemaTime) {
+                return false;
+            }
+        }
+    }else{
+        return false;
+    }
+    return true;
+};
+
+const isJson = (str) => {
+    try {
+        JSON.parse(str);
+    } catch (e) {
+        return false;
+    }
+    return true;
 };
 
 ipcRenderer.on("tema", (event, theme) => {
@@ -53,18 +82,49 @@ document.addEventListener("DOMContentLoaded", () => {
         applyTheme("slate");
     }
 
-    ipcRenderer.on("data", (event, array) => {
+    ipcRenderer.on("request", (event, array) => {
 
         let __data = [];
+        let data;
 
         for (const key in localStorage) {
             if (localStorage.hasOwnProperty(key) && key !== "style") {
+
+                data = localStorage.getItem(key);
+
                 __data.push({
                     key,
-                    data: JSON.parse(localStorage.getItem(key))
+                    data: isJson(data) ? JSON.parse(data) : data
                 });
             }
         }
-        ipcRenderer.send("data", JSON.stringify(__data));
+        ipcRenderer.send("export", JSON.stringify(__data));
+    });
+
+    ipcRenderer.on("import", (e, d) => {
+        const importData = JSON.parse(d);
+        let dataLoaded = true;
+        localStorage.clear();
+        for (const element of importData) {
+            if(compareKeyJson(element) && element.data && element.key){
+                if (element.key === "style"){
+                    localStorage.setItem(element.key, JSON.stringify(element.data).replaceAll('\"',''));
+                }else{
+                    localStorage.setItem(element.key, JSON.stringify(element.data));
+                }
+                console.log("se ejecuta el cierto");
+            }else{
+                console.log("se ejecuta el falseo");
+                dataLoaded = false;
+                localStorage.clear();
+                break;
+            }
+        }
+
+        if (dataLoaded) {
+            location.reload();
+        }else{
+            ipcRenderer.send("load-backup-fail", "fail");
+        }
     });
 });
