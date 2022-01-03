@@ -51,6 +51,11 @@ const isJson = (str) => {
     return true;
 };
 
+window.addEmploy = () => {
+    console.log("se llamo");
+    ipcRenderer.send("add-employ","open");
+};
+
 ipcRenderer.on("tema", (event, theme) => {
 
     switch (theme) {

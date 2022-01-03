@@ -1,12 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { dataTableSpanish } from '../../helper';
 import db from '../../helper/db';
-import { AddEmployer } from './AddEmployer';
 import { EditEmploy } from './EditEmploy';
 import { ajax } from './helper/ajax';
 const { $ } = window;
 
-export const HomeTable = () => {
+export const HomeTable = ({setHomeTable}) => {
 
     const table = useRef();
 
@@ -34,6 +33,7 @@ export const HomeTable = () => {
             ]
         });
         $(".pagination").addClass("pagination-sm");
+        setHomeTable(table.current);
     }, []);
 
     const [indexId, setIndexId] = useState("");
@@ -57,9 +57,6 @@ export const HomeTable = () => {
 
     return (
         <div className="animate__animated animate__bounce animate__fadeIn" style={{ animationFillMode: "backwards" }} >
-            <AddEmployer
-                table={table}
-            />
 
             <EditEmploy
                 indexId={indexId}
@@ -72,8 +69,7 @@ export const HomeTable = () => {
             <button
                 type="button"
                 className="btn btn-sm  btn-primary"
-                data-bs-toggle="modal"
-                data-bs-target="#addEmploy"
+                onClick={window.addEmploy}
             >
                 <i className="fas fa-plus"></i>
                 Nuevo funcionario

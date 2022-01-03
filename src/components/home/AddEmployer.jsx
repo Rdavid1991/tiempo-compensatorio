@@ -6,7 +6,7 @@ import { compareDiffTime } from '../../helper';
 import db from '../../helper/db';
 import { ajax } from './helper/ajax';
 
-export const AddEmployer = ({ table }) => {
+export const AddEmployer = ({ homeTable }) => {
 
     const initialState = {
         name      : "",
@@ -34,8 +34,8 @@ export const AddEmployer = ({ table }) => {
         e.preventDefault();
         if(compareDiffTime(addEmploy.start, addEmploy.end)){
             await db().insert(addEmploy);
-            table.current.clear().rows.add(ajax().data).draw();
-            table.current.columns.adjust().draw();
+            homeTable.clear().rows.add(ajax().data).draw();
+            homeTable.columns.adjust().draw();
             window.bootstrap.Modal.getInstance(document.querySelector('#addEmploy'), {}).hide();
             setAddEmploy(initialState);
         }else{
@@ -49,7 +49,7 @@ export const AddEmployer = ({ table }) => {
     };
 
     return (
-        <div className="modal fade" data-bs-backdrop="static" id="addEmploy"  >
+        <div className="" data-bs-backdrop="static" id="addEmploy"  >
             <div className="modal-dialog modal-dialog-centered">
                 <div className="modal-content">
                     <div className="modal-header">

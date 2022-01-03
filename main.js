@@ -17,17 +17,17 @@ function createWindow() {
         },
     });
 
-    // let winChild = new BrowserWindow({
-    //     minWidth      : width * 0.4,
-    //     minHeight     : height * 0.4,
-    //     webPreferences: {
-    //         preload: path.join(__dirname, "script.js"),
-    //     },
-    //     parent: win, 
-    //     modal : true, 
-    //     show  : false,
-    //     frame : false
-    // });
+    let winAddEmploy = new BrowserWindow({
+        minWidth      : 500,
+        minHeight     : 556,
+        webPreferences: {
+            preload: path.join(__dirname, "script.js"),
+        },
+        parent: win,
+        modal : true,
+        show  : false,
+        frame : false
+    });
 
 
     const template = [
@@ -54,6 +54,7 @@ function createWindow() {
                                         event.reply("response", "Ha ocurrido un error creando el archivo: " + err.message);
                                     }
                                     event.reply("response_resolve", "El archivo ha sido creado satisfactoriamente");
+                                    ipcMain.removeHandler("export");
                                 });
                             }
                         });
@@ -63,14 +64,6 @@ function createWindow() {
             {
                 label: 'Importar copia DB ☝🏼 ',
                 click: () => {
-                    // winChild.loadURL("file:///" + path.join(__dirname, '/build/index.html') + "#/employed/nolgiE");
-                    // winChild.show();
-
-                    // winChild.on("close",(e)=>{
-                    //     e.preventDefault();
-
-                    //     winChild.hide();
-                    // });
 
                     dialog.showOpenDialog(win, {
                         properties: ["openFile"],
@@ -83,8 +76,7 @@ function createWindow() {
                                     console.error(err);
                                     return;
                                 }
-                                console.log(data);
-                                win.webContents.send("import",data);
+                                win.webContents.send("import", data);
                             });
                         }
                     });
@@ -139,8 +131,22 @@ function createWindow() {
         win = null;
     });
 
-    ipcMain.on("load-backup-fail",() => {
-       dialog.showMessageBox(win,{message: "no se pudo cargar la copia de seguridad"}) ;
+    ipcMain.on("load-backup-fail", () => {
+        dialog.showMessageBox(win, { message: "no se pudo cargar la copia de seguridad" });
+    });
+
+
+    winAddEmploy.loadURL("file:///" + path.join(__dirname, '/build/index.html') + "#/add_employ");
+
+    ipcMain.on("add-employ", (event, message) => {
+        if (message === "open") {
+            winAddEmploy.show();
+        }
+    });
+
+    winAddEmploy.on("close", (e) => {
+        e.preventDefault();
+        winAddEmploy.hide();
     });
 }
 
