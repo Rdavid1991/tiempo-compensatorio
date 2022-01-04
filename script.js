@@ -51,10 +51,6 @@ const isJson = (str) => {
     return true;
 };
 
-window.addEmploy = () => {
-    console.log("se llamo");
-    ipcRenderer.send("add-employ","open");
-};
 
 ipcRenderer.on("tema", (event, theme) => {
 
@@ -80,7 +76,14 @@ ipcRenderer.on("tema", (event, theme) => {
     }
 });
 
+window.addEmploy = () => {
+    console.log("se llamo");
+    ipcRenderer.send("add-employ","open");
+};
+
 document.addEventListener("DOMContentLoaded", () => {
+
+    
     if (localStorage.hasOwnProperty("style")) {
         applyTheme(localStorage.getItem("style"));
     } else {

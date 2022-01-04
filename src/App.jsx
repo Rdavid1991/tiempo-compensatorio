@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Route, Routes } from "react-router";
+import {useLocation} from "react-router-dom";
 import { HomeTable } from "./components/home/HomeTable";
 import { EmployeeTable } from "./components/employ/EmployeeTable";
 import "./App.css";
@@ -9,16 +10,21 @@ function App() {
 
   const [homeTable, setHomeTable] = useState();
 
-  return (
-    <div className="container">
+  const {pathname} = useLocation();
 
-      <div className="mt-5">
+  const rutas = useLocation();
+
+  console.log(rutas);
+  return (
+    <div className={ pathname==="/" || pathname.match(/employed/g) ? "container": ""}>
+      <div className={pathname==="/" || pathname.match(/employed/g) ? "mt-5": ""}>
+
         <Routes>
           <Route path="/" element={<HomeTable setHomeTable={setHomeTable}/>} />
+          <Route path="/employed/:employeeKey" element={<EmployeeTable/>} />
+
           <Route path="/add_employ" element={<AddEmployer homeTable={homeTable}/>}/>
 
-
-          <Route path="/employed/:employeeKey" element={<EmployeeTable/>} />
         </Routes>
       </div>
     </div>

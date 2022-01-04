@@ -53,7 +53,7 @@ export const AddEmployer = ({ homeTable }) => {
             <div className="modal-dialog modal-dialog-centered">
                 <div className="modal-content">
                     <div className="modal-header">
-                        <h5 className="modal-title">Agregar funcionario</h5>
+                        <h5 className="modal-title drag-header">Agregar funcionario</h5>
                         <button type="button" className="btn-close" aria-label="Close" data-bs-dismiss="modal"></button>
                     </div>
                     <form

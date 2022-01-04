@@ -13,13 +13,14 @@ function createWindow() {
         width         : (width * 0.8),
         height        : (height * 0.8),
         webPreferences: {
-            preload: path.join(__dirname, "script.js"),
+            preload         : path.join(__dirname, "script.js"),
+            contextIsolation: false
         },
     });
 
     let winAddEmploy = new BrowserWindow({
-        minWidth      : 500,
-        minHeight     : 556,
+        width         : 500,
+        height        : 556,
         webPreferences: {
             preload: path.join(__dirname, "script.js"),
         },
@@ -147,6 +148,7 @@ function createWindow() {
     winAddEmploy.on("close", (e) => {
         e.preventDefault();
         winAddEmploy.hide();
+        winAddEmploy.reload();
     });
 }
 

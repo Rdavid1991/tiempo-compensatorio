@@ -69,7 +69,10 @@ export const HomeTable = ({setHomeTable}) => {
             <button
                 type="button"
                 className="btn btn-sm  btn-primary"
-                onClick={window.addEmploy}
+                onClick={()=>{
+                    console.log("se ejecuta la funcion");
+                    window.addEmploy();
+                }}
             >
                 <i className="fas fa-plus"></i>
                 Nuevo funcionario
