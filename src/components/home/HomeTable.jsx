@@ -1,6 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import db from '../../helper/db';
-import { EditEmploy } from './EditEmploy';
 import { ajax } from './helper/ajax';
 import { employTable } from './helper/employTable';
 import { ipcRendererEvent } from './helper/ipcRendererEvent';
@@ -15,10 +14,10 @@ export const HomeTable = () => {
     useEffect(() => {
         table.current = employTable();
         $(".pagination").addClass("pagination-sm");
-        ipcRendererEvent().createEmploy(table.current);
+        ipcRendererEvent().refreshTable(table.current);
     }, []);
 
-    const [indexId, setIndexId] = useState("");
+    //const [indexId, setIndexId] = useState(""); * elementos para la web
 
     const handlerActions = async ({ target }) => {
 
@@ -29,7 +28,8 @@ export const HomeTable = () => {
                 table.current.columns.adjust().draw();
                 break;
             case "edit":
-                setIndexId(target.dataset.index);
+                //setIndexId(target.dataset.index); * elementos para la web
+                ipcRenderer.send("edit-employ",["open", target.dataset.index]);
                 break;
 
             default:
@@ -40,10 +40,13 @@ export const HomeTable = () => {
     return (
         <div className="animate__animated animate__bounce animate__fadeIn" style={{ animationFillMode: "backwards" }} >
 
-            <EditEmploy
-                indexId={indexId}
-                table={table}
-            />
+            {
+                //elementos para la web
+                /* <EditEmploy
+                    indexId={indexId}
+                    table={table}
+                />*/
+            }
 
             <h1>Registro de tiempo compensatorio</h1>
             <h2>Lista de funcionarios</h2>
@@ -52,7 +55,7 @@ export const HomeTable = () => {
                 type="button"
                 className="btn btn-sm  btn-primary"
                 onClick={() => {
-                    ipcRenderer.send("add-employ","open");
+                    ipcRenderer.send("add-employ", "open");
                 }}
             >
                 <i className="fas fa-plus"></i>

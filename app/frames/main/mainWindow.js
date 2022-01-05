@@ -1,7 +1,8 @@
 
 const {menuTemplate} = require('./menuTemplate');
 const path = require('path');
-const { BrowserWindow, Menu, screen } = require("electron");
+const { BrowserWindow, Menu, screen, ipcMain, dialog } = require("electron");
+const fs = require('fs');
 
 exports.mainWindow = () => {
 
@@ -24,5 +25,25 @@ exports.mainWindow = () => {
     
     Menu.setApplicationMenu(Menu.buildFromTemplate(menuTemplate(window)));
 
+    mainEvents(window);
+
     return window;
+};
+
+const mainEvents = (win) => {
+    ipcMain.on("export", (event, data) => {
+    
+        dialog.showSaveDialog(win, { filters: [{ name: 'TIEMPO COMPENSATORIO', extensions: ['json'] }] }).then((fileName) => {
+    
+            if (!fileName.canceled) {
+                fs.writeFile(fileName.filePath, data, function (err) {
+                    if (err) {
+                        event.reply("response", "Ha ocurrido un error creando el archivo: " + err.message);
+                    }
+                    event.reply("response_resolve", "El archivo ha sido creado satisfactoriamente");
+
+                });
+            }
+        });
+    });
 };

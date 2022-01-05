@@ -17,7 +17,7 @@ export const employTable = () => {
             {
                 targets: [5],
                 render : (key) => {
-                    const html = `<button class="btn btn-sm btn-secondary" data-bs-toggle="modal" data-bs-target="#editEmploy" data-click="edit" data-index="${key}"><i class="far fa-edit"></i></button>
+                    const html = `<button class="btn btn-sm btn-secondary" data-click="edit" data-index="${key}"><i class="far fa-edit"></i></button>
                                     <button class="btn btn-sm btn-secondary" data-click="delete" data-index="${key}"><i class="far fa-trash-alt"></i></button>`;
                     return html;
                 }

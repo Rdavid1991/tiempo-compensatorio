@@ -1,4 +1,4 @@
-const { dialog, ipcMain } = require('electron');
+const { dialog } = require('electron');
 const fs = require("fs");
 
 exports.menuTemplate = (win) => {
@@ -13,24 +13,7 @@ exports.menuTemplate = (win) => {
             }, {
                 label: 'Exportar copia DB  👇🏼 ',
                 click: () => {
-
                     win.webContents.send("request", []);
-
-                    ipcMain.on("export", (event, data) => {
-
-                        dialog.showSaveDialog(win, { filters: [{ name: 'TIEMPO COMPENSATORIO', extensions: ['json'] }] }).then((fileName) => {
-
-                            if (!fileName.canceled) {
-                                fs.writeFile(fileName.filePath, data, function (err) {
-                                    if (err) {
-                                        event.reply("response", "Ha ocurrido un error creando el archivo: " + err.message);
-                                    }
-                                    event.reply("response_resolve", "El archivo ha sido creado satisfactoriamente");
-                                    ipcMain.removeHandler("export");
-                                });
-                            }
-                        });
-                    });
                 }
             },
             {
