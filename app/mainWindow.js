@@ -16,7 +16,8 @@ exports.mainWindow = () => {
         vibrancy      : 'ultra-dark',
         webPreferences: {
             preload         : path.join(__dirname, "script.js"),
-            contextIsolation: false
+            contextIsolation: false,
+            //nodeIntegration : true,
         },
     });
 

@@ -3,6 +3,7 @@
 /* eslint-disable no-case-declarations */
 const { ipcRenderer } = require("electron");
 
+
 window.refreshHomeTable = () => {
     console.log(window.homeTable);
 };
@@ -12,8 +13,6 @@ window.setSaveData = (data) => {
 };
 
 const applyTheme = (theme) => {
-
-    console.log({ theme });
 
     const themeElements = document.querySelectorAll("[class^='theme']");
     themeElements.forEach((element) => {
@@ -59,10 +58,9 @@ const isJson = (str) => {
     return true;
 };
 
-window.addEmploy = () => {
-    console.log("se llamo");
-    ipcRenderer.send("add-employ","open");
-};
+ipcRenderer.on("verify-theme", () => {
+    verifyTheme();
+});
 
 ipcRenderer.on("tema", (event, theme) => {
 
@@ -87,13 +85,19 @@ ipcRenderer.on("tema", (event, theme) => {
             break;
     }
 });
+window.require = require;
 
-document.addEventListener("DOMContentLoaded", () => {
+const verifyTheme = () => {
     if (localStorage.hasOwnProperty("style")) {
         applyTheme(localStorage.getItem("style"));
     } else {
         applyTheme("slate");
     }
+};
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    verifyTheme();
 
     ipcRenderer.on("request", (event, array) => {
 

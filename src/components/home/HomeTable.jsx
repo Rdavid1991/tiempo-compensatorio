@@ -1,39 +1,21 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { dataTableSpanish } from '../../helper';
 import db from '../../helper/db';
 import { EditEmploy } from './EditEmploy';
 import { ajax } from './helper/ajax';
-const { $ } = window;
+import { employTable } from './helper/employTable';
+import { ipcRendererEvent } from './helper/ipcRendererEvent';
+const { $, require } = window;
 
-export const HomeTable = ({setHomeTable}) => {
+const { ipcRenderer } = require("electron");
+
+export const HomeTable = () => {
 
     const table = useRef();
 
     useEffect(() => {
-        table.current = $("#example").DataTable({
-            language    : { ...dataTableSpanish },
-            "aaData"    : ajax().data,
-            "retrieve"  : true,
-            "columnDefs": [
-                {
-                    targets: [0],
-                    render : function (data) {
-                        const index = data.split("|");
-                        return `<a href="#/employed/${index[0]}" class="text-truncate">${index[1]}</a>`;
-                    }
-                },
-                {
-                    targets: [5],
-                    render : (key) => {
-                        const html = `<button class="btn btn-sm btn-secondary" data-bs-toggle="modal" data-bs-target="#editEmploy" data-click="edit" data-index="${key}"><i class="far fa-edit"></i></button>
-                                        <button class="btn btn-sm btn-secondary" data-click="delete" data-index="${key}"><i class="far fa-trash-alt"></i></button>`;
-                        return html;
-                    }
-                }
-            ]
-        });
+        table.current = employTable();
         $(".pagination").addClass("pagination-sm");
-        setHomeTable(table.current);
+        ipcRendererEvent().createEmploy(table.current);
     }, []);
 
     const [indexId, setIndexId] = useState("");
@@ -69,9 +51,8 @@ export const HomeTable = ({setHomeTable}) => {
             <button
                 type="button"
                 className="btn btn-sm  btn-primary"
-                onClick={()=>{
-                    console.log("se ejecuta la funcion");
-                    window.addEmploy();
+                onClick={() => {
+                    ipcRenderer.send("add-employ","open");
                 }}
             >
                 <i className="fas fa-plus"></i>

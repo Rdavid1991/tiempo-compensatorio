@@ -2,10 +2,11 @@ import moment from 'moment';
 import React, { useState } from 'react';
 import Swal from 'sweetalert2';
 import { compareDiffTime } from '../../helper';
-//import db from '../../helper/db';
-import { ajax } from './helper/ajax';
+import db from '../../helper/db';
 
-export const AddEmployer = ({ homeTable }) => {
+const { ipcRenderer } = window.require('electron');
+
+export const AddEmployer = () => {
 
     const initialState = {
         name      : "",
@@ -32,13 +33,8 @@ export const AddEmployer = ({ homeTable }) => {
     const handleSaveInfo = async (e) => {
         e.preventDefault();
         if (compareDiffTime(addEmploy.start, addEmploy.end)) {
-            //await db().insert(addEmploy);
-            //homeTable.clear().rows.add(ajax().data).draw();
-            //homeTable.columns.adjust().draw();
-            window.refreshHomeTable(ajax, homeTable);
-            window.setSaveData(addEmploy);
-            console.log("se ejecuta esta vaina");
-            //window.bootstrap.Modal.getInstance(document.querySelector('#addEmploy'), {}).hide();
+            await db().insert(addEmploy);
+            ipcRenderer.send("refresh-table", []);
             setAddEmploy(initialState);
         } else {
             Swal.fire(
@@ -50,15 +46,20 @@ export const AddEmployer = ({ homeTable }) => {
         }
     };
 
+    const close = () => {
+        setAddEmploy(initialState);
+        ipcRenderer.send("add-employ", "close");
+    };
+
     return (
         <div className="card overflow-hidden" style={{ "width": "100%", "height": "100vh" }} >
-            <div className="card-header drag-header">
+            <div className="card-header">
                 <div className="row">
-                    <div className="col-10">
+                    <div className="col-11 drag-header">
                         <h5>Agregar funcionario</h5>
                     </div>
-                    <div className="col-2">
-                        <button type="button" className="btn-close" aria-label="Close"></button>
+                    <div className="col-1">
+                        <button type="button" onClick={close} className="float-end btn btn-close"></button>
                     </div>
                 </div>
             </div>
@@ -137,8 +138,9 @@ export const AddEmployer = ({ homeTable }) => {
                     <button
                         type="button"
                         className="btn btn-sm btn-secondary"
-                        data-bs-dismiss="modal">
-                        Close
+                        onClick={close}
+                    >
+                        Cancelar
                     </button>
                     <button
                         type="submit"
