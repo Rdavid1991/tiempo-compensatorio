@@ -1,7 +1,7 @@
 
 const { dialog, app, ipcMain, } = require('electron');
-const { addEmployWindow } = require('./app/addEmployWindow');
-const { mainWindow } = require('./app/mainWindow');
+const { addEmployWindow } = require('./frames/add_employ/addEmployWindow');
+const { mainWindow } = require('./frames/main/mainWindow');
 
 
 function createWindow() {
@@ -23,15 +23,14 @@ function createWindow() {
             case "close":
                 winAddEmploy.hide();
                 break;
+            case "refresh-table":
+                win.webContents.send("crate-employ", []);
+                winAddEmploy.hide();
+                break;
         
             default:
                 break;
         }
-    });
-
-    ipcMain.on("refresh-table", () => {
-        win.webContents.send("crate-employ", []);
-        winAddEmploy.hide();
     });
 }
 

@@ -10,7 +10,7 @@ exports.addEmployWindow = (parent) => {
         maxWidth      : 500,
         maxHeight     : 568,
         webPreferences: {
-            preload         : path.join(__dirname, "script.js"),
+            preload         : path.join(__dirname, "../../preload/preload.js"),
             contextIsolation: false,
         },
         parent: parent,
@@ -18,7 +18,7 @@ exports.addEmployWindow = (parent) => {
         show  : false,
         frame : false
     });    
-    window.loadURL("file:///" + path.join(__dirname, '/../build/index.html') + "#/add_employ");
+    window.loadURL("file:///" + path.join(__dirname, '/../../../build/index.html') + "#/add_employ");
 
     window.on("close", (e) => {
         e.preventDefault();

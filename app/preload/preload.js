@@ -99,7 +99,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     verifyTheme();
 
-    ipcRenderer.on("request", (event, array) => {
+    ipcRenderer.on("request", () => {
 
         let __data = [];
         let data;
@@ -125,7 +125,7 @@ document.addEventListener("DOMContentLoaded", () => {
         for (const element of importData) {
             if(compareKeyJson(element) && element.data && element.key){
                 if (element.key === "style"){
-                    localStorage.setItem(element.key, JSON.stringify(element.data).replaceAll('\"',''));
+                    localStorage.setItem(element.key, JSON.stringify(element.data).replaceAll('"',''));
                 }else{
                     localStorage.setItem(element.key, JSON.stringify(element.data));
                 }

@@ -15,7 +15,7 @@
     "web-vitals": "^2.1.2"
   },
   "homepage": "./",
-  "main": "main.js",
+  "main": "./app/index.js",
   "scripts": {
     "start-electron": "electron .",
     "build-windows": "electron-builder",
@@ -33,13 +33,13 @@
       "icon": "icon.*"
     },
     "files": [
-      "./main.js",
+      "./app/index.js",
       "*.map",
       "icon.*",
       "script.js"
     ],
     "extraMetadata": {
-      "main": "./main.js"
+      "main": "./app/index.js"
     }
   },
   "eslintConfig": {

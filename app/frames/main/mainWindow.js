@@ -15,13 +15,12 @@ exports.mainWindow = () => {
         height        : (height * 0.8),
         vibrancy      : 'ultra-dark',
         webPreferences: {
-            preload         : path.join(__dirname, "script.js"),
+            preload         : path.join(__dirname, "../../preload/preload.js"),
             contextIsolation: false,
-            //nodeIntegration : true,
         },
     });
 
-    window.loadFile(path.join(__dirname, '/../build/index.html'));
+    window.loadFile(path.join(__dirname, '/../../../build/index.html'));
     
     Menu.setApplicationMenu(Menu.buildFromTemplate(menuTemplate(window)));
 

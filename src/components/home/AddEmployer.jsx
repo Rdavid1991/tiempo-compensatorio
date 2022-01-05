@@ -34,7 +34,7 @@ export const AddEmployer = () => {
         e.preventDefault();
         if (compareDiffTime(addEmploy.start, addEmploy.end)) {
             await db().insert(addEmploy);
-            ipcRenderer.send("refresh-table", []);
+            ipcRenderer.send("add-employ", "refresh-table");
             setAddEmploy(initialState);
         } else {
             Swal.fire(
