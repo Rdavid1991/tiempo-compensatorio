@@ -41,7 +41,6 @@ export const EditEmploy = () => {
     };
 
     const close = () => {
-        setEditEmploy(initialState);
         ipcRenderer.send("edit-employ", ["close"]);
     };
 

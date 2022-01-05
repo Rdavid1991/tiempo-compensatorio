@@ -2,16 +2,18 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router';
 import { Link } from 'react-router-dom';
-import { AddTime } from './AddTime';
 import moment from 'moment';
 import 'moment/locale/es-us';
-import { dataTableSpanish } from '../../helper';
 import { DetailsTime } from './DetailsTime';
 import { UseTime } from './UseTime';
 import { EditTime } from './EditTime';
 import { ajaxEmploy } from './helper/ajaxEmploy';
 import db from '../../helper/db';
-const { $, bootstrap } = window;
+import { employTables } from './helper/employTables';
+import { ipcRendererEvent } from './helper/ipcRendererEvent';
+const { $, bootstrap, require } = window;
+
+const { ipcRenderer } = require("electron");
 
 const localDB = db();
 moment.locale("es");
@@ -25,45 +27,11 @@ export const EmployeeTable = () => {
     const [data, setData] = useState(JSON.parse(localStorage.getItem(employeeKey)));
 
     useEffect(() => {
-
-        usedTable.current = $("#used").DataTable({
-            "language"  : { ...dataTableSpanish },
-            "aaData"    : ajaxEmploy(employeeKey).used().data,
-            "columnDefs": [
-                {
-                    targets: [0],
-                    render : (item) => {
-                        const [index, data] = item.split("|");
-                        return `<div style="cursor:pointer" data-click="details" data-index="${index}">${data}</div>`;
-                    }
-                }
-            ]
-        });
-
-        notUsedTable.current = $("#notUsed").DataTable({
-            "language"  : { ...dataTableSpanish },
-            "aaData"    : ajaxEmploy(employeeKey).notUsed().data,
-            "columnDefs": [
-                {
-                    targets: [0],
-                    render : (item) => {
-                        const [index, data] = item.split("|");
-                        return `<div style="cursor:pointer" class="text-truncate" data-click="details" data-index="${index}">${data}</div>`;
-                    }
-                },
-                {
-                    targets: [6],
-                    render : (index) => {
-                        const html = `<button class="btn btn-sm btn-secondary" data-bs-toggle="modal" data-bs-target="#useTime" data-click="useTime" data-index="${index}"><i class="fas fa-cogs"></i></button>
-                        <button class="btn btn-sm btn-secondary" data-bs-toggle="modal" data-bs-target="#editEmployTime" data-click="editTime" data-index="${index}"><i class="far fa-edit"></i></button>
-                        <button class="btn btn-sm btn-secondary" data-click="delete" data-index="${index}"><i class="far fa-trash-alt"></i></button>`;
-                        return html;
-                    }
-                }
-            ]
-        });
-
+        usedTable.current = employTables(employeeKey).used;
+        notUsedTable.current = employTables(employeeKey).notUsed;
         $(".pagination").addClass("pagination-sm");
+        ipcRendererEvent(employeeKey).refreshNotUseTable(notUsedTable);
+        ipcRendererEvent(employeeKey).refreshUseTable(usedTable);
     }, []);
 
     const handleDelete = async () => {
@@ -107,11 +75,11 @@ export const EmployeeTable = () => {
 
         < div className="animate__animated animate__bounce animate__fadeIn" style={{ animationFillMode: "backwards" }}>
 
-            <AddTime
+            {/* <AddTime
                 employeeKey={employeeKey}
                 notUsedTable={notUsedTable}
                 refreshHistoryUsedTime={refreshHistoryUsedTime}
-            />
+            /> */}
 
             {
                 data.time.length > 0
@@ -155,8 +123,10 @@ export const EmployeeTable = () => {
 
             <button
                 className="btn btn-sm btn-success mx-3"
-                data-bs-toggle="modal"
-                data-bs-target="#addEmployTime"
+                onClick={() => {
+                    console.log(employeeKey);
+                    ipcRenderer.send("add-time",["open",employeeKey]);
+                }}
             >
                 <i className="fas fa-plus"></i>
                 Agregar hora

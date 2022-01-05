@@ -1,14 +1,14 @@
 const path = require('path');
 const { BrowserWindow } = require("electron");
 
-exports.editEmployWindow = (parent) => {
+exports.addEmployTime = (parent) => {
     const window = new BrowserWindow({
         width         : 500,
-        height        : 345,
+        height        : 400,
         minWidth      : 500,
-        minHeight     : 345,
+        minHeight     : 400,
         maxWidth      : 500,
-        maxHeight     : 345,
+        maxHeight     : 400,
         webPreferences: {
             preload         : path.join(__dirname, "../../preload/preload.js"),
             contextIsolation: false,
@@ -18,7 +18,6 @@ exports.editEmployWindow = (parent) => {
         show  : false,
         frame : false
     });
-    window.loadURL("file:///" + path.join(__dirname, "/../../../build/index.html") + "#/edit_employ/");
 
     window.on("close", (e) => {
         e.preventDefault();
