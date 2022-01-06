@@ -1,7 +1,7 @@
 const { BrowserWindow } = require('electron');
 const path = require('path');
 
-const timeFrame = {
+const employFrame = {
 
     baseUrl    : "file:///" + path.join(__dirname, "/../../../build/index.html"),
     browserConf: (parent) => {
@@ -30,40 +30,32 @@ const timeFrame = {
             window.show();
         });
     },
-    editEmployTime: (parent, id, employeeKey,) => {
+
+    addEmployWindow: (parent) => {
         let window = new BrowserWindow({
             width : 500,
-            height: 400,
-            ...timeFrame.browserConf(parent)
+            height: 568,
+            ...employFrame.browserConf(parent)
+
         });
 
-        timeFrame.windowEvent(window);
-        window.loadURL(timeFrame.baseUrl + "#/edit_time/" + employeeKey + "/" + id);
-        return window;
-    },
-    useEmployTime: (parent, id, employeeKey,) => {
-        let window = new BrowserWindow({
-            width : 500,
-            height: 320,
-            ...timeFrame.browserConf(parent)
-        });
+        employFrame.windowEvent(window);
 
-        timeFrame.windowEvent(window);
-        window.loadURL(timeFrame.baseUrl + "#/use_time/" + employeeKey + "/" + id);
+        window.loadURL(employFrame.baseUrl + "#/add_employ");
         return window;
     },
-    addEmployTime: (parent, id) => {
+    editEmployWindow: (parent, id) => {
         let window = new BrowserWindow({
             width : 500,
-            height: 400,
-            ...timeFrame.browserConf(parent)
+            height: 345,
+            ...employFrame.browserConf(parent)
         });
-    
-        timeFrame.windowEvent(window);
-    
-        window.loadURL(timeFrame.baseUrl + "#/add_time/" + id);
+        
+        employFrame.windowEvent(window);
+        
+        window.loadURL(employFrame.baseUrl + "#/edit_employ/" + id);
         return window;
     }
 };
 
-module.exports = timeFrame;
+module.exports = employFrame;
