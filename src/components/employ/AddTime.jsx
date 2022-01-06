@@ -5,15 +5,11 @@ import { compareDiffTime } from '../../helper';
 //import { ajaxEmploy } from './helper/ajaxEmploy';
 import { useParams } from 'react-router-dom';
 
-const { bootstrap } = window;
+const { ipcRenderer } = window.require("electron");
 
 export const AddTime = ( ) => {
 
-    const pamar = useParams();
-
-    const employeeKey ="nc8SMq";
-
-    console.log(pamar);
+    const {employeeKey} = useParams();
 
     const initialState = {
         day  : "",
@@ -59,9 +55,8 @@ export const AddTime = ( ) => {
                 });
                 localStorage.setItem(employeeKey, JSON.stringify(info));
             }
-
             setAddEmployTime(initialState);
-            bootstrap.Modal.getInstance(document.querySelector('#addEmployTime'), {}).hide();
+            //bootstrap.Modal.getInstance(document.querySelector('#addEmployTime'), {}).hide();
             Swal.fire({
                 position         : 'top-end',
                 icon             : 'success',
@@ -72,6 +67,7 @@ export const AddTime = ( ) => {
                 // notUsedTable.current.clear().rows.add(ajaxEmploy(employeeKey).notUsed().data).draw();
                 // notUsedTable.current.columns.adjust().draw();
                 // refreshHistoryUsedTime();
+                ipcRenderer.send("add-time", ["refresh-table"]);
             });
         } else {
             Swal.fire(

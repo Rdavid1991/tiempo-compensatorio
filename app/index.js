@@ -1,4 +1,3 @@
-const path = require('path');
 const { dialog, app, ipcMain, } = require('electron');
 const { addEmployWindow } = require('./frames/add_employ/addEmployWindow');
 const { addEmployTime } = require('./frames/add_time/addEmployTime');
@@ -7,31 +6,27 @@ const { mainWindow } = require('./frames/main/mainWindow');
 
 
 function createWindow() {
-
+    
+    let winAddEmploy, winEditEmploy, winAddEmployTime;
+    
     let win = mainWindow();
-    let winAddEmploy = addEmployWindow(win);
-    let winEditEmploy = editEmployWindow(win);
-    let winAddEmployTime = addEmployTime(win);
 
     ipcMain.on("load-backup-fail", () => {
         dialog.showMessageBox(win, { message: "no se pudo cargar la copia de seguridad" });
     });
 
     ipcMain.on("add-employ", (event, message) => {
-
         switch (message) {
             case "open":
-                winAddEmploy.webContents.send("verify-theme", []);
-                winAddEmploy.show();
+                winAddEmploy = addEmployWindow(win);
                 break;
             case "close":
-                winAddEmploy.hide();
+                winAddEmploy.close();
                 break;
             case "refresh-table":
                 win.webContents.send("refresh-table", []);
-                winAddEmploy.hide();
+                winAddEmploy.close();
                 break;
-        
             default:
                 break;
         }
@@ -43,40 +38,32 @@ function createWindow() {
 
         switch (command) {
             case "open":
-                winEditEmploy.webContents.send("verify-theme", []);
-                winEditEmploy.loadURL(winEditEmploy.webContents.getURL().replace(/(?<=edit_employ\/)(.*)/, id));
-                winEditEmploy.show();
+                winEditEmploy = editEmployWindow(win, id);
                 break;
             case "close":
-                winEditEmploy.hide();
+                winEditEmploy.close();
                 break;
             case "refresh-table":
                 win.webContents.send("refresh-table", []);
-                winEditEmploy.hide();
+                winEditEmploy.close();
                 break;
-        
             default:
                 break;
         }
     });
 
     ipcMain.on("add-time", (event, message) => {
-
         const [command, id] = message;
-
         switch (command) {
             case "open":
-                console.log("file:///" + path.join(__dirname, "/../../../build/index.html") + "#/add_time/" + id);
-                winAddEmployTime.loadURL("file:///" + path.join(__dirname, "/../build/index.html") + "#/add_time/" + id);
-                winAddEmployTime.webContents.send("verify-theme", []);
-                winAddEmployTime.show();
+                winAddEmployTime = addEmployTime(win, id);
                 break;
             case "close":
-                winEditEmploy.hide();
+                winAddEmployTime.close();
                 break;
             case "refresh-table":
-                win.webContents.send("refresh-table", []);
-                winEditEmploy.hide();
+                win.webContents.send("refresh-table-not-use", []);
+                winAddEmployTime.close();
                 break;
         
             default:

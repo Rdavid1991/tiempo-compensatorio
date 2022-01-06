@@ -5,7 +5,7 @@ const {ipcRenderer} = window.require("electron");
 export const ipcRendererEvent = (employeeKey) => {
     return {
         refreshNotUseTable: (table) => {
-            ipcRenderer.on("refresh-table", () => {
+            ipcRenderer.on("refresh-table-not-use", () => {
                 table.clear().rows.add(ajaxEmploy(employeeKey).notUsed().data).draw();
                 table.columns.adjust().draw();
             });

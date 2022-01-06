@@ -1,8 +1,8 @@
 const path = require('path');
 const { BrowserWindow } = require("electron");
 
-exports.addEmployTime = (parent) => {
-    const window = new BrowserWindow({
+exports.addEmployTime = (parent, id) => {
+    let window = new BrowserWindow({
         width         : 500,
         height        : 400,
         minWidth      : 500,
@@ -19,10 +19,14 @@ exports.addEmployTime = (parent) => {
         frame : false
     });
 
-    window.on("close", (e) => {
-        e.preventDefault();
-        window.hide();
+    window.on("close", () => {
+        window = null;
+    });
+    
+    window.on("ready-to-show",() => {
+        window.show();
     });
 
+    window.loadURL("file:///" + path.join(__dirname, "/../../../build/index.html") + "#/add_time/" + id);
     return window;
 };

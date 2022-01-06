@@ -7,7 +7,7 @@ export const employTables = (employeeKey) => {
 
     return {
         used: () => {
-            $("#used").DataTable({
+            return $("#used").DataTable({
                 "language"  : { ...dataTableSpanish },
                 "aaData"    : ajaxEmploy(employeeKey).used().data,
                 "columnDefs": [
@@ -21,9 +21,8 @@ export const employTables = (employeeKey) => {
                 ]
             });
         },
-        notUsed: () => {
-            
-            $("#notUsed").DataTable({
+        notUsed: () => { 
+            return $("#notUsed").DataTable({
                 "language"  : { ...dataTableSpanish },
                 "aaData"    : ajaxEmploy(employeeKey).notUsed().data,
                 "columnDefs": [

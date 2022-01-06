@@ -14,7 +14,7 @@ exports.mainWindow = () => {
         minHeight     : (height * 0.8),
         width         : (width * 0.8),
         height        : (height * 0.8),
-        vibrancy      : 'ultra-dark',
+        show          : false,
         webPreferences: {
             preload         : path.join(__dirname, "../../preload/preload.js"),
             contextIsolation: false,
@@ -25,8 +25,11 @@ exports.mainWindow = () => {
     //window.loadURL("file:///C:/Users/rcenteno/Desktop/Utilidad/Codigo/tiempo-compensatorio/build/index.html#/add_time/nc8SMq");
     
     Menu.setApplicationMenu(Menu.buildFromTemplate(menuTemplate(window)));
-
     mainEvents(window);
+
+    window.on("ready-to-show",() => {
+        window.show();
+    });
 
     return window;
 };

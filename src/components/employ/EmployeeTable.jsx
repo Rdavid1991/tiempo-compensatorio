@@ -27,11 +27,11 @@ export const EmployeeTable = () => {
     const [data, setData] = useState(JSON.parse(localStorage.getItem(employeeKey)));
 
     useEffect(() => {
-        usedTable.current = employTables(employeeKey).used;
-        notUsedTable.current = employTables(employeeKey).notUsed;
+        usedTable.current = employTables(employeeKey).used();
+        notUsedTable.current = employTables(employeeKey).notUsed();
         $(".pagination").addClass("pagination-sm");
-        ipcRendererEvent(employeeKey).refreshNotUseTable(notUsedTable);
-        ipcRendererEvent(employeeKey).refreshUseTable(usedTable);
+        ipcRendererEvent(employeeKey).refreshNotUseTable(notUsedTable.current);
+        ipcRendererEvent(employeeKey).refreshUseTable(usedTable.current);
     }, []);
 
     const handleDelete = async () => {
@@ -74,12 +74,6 @@ export const EmployeeTable = () => {
     return (
 
         < div className="animate__animated animate__bounce animate__fadeIn" style={{ animationFillMode: "backwards" }}>
-
-            {/* <AddTime
-                employeeKey={employeeKey}
-                notUsedTable={notUsedTable}
-                refreshHistoryUsedTime={refreshHistoryUsedTime}
-            /> */}
 
             {
                 data.time.length > 0
