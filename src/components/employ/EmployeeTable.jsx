@@ -77,17 +77,10 @@ export const EmployeeTable = () => {
 
         < div className="animate__animated animate__bounce animate__fadeIn" style={{ animationFillMode: "backwards" }}>
 
-            {
-                data.time.length > 0
-                    ?
-                    <>
-                        <DetailsTime
-                            data={data.time[indexData]}
-                        />
-                    </>
-                    : ""
-
-            }
+            <DetailsTime
+                employeeKey={employeeKey}
+                id={indexData}
+            />
 
             <h2>Funcionario: {data.name}</h2>
             <Link
@@ -101,7 +94,7 @@ export const EmployeeTable = () => {
             <button
                 className="btn btn-sm btn-success mx-3"
                 onClick={() => {
-                    ipcRenderer.send("add-time",["open",employeeKey]);
+                    ipcRenderer.send("add-time", ["open", employeeKey]);
                 }}
             >
                 <i className="fas fa-plus"></i>

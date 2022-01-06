@@ -1,12 +1,24 @@
 import moment from 'moment';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { timeToHumanize } from '../../helper';
+import db from '../../helper/db';
 
-export const DetailsTime = ({ data }) => {
+const initialState = {
+    usedHourHistory: [],
+    day            : ""
+};
+
+export const DetailsTime = ({ employeeKey, id }) => {
+
+    const [data, setUsedHistory] = useState(initialState);
 
     useEffect(() => {
-
-    }, [data]);
+        const employ = db().getOneEmploy(employeeKey);
+        setUsedHistory({
+            usedHourHistory: employ.time[id].usedHourHistory,
+            day            : employ.time[id].day
+        });
+    }, []);
 
     return (
         <div className="modal fade" id="details" data-bs-backdrop="static" data-bs-keyboard="false">
