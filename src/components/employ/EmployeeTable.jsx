@@ -60,15 +60,16 @@ export const EmployeeTable = () => {
                 setIndexData(target.dataset.index);
                 break;
             case "editTime":
-                setIndexData(target.dataset.index);
+                //setIndexData(target.dataset.index);
+                ipcRenderer.send("edit-time", {
+                    command: "open",
+                    id     : target.dataset.index,
+                    employeeKey,
+                });
                 break;
             default:
                 break;
         }
-    };
-
-    const refreshHistoryUsedTime = () => {
-        setData(JSON.parse(localStorage.getItem(employeeKey)));
     };
 
     return (
@@ -84,9 +85,9 @@ export const EmployeeTable = () => {
                             indexData={indexData}
                             employeeKey={employeeKey}
                             notUsedTable={notUsedTable}
-                            refreshHistoryUsedTime={refreshHistoryUsedTime}
+                            refreshHistoryUsedTime={()=>{}}
                         />
-                        <EditTime
+                        {/* <EditTime
                             employeeKey={employeeKey}
                             editState={{
                                 day  : data.time[indexData].day,
@@ -96,8 +97,8 @@ export const EmployeeTable = () => {
                             }}
                             indexData={indexData}
                             notUsedTable={notUsedTable}
-                            refreshHistoryUsedTime={refreshHistoryUsedTime}
-                        />
+                            refreshHistoryUsedTime={()=>{}}
+                        /> */}
                         <DetailsTime
                             data={data.time[indexData]}
                         />
@@ -118,7 +119,6 @@ export const EmployeeTable = () => {
             <button
                 className="btn btn-sm btn-success mx-3"
                 onClick={() => {
-                    console.log(employeeKey);
                     ipcRenderer.send("add-time",["open",employeeKey]);
                 }}
             >

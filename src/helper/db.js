@@ -2,7 +2,6 @@
 import moment from "moment";
 import Swal from "sweetalert2";
 import { compareDiffTime, compareDurationTime, randomId, substractTime } from ".";
-const { bootstrap } = window;
 
 /* eslint-disable no-prototype-builtins */
 
@@ -76,6 +75,7 @@ const db = () => {
     };
 
     const update = async (indexData, employeeKey, editEmployTime) => {
+
         if (compareDiffTime(editEmployTime.start, editEmployTime.end)) {
 
             const duration = moment.duration(
@@ -86,6 +86,7 @@ const db = () => {
 
             // eslint-disable-next-line no-prototype-builtins
             if (localStorage.hasOwnProperty(employeeKey)) {
+               
                 const info = JSON.parse(localStorage.getItem(employeeKey));
 
                 const [totalTime, leftTime] = Array(2).fill(`${duration.hours()}${duration.minutes() > 0 ? `:${duration.minutes()}` : ":00"}`);
@@ -102,7 +103,6 @@ const db = () => {
                     };
                     localStorage.setItem(employeeKey, JSON.stringify(info));
 
-                    bootstrap.Modal.getInstance(document.querySelector('#editEmployTime'), {}).hide();
                     await Swal.fire({
                         position         : 'top-end',
                         icon             : 'success',
@@ -120,6 +120,12 @@ const db = () => {
                         'error'
                     );
                 }
+            } else {
+                Swal.fire(
+                    'Lo siento',
+                    `El elemento a editar no existe. <br>`,
+                    'error'
+                );
             }
 
         } else {

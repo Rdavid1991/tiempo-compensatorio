@@ -7,6 +7,7 @@ import "./App.css";
 import { AddEmployer } from "./components/home/AddEmployer";
 import { EditEmploy } from "./components/home/EditEmploy";
 import { AddTime } from "./components/employ/AddTime";
+import { EditTime } from "./components/employ/EditTime";
 
 function App() {
   const { pathname } = useLocation();
@@ -28,6 +29,7 @@ function App() {
 
           {/* modales employ */}
           <Route path="/add_time/:employeeKey" element={<AddTime/>}/>
+          <Route path="/edit_time/:employeeKey/:id" element={<EditTime/>}/>
 
 
         </Routes>

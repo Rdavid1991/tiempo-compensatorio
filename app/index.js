@@ -3,12 +3,13 @@ const { addEmployWindow } = require('./frames/add_employ/addEmployWindow');
 const { addEmployTime } = require('./frames/add_time/addEmployTime');
 const { editEmployWindow } = require('./frames/edit_employ/editEmployWindow');
 const { mainWindow } = require('./frames/main/mainWindow');
+const { editEmployTime } = require('./frames/time');
 
 
 function createWindow() {
-    
-    let winAddEmploy, winEditEmploy, winAddEmployTime;
-    
+
+    let winAddEmploy, winEditEmploy, winAddEmployTime, winEditEmployTime;
+
     let win = mainWindow();
 
     ipcMain.on("load-backup-fail", () => {
@@ -65,7 +66,27 @@ function createWindow() {
                 win.webContents.send("refresh-table-not-use", []);
                 winAddEmployTime.close();
                 break;
-        
+
+            default:
+                break;
+        }
+    });
+    
+    ipcMain.on("edit-time", (event, message) => {
+        const { command, employeeKey, id } = message;
+        switch (command) {
+            case "open":
+                winEditEmployTime = editEmployTime(win, id, employeeKey);
+                break;
+            case "close":
+                winEditEmployTime.close();
+                break;
+            case "refresh-table":
+                console.log("se ejecuto");
+                win.webContents.send("refresh-table-not-use", []);
+                winEditEmployTime.close();
+                break;
+
             default:
                 break;
         }
