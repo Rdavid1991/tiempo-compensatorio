@@ -8,13 +8,11 @@ import { AddEmployer } from "./components/home/AddEmployer";
 import { EditEmploy } from "./components/home/EditEmploy";
 import { AddTime } from "./components/employ/AddTime";
 import { EditTime } from "./components/employ/EditTime";
+import { UseTime } from "./components/employ/UseTime";
 
 function App() {
   const { pathname } = useLocation();
 
-  const rutas = useLocation();
-
-  console.log(rutas);
   return (
     <div className={pathname === "/" || pathname.match(/employed/g) ? "container" : ""}>
       <div className={pathname === "/" || pathname.match(/employed/g) ? "mt-5" : ""}>
@@ -30,6 +28,7 @@ function App() {
           {/* modales employ */}
           <Route path="/add_time/:employeeKey" element={<AddTime/>}/>
           <Route path="/edit_time/:employeeKey/:id" element={<EditTime/>}/>
+          <Route path="/use_time/:employeeKey/:id" element={<UseTime/>}/>
 
 
         </Routes>

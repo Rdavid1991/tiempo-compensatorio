@@ -24,7 +24,6 @@ exports.menuTemplate = (win) => {
                         properties: ["openFile"],
                         filters   : [{ name: 'TIEMPO COMPENSATORIO', extensions: ['json'] }]
                     }).then((file) => {
-                        console.log(file);
                         if (!file.canceled) {
                             fs.readFile(file.filePaths[0], 'utf8', (err, data) => {
                                 if (err) {

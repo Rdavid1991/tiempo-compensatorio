@@ -3,12 +3,12 @@ const { addEmployWindow } = require('./frames/add_employ/addEmployWindow');
 const { addEmployTime } = require('./frames/add_time/addEmployTime');
 const { editEmployWindow } = require('./frames/edit_employ/editEmployWindow');
 const { mainWindow } = require('./frames/main/mainWindow');
-const { editEmployTime } = require('./frames/time');
+const { editEmployTime, useEmployTime } = require('./frames/time');
 
 
 function createWindow() {
 
-    let winAddEmploy, winEditEmploy, winAddEmployTime, winEditEmployTime;
+    let childWindow;
 
     let win = mainWindow();
 
@@ -19,14 +19,14 @@ function createWindow() {
     ipcMain.on("add-employ", (event, message) => {
         switch (message) {
             case "open":
-                winAddEmploy = addEmployWindow(win);
+                childWindow = addEmployWindow(win);
                 break;
             case "close":
-                winAddEmploy.close();
+                childWindow.close();
                 break;
             case "refresh-table":
                 win.webContents.send("refresh-table", []);
-                winAddEmploy.close();
+                childWindow.close();
                 break;
             default:
                 break;
@@ -39,14 +39,14 @@ function createWindow() {
 
         switch (command) {
             case "open":
-                winEditEmploy = editEmployWindow(win, id);
+                childWindow = editEmployWindow(win, id);
                 break;
             case "close":
-                winEditEmploy.close();
+                childWindow.close();
                 break;
             case "refresh-table":
                 win.webContents.send("refresh-table", []);
-                winEditEmploy.close();
+                childWindow.close();
                 break;
             default:
                 break;
@@ -57,14 +57,14 @@ function createWindow() {
         const [command, id] = message;
         switch (command) {
             case "open":
-                winAddEmployTime = addEmployTime(win, id);
+                childWindow = addEmployTime(win, id);
                 break;
             case "close":
-                winAddEmployTime.close();
+                childWindow.close();
                 break;
             case "refresh-table":
                 win.webContents.send("refresh-table-not-use", []);
-                winAddEmployTime.close();
+                childWindow.close();
                 break;
 
             default:
@@ -76,15 +76,34 @@ function createWindow() {
         const { command, employeeKey, id } = message;
         switch (command) {
             case "open":
-                winEditEmployTime = editEmployTime(win, id, employeeKey);
+                childWindow = editEmployTime(win, id, employeeKey);
                 break;
             case "close":
-                winEditEmployTime.close();
+                childWindow.close();
                 break;
             case "refresh-table":
-                console.log("se ejecuto");
                 win.webContents.send("refresh-table-not-use", []);
-                winEditEmployTime.close();
+                childWindow.close();
+                break;
+
+            default:
+                break;
+        }
+    });
+
+    ipcMain.on("use-time", (event, message) => {
+        const { command, employeeKey, id } = message;
+        switch (command) {
+            case "open":
+                childWindow = useEmployTime(win, id, employeeKey);
+                break;
+            case "close":
+                childWindow.close();
+                break;
+            case "refresh-table":
+                win.webContents.send("refresh-table-not-use", []);
+                win.webContents.send("refresh-table-use", []);
+                childWindow.close();
                 break;
 
             default:

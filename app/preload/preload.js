@@ -3,11 +3,6 @@
 /* eslint-disable no-case-declarations */
 const { ipcRenderer } = require("electron");
 
-
-window.refreshHomeTable = () => {
-    console.log(window.homeTable);
-};
-
 window.setSaveData = (data) => {
   ipcRenderer.send("save-data",data);
 };
@@ -129,9 +124,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 }else{
                     localStorage.setItem(element.key, JSON.stringify(element.data));
                 }
-                console.log("se ejecuta el cierto");
             }else{
-                console.log("se ejecuta el falseo");
                 dataLoaded = false;
                 localStorage.clear();
                 break;

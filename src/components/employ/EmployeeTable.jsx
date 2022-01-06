@@ -5,8 +5,6 @@ import { Link } from 'react-router-dom';
 import moment from 'moment';
 import 'moment/locale/es-us';
 import { DetailsTime } from './DetailsTime';
-import { UseTime } from './UseTime';
-import { EditTime } from './EditTime';
 import { ajaxEmploy } from './helper/ajaxEmploy';
 import db from '../../helper/db';
 import { employTables } from './helper/employTables';
@@ -57,10 +55,13 @@ export const EmployeeTable = () => {
                 handleDelete();
                 break;
             case "useTime":
-                setIndexData(target.dataset.index);
+                ipcRenderer.send("use-time", {
+                    command: "open",
+                    id     : target.dataset.index,
+                    employeeKey,
+                });
                 break;
             case "editTime":
-                //setIndexData(target.dataset.index);
                 ipcRenderer.send("edit-time", {
                     command: "open",
                     id     : target.dataset.index,
@@ -80,25 +81,6 @@ export const EmployeeTable = () => {
                 data.time.length > 0
                     ?
                     <>
-                        <UseTime
-                            dateFrom={data.time[indexData].day}
-                            indexData={indexData}
-                            employeeKey={employeeKey}
-                            notUsedTable={notUsedTable}
-                            refreshHistoryUsedTime={()=>{}}
-                        />
-                        {/* <EditTime
-                            employeeKey={employeeKey}
-                            editState={{
-                                day  : data.time[indexData].day,
-                                start: data.time[indexData].start,
-                                end  : data.time[indexData].end,
-                                used : false
-                            }}
-                            indexData={indexData}
-                            notUsedTable={notUsedTable}
-                            refreshHistoryUsedTime={()=>{}}
-                        /> */}
                         <DetailsTime
                             data={data.time[indexData]}
                         />

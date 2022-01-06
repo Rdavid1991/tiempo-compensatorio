@@ -22,7 +22,6 @@ exports.mainWindow = () => {
     });
 
     window.loadFile(path.join(__dirname, '/../../../build/index.html'));
-    //window.loadURL("file:///C:/Users/rcenteno/Desktop/Utilidad/Codigo/tiempo-compensatorio/build/index.html#/add_time/nc8SMq");
     
     Menu.setApplicationMenu(Menu.buildFromTemplate(menuTemplate(window)));
     mainEvents(window);

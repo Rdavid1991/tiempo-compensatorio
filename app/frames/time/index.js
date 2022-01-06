@@ -41,19 +41,19 @@ const timeFrame = {
         return window;
     },
 
-    editEmployWindow: (parent, id) => {
+    useEmployTime: (parent, id, employeeKey,) => {
         let window = new BrowserWindow({
             width    : 500,
-            height   : 345,
+            height   : 320,
             resizable: false,
             ...timeFrame.browserConf(parent)
         });
 
         timeFrame.windowEvent(window);
-
-        window.loadURL(timeFrame.baseUrl + "#/edit_employ/" + id);
+        window.loadURL(timeFrame.baseUrl + "#/use_time/" + employeeKey + "/" + id);
         return window;
     }
+
 };
 
 module.exports = timeFrame;

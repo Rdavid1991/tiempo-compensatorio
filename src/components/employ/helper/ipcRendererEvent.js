@@ -11,7 +11,7 @@ export const ipcRendererEvent = (employeeKey) => {
             });
         },
         refreshUseTable: (table) => {
-            ipcRenderer.on("refresh-table", () => {
+            ipcRenderer.on("refresh-table-use", () => {
                 table.clear().rows.add(ajaxEmploy(employeeKey).used().data).draw();
                 table.columns.adjust().draw();
             });
