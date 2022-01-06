@@ -1,9 +1,8 @@
 const { dialog, app, ipcMain, } = require('electron');
 const { addEmployWindow } = require('./frames/add_employ/addEmployWindow');
-const { addEmployTime } = require('./frames/add_time/addEmployTime');
 const { editEmployWindow } = require('./frames/edit_employ/editEmployWindow');
 const { mainWindow } = require('./frames/main/mainWindow');
-const { editEmployTime, useEmployTime } = require('./frames/time');
+const { editEmployTime, useEmployTime, addEmployTime } = require('./frames/time');
 
 
 function createWindow() {
