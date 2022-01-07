@@ -17,7 +17,7 @@
   "homepage": "./",
   "main": "./app/index.js",
   "scripts": {
-    "start-electron": "electron .",
+    "start-electron": "electron --trace-warnings .",
     "build-windows": "electron-builder",
     "start": "react-scripts start",
     "build": "react-scripts build",

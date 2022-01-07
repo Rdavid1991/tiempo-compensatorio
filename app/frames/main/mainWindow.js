@@ -18,7 +18,8 @@ exports.mainWindow = () => {
         webPreferences: {
             preload         : path.join(__dirname, "../../preload/preload.js"),
             contextIsolation: false,
-            webgl           : false
+            webgl           : false,
+            webviewTag      : true
         },
     });
 
