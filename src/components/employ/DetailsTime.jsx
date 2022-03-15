@@ -18,7 +18,7 @@ export const DetailsTime = ({ employeeKey, id }) => {
             usedHourHistory: employ.time[id].usedHourHistory,
             day            : employ.time[id].day
         });
-    }, []);
+    }, [id,employeeKey]);
 
     return (
         <div className="modal fade" id="details" data-bs-backdrop="static" data-bs-keyboard="false">

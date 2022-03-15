@@ -90,11 +90,11 @@ export const AddEmployer = () => {
                             name="department"
                             required
                         >
-                            <option value={undefined}>Selecciona un departamento</option>
-                            <option value="Administración">Administración</option>
+                            <option value="DISPROS">DISPROS</option>
+                            {/* <option value="Administración">Administración</option>
                             <option value="Desarrollo">Desarrollo</option>
                             <option value="Infraestructura">Infraestructura</option>
-                            <option value="Soporte">Soporte</option>
+                            <option value="Soporte">Soporte</option> */}
                         </select>
                     </div>
                     <div className="mb-3">
