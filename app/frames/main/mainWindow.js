@@ -1,8 +1,8 @@
 
-const {menuTemplate} = require('./menuTemplate');
-const path = require('path');
+const {menuTemplate} = require("./menuTemplate");
+const path = require("path");
 const { BrowserWindow, Menu, screen, ipcMain, dialog } = require("electron");
-const fs = require('fs');
+const fs = require("fs");
 
 exports.mainWindow = () => {
 
@@ -22,7 +22,7 @@ exports.mainWindow = () => {
         },
     });
 
-    window.loadFile(path.join(__dirname, '/../../../build/index.html'));
+    window.loadURL("http://localhost:3000");
     
     Menu.setApplicationMenu(Menu.buildFromTemplate(menuTemplate(window)));
     mainEvents(window);
@@ -37,7 +37,7 @@ exports.mainWindow = () => {
 const mainEvents = (win) => {
     ipcMain.on("export", (event, data) => {
     
-        dialog.showSaveDialog(win, { filters: [{ name: 'TIEMPO COMPENSATORIO', extensions: ['json'] }] }).then((fileName) => {
+        dialog.showSaveDialog(win, { filters: [{ name: "TIEMPO COMPENSATORIO", extensions: ["json"] }] }).then((fileName) => {
     
             if (!fileName.canceled) {
                 fs.writeFile(fileName.filePath, data, function (err) {

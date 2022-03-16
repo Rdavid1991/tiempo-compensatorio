@@ -1,8 +1,13 @@
-const { dialog, app, ipcMain, } = require('electron');
-const { addEmployWindow, editEmployWindow } = require('./frames/employ');
-const { mainWindow } = require('./frames/main/mainWindow');
-const { editEmployTime, useEmployTime, addEmployTime } = require('./frames/time');
+const { dialog, app, ipcMain, } = require("electron");
+const { addEmployWindow, editEmployWindow } = require("./frames/employ");
+const { mainWindow } = require("./frames/main/mainWindow");
+const { editEmployTime, useEmployTime, addEmployTime } = require("./frames/time");
 
+try {
+	require("electron-reloader")(module);
+} catch(e) {
+    console.log(e);
+}
 
 function createWindow() {
 

@@ -19,12 +19,13 @@ module.exports = {
         "react"
     ],
     "rules": {
-
         "react/prop-types": 0,
         "no-debugger"     : 0,
-        "jsx-quotes"      : ["error", "prefer-double"],
-        'semi'            : ['error', 'always'],
-        'key-spacing'     : ['error', { 'align': 'colon' }]
+        "no-unused-vars"  : "warn",
+        "jsx-quotes"      : ["warn", "prefer-double"],
+        "semi"            : ["warn", "always"],
+        "key-spacing"     : ["warn", { "align": "colon" }],
+        "quotes"          : ["warn", "double"]
     }
 };
 

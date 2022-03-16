@@ -80,7 +80,7 @@ ipcRenderer.on("tema", (event, theme) => {
             break;
     }
 });
-window.require = require;
+
 
 const verifyTheme = () => {
     if (localStorage.hasOwnProperty("style")) {
@@ -91,6 +91,8 @@ const verifyTheme = () => {
 };
 
 document.addEventListener("DOMContentLoaded", () => {
+    
+    window.require = require;
 
     verifyTheme();
 
@@ -120,7 +122,7 @@ document.addEventListener("DOMContentLoaded", () => {
         for (const element of importData) {
             if(compareKeyJson(element) && element.data && element.key){
                 if (element.key === "style"){
-                    localStorage.setItem(element.key, JSON.stringify(element.data).replaceAll('"',''));
+                    localStorage.setItem(element.key, JSON.stringify(element.data).replaceAll("\"",""));
                 }else{
                     localStorage.setItem(element.key, JSON.stringify(element.data));
                 }

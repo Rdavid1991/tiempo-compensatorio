@@ -1,5 +1,5 @@
-import moment from 'moment';
-import { timeToHumanize } from '../../../helper';
+import moment from "moment";
+import { timeToHumanize } from "../../../helper";
 
 export const ajaxEmploy = (employeeKey) => {
 
@@ -7,7 +7,7 @@ export const ajaxEmploy = (employeeKey) => {
 
     const sourseData = (state) => {
 
-        let sourse = { data: [] }; 
+        let source = { data: [] }; 
         let totalInMilliseconds, usedInMilliseconds, leftOverInMilliseconds;
         for (let i = 0; i < __info.time.length; i++) {
 
@@ -17,8 +17,8 @@ export const ajaxEmploy = (employeeKey) => {
                 usedInMilliseconds = moment.duration(__info.time[i].hourUsed, "hours").asMilliseconds();
                 leftOverInMilliseconds = moment.duration(__info.time[i].hourLeft, "hours").asMilliseconds();
 
-                sourse.data.push([
-                    `${i}|${moment(__info.time[i].day).format("dddd LL")}`,
+                source.data.push([
+                    `${i}|${moment(__info.time[i].day).format("dddd LL")}|${moment(__info.time[i].day).format("YYYYMMDD")}`,
                     moment(__info.time[i].start, "hh:mm").format("LT"),
                     moment(__info.time[i].end, "hh:mm").format("LT"),
                     timeToHumanize(totalInMilliseconds),
@@ -28,7 +28,7 @@ export const ajaxEmploy = (employeeKey) => {
                 ]);
             }
         }
-        return sourse;
+        return source;
     };
 
     const notUsed = () => {

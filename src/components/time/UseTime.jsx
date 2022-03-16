@@ -1,10 +1,10 @@
-import moment from 'moment';
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import db from '../../helper/db';
-import { handlerFunctions } from './helper/handlerFunctions';
+import moment from "moment";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import db from "../../helper/db";
+import { handlerFunctions } from "./function/handlerFunctions";
 
-const { ipcRenderer } = window.require('electron');
+const { ipcRenderer } = window.require("electron");
 const initialState = {
     hourToUse: "",
     dateOfUse: ""

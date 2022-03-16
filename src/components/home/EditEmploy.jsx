@@ -1,7 +1,7 @@
 
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import db from '../../helper/db';
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import db from "../../helper/db";
 
 const { ipcRenderer } = window.require("electron");
 

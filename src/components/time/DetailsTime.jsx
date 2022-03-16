@@ -1,7 +1,7 @@
-import moment from 'moment';
-import React, { useEffect, useState } from 'react';
-import { timeToHumanize } from '../../helper';
-import db from '../../helper/db';
+import moment from "moment";
+import React, { useEffect, useState } from "react";
+import { timeToHumanize } from "../../helper";
+import db from "../../helper/db";
 
 const initialState = {
     usedHourHistory: [],
