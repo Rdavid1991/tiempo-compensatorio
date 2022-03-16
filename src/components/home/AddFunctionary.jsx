@@ -6,7 +6,7 @@ import db from "../../helper/db";
 import { useForm } from "../../hooks/useForm";
 import { RefreshFunctionaryTable } from "./functions/ActionFunctionaryTable";
 
-export const AddFunctionary = ({functionaryTable}) => {
+export const AddFunctionary = ({ functionaryTable }) => {
 
     const initialState = {
         name      : "",
@@ -20,7 +20,7 @@ export const AddFunctionary = ({functionaryTable}) => {
         used      : false
     };
 
-    const [values, handleInputChange, reset] = useForm(initialState);
+    const [values, setValues, handleInputChange, reset] = useForm(initialState);
 
     const handleSaveInfo = async (e) => {
         e.preventDefault();

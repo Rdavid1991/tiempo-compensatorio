@@ -7,7 +7,7 @@ export const ajaxEmploy = (employeeKey) => {
 
     const sourseData = (state) => {
 
-        let source = { data: [] }; 
+        let source = { data: [] };
         let totalInMilliseconds, usedInMilliseconds, leftOverInMilliseconds;
         for (let i = 0; i < __info.time.length; i++) {
 
@@ -17,10 +17,18 @@ export const ajaxEmploy = (employeeKey) => {
                 usedInMilliseconds = moment.duration(__info.time[i].hourUsed, "hours").asMilliseconds();
                 leftOverInMilliseconds = moment.duration(__info.time[i].hourLeft, "hours").asMilliseconds();
 
+                console.log(totalInMilliseconds);
+
                 source.data.push([
                     `${i}|${moment(__info.time[i].day).format("dddd LL")}|${moment(__info.time[i].day).format("YYYYMMDD")}`,
-                    moment(__info.time[i].start, "hh:mm").format("LT"),
-                    moment(__info.time[i].end, "hh:mm").format("LT"),
+                    {
+                        humanize: moment(__info.time[i].start, "hh:mm").format("LT"),
+                        brute   : moment.duration(__info.time[i].start).asSeconds()
+                    },
+                    {
+                        humanize: moment(__info.time[i].end, "hh:mm").format("LT"),
+                        brute   : moment.duration(__info.time[i].end).asSeconds()
+                    },
                     timeToHumanize(totalInMilliseconds),
                     timeToHumanize(usedInMilliseconds),
                     timeToHumanize(leftOverInMilliseconds),

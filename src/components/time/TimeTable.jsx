@@ -11,7 +11,9 @@ import db from "../../helper/db";
 import TimeTableUsed from "./TimeTableUsed";
 import TimeTableNotUsed from "./TimeTableNotUsed";
 import TimeHeader from "./TimeHeader";
-import { RenderTimeTableNotUsed, RenderTimeTableUsed } from "./function/ActionTimeTable";
+import { RefreshNotUsedTable, RenderTimeTableNotUsed, RenderTimeTableUsed } from "./function/ActionTimeTable";
+import TimeEditTime from "./TimeEditTime";
+import { showModal } from "src/helper";
 // import { ipcRendererEvent } from "./helper/ipcRendererEvent";
 //const { $, bootstrap, require } = window;
 
@@ -22,7 +24,6 @@ moment.locale("es");
 export const TimeTable = () => {
 
     const notUsedTable = useRef();
-    const usedTable = useRef();
     const { employeeKey } = useParams();
 
     const [timeTable, setTimeTable] = useState({
@@ -41,22 +42,19 @@ export const TimeTable = () => {
         $(".pagination").addClass("pagination-sm");
     }, []);
 
-    const handleDelete = async () => {
-        const isDeleted = await localDB.drop(indexData, employeeKey);
+    const handleDelete = async (target, index, key) => {
+        const isDeleted = await localDB.drop(target, index, key);
         if (isDeleted) {
-            notUsedTable.current.clear().rows.add(ajaxEmploy(employeeKey).notUsed().data).draw();
-            notUsedTable.current.columns.adjust().draw();
+            RefreshNotUsedTable(key, timeTable.notUsed);
         }
     };
 
     // eslint-disable-next-line no-extra-boolean-cast
-    if (Boolean(timeTable.notUsed.table)) {
-        timeTable.notUsed.order.listener("#day", 0, (e) => {
-            console.log("funciona", e);
-            
-        });
-    }
 
+    /**
+     * 
+     * @param {React.ChangeEvent<HTMLInputElement>} e 
+     */
     const handleActionTable = (e) => {
 
         const { target } = e;
@@ -69,7 +67,7 @@ export const TimeTable = () => {
                 break;
             case "delete":
                 setIndexData(target.dataset.index);
-                handleDelete();
+                handleDelete(target,indexData, employeeKey);  
                 break;
             case "useTime":
                 // ipcRenderer.send("use-time", {
@@ -79,11 +77,8 @@ export const TimeTable = () => {
                 // });
                 break;
             case "editTime":
-                // ipcRenderer.send("edit-time", {
-                //     command: "open",
-                //     id     : target.dataset.index,
-                //     employeeKey,
-                // });
+                setIndexData(target.dataset.index);
+                showModal("#timeEditModal");
                 break;
             default:
                 break;
@@ -94,6 +89,10 @@ export const TimeTable = () => {
 
         < div className="animate__animated animate__bounce animate__fadeIn" style={{ animationFillMode: "backwards" }}>
 
+            <TimeEditTime
+                employeeKey={employeeKey}
+                id={indexData}
+            />
             <TimeHeader name={data.name} timeTable={timeTable} />
 
             <div className="mt-3">

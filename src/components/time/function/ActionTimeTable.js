@@ -7,16 +7,28 @@ import { dataTableSpanish } from "src/helper";
 
 const OpenDetails = ({ index, data, dateOrder }) => {
     return (
-        <div style={{ cursor: "pointer" }} data-click="details" data-index={index}>
-            <span className="d-none">{dateOrder}</span>
-            {data}
-        </div>
+        <React.Fragment>
+            <div style={{ cursor: "pointer" }} data-click="details" data-index={index}>
+                <span className="d-none">{dateOrder}</span>
+                {data}
+            </div>
+        </React.Fragment>
     );
 };
 
+
+const ColumnsCustomOrder = ({ humanize, brute }) => {
+    return (
+        <React.Fragment>
+            <span className="d-none">{brute}</span>{humanize}
+        </React.Fragment>
+    );
+};
+
+
 const ActionTableButton = ({ index }) => {
     return (
-        <>
+        <React.Fragment>
             <button className="btn btn-sm btn-secondary" data-click="useTime" data-index={index}>
                 <i className="fas fa-cogs"></i>
             </button>
@@ -26,7 +38,7 @@ const ActionTableButton = ({ index }) => {
             <button className="btn btn-sm btn-secondary" data-click="delete" data-index={index}>
                 <i className="far fa-trash-alt"></i>
             </button>
-        </>
+        </React.Fragment>
     );
 
 };
@@ -76,6 +88,33 @@ export const RenderTimeTableNotUsed = (functionaryKey) => {
                 }
             },
             {
+                targets: [1],
+                render : (item, t, g, h,) => {
+                    const { humanize, brute } = item;
+
+                    return renderToString(
+                        <ColumnsCustomOrder
+                            humanize={humanize}
+                            brute={brute}
+                        />
+                    );
+                }
+            },
+            {
+                targets: [2],
+                render : (item, t, g, h,) => {
+                    const { humanize, brute } = item;
+
+                    return renderToString(
+                        <ColumnsCustomOrder
+                            humanize={humanize}
+                            brute={brute}
+                        />
+                    );
+                }
+            },
+       
+            {
                 targets: [6],
                 render : (index) => {
                     return renderToString(
@@ -90,9 +129,12 @@ export const RenderTimeTableNotUsed = (functionaryKey) => {
 };
 
 
-
+/**
+ * 
+ * @param {String} employeeKey 
+ * @param {Object} table 
+ */
 export const RefreshNotUsedTable = (employeeKey, table) => {
-    console.log({ employeeKey, table });
     table.clear().rows.add(ajaxEmploy(employeeKey).notUsed().data).draw();
     table.columns.adjust().draw();
 };

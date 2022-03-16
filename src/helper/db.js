@@ -64,9 +64,9 @@ const db = () => {
         }));
 
         await Swal.fire({
-            position         : 'top-end',
-            icon             : 'success',
-            title            : 'Funcionario guardado',
+            position         : "top-end",
+            icon             : "success",
+            title            : "Funcionario guardado",
             showConfirmButton: false,
             timer            : 1000
         });
@@ -86,7 +86,7 @@ const db = () => {
 
             // eslint-disable-next-line no-prototype-builtins
             if (localStorage.hasOwnProperty(employeeKey)) {
-               
+
                 const info = JSON.parse(localStorage.getItem(employeeKey));
 
                 const [totalTime, leftTime] = Array(2).fill(`${duration.hours()}${duration.minutes() > 0 ? `:${duration.minutes()}` : ":00"}`);
@@ -104,9 +104,9 @@ const db = () => {
                     localStorage.setItem(employeeKey, JSON.stringify(info));
 
                     await Swal.fire({
-                        position         : 'top-end',
-                        icon             : 'success',
-                        title            : 'Horas actualizadas',
+                        position         : "top-end",
+                        icon             : "success",
+                        title            : "Horas actualizadas",
                         showConfirmButton: false,
                         timer            : 1000
                     });
@@ -115,25 +115,25 @@ const db = () => {
 
                 } else {
                     Swal.fire(
-                        'Lo siento',
-                        `Las horas restantes son menor al tiempo utilizado. <br>`,
-                        'error'
+                        "Lo siento",
+                        "Las horas restantes son menor al tiempo utilizado. <br>",
+                        "error"
                     );
                 }
             } else {
                 Swal.fire(
-                    'Lo siento',
-                    `El elemento a editar no existe. <br>`,
-                    'error'
+                    "Lo siento",
+                    "El elemento a editar no existe. <br>",
+                    "error"
                 );
             }
 
         } else {
             Swal.fire(
-                'Lo siento',
+                "Lo siento",
                 `No puede ingresar las horas en ese orden. <br>
                     Desde ${moment(editEmployTime.start, "hh:mm").format("LT")} es menor que, Hasta ${moment(editEmployTime.end, "hh:mm").format("LT")}`,
-                'error'
+                "error"
             );
         }
 
@@ -141,41 +141,52 @@ const db = () => {
 
     };
 
-    const drop = async (indexData, employeeKey,) => {
+    const drop = async (target, indexData, employeeKey,) => {
 
         if (localStorage.hasOwnProperty(employeeKey)) {
 
             const sureToDelete = await Swal.fire({
-                title             : '¿Estas seguro/a?',
+                title             : "¿Estas seguro/a?",
                 text              : "Desea borrar el registro",
-                icon              : 'warning',
+                icon              : "warning",
                 showCancelButton  : true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor : '#d33',
-                confirmButtonText : 'Si, borrar!',
-                cancelButtonText  : 'Cancelar'
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor : "#d33",
+                confirmButtonText : "Si, borrar!",
+                cancelButtonText  : "Cancelar"
             }).then((result) => result);
 
             if (sureToDelete.isConfirmed) {
-                const info = JSON.parse(localStorage.getItem(employeeKey));
 
-                const deleted = info.time.splice(indexData, 1);
+                var tr = target.closest("tr");
+                tr.classList.add("animate__animated", "animate__backOutLeft");
 
-                if (deleted.length >= 1) {
-                    localStorage.setItem(employeeKey, JSON.stringify(info));
-                    Swal.fire(
-                        'Borrado!',
-                        'El registro a sido borrado!',
-                        'success'
-                    );
-                    return true;
-                } else {
-                    Swal.fire(
-                        'Ooops!',
-                        'Algo a salido mal!',
-                        'error'
-                    );
-                }
+                return await new Promise((resolve, reject)=>{
+                    onanimationend = (e) => {
+                        if(e.animationName === "backOutLeft" && Boolean(target.closest("#notUsed"))){
+                            const info = JSON.parse(localStorage.getItem(employeeKey));
+            
+                            const deleted = info.time.splice(indexData, 1);
+            
+                            if (deleted.length >= 1) {
+                                localStorage.setItem(employeeKey, JSON.stringify(info));
+                                Swal.fire(
+                                    "Borrado!",
+                                    "El registro a sido borrado!",
+                                    "success"
+                                );
+                                resolve(true);
+                            } else {
+                                Swal.fire(
+                                    "Ooops!",
+                                    "Algo a salido mal!",
+                                    "error"
+                                );
+                                reject(false);
+                            }
+                        }
+                    };
+                });
             }
 
         }
@@ -187,22 +198,22 @@ const db = () => {
         if (localStorage.hasOwnProperty(employeeKey)) {
 
             const sureToDelete = await Swal.fire({
-                title             : '¿Estas seguro/a?',
+                title             : "¿Estas seguro/a?",
                 text              : "Desea borrar el registro",
-                icon              : 'warning',
+                icon              : "warning",
                 showCancelButton  : true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor : '#d33',
-                confirmButtonText : 'Si, borrar!',
-                cancelButtonText  : 'Cancelar'
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor : "#d33",
+                confirmButtonText : "Si, borrar!",
+                cancelButtonText  : "Cancelar"
             }).then((result) => result);
 
             if (sureToDelete.isConfirmed) {
                 localStorage.removeItem(employeeKey);
                 await Swal.fire(
-                    'Borrado!',
-                    'El registro a sido borrado!',
-                    'success'
+                    "Borrado!",
+                    "El registro a sido borrado!",
+                    "success"
                 );
                 return true;
             }
@@ -217,9 +228,9 @@ const db = () => {
         localStorage.setItem(employeeKey, JSON.stringify(info));
 
         await Swal.fire({
-            position         : 'top-end',
-            icon             : 'success',
-            title            : 'Funcionario Actualizado',
+            position         : "top-end",
+            icon             : "success",
+            title            : "Funcionario Actualizado",
             showConfirmButton: false,
             timer            : 1000
 

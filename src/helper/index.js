@@ -1,5 +1,6 @@
 /* eslint-disable no-case-declarations */
 /* eslint-disable no-useless-escape */
+/*global bootstrap */
 import moment from "moment";
 
 const randomId = () => {
@@ -301,7 +302,15 @@ const substractTime = (leftover, used) => {
 
 };
 
+export const showModal = (selector) => {
+    const modal =  bootstrap.Modal.getOrCreateInstance(document.querySelector(selector), {});
+    modal.show();
+};
 
+export const hideModal = (selector) => {
+    const modal = bootstrap.Modal.getOrCreateInstance(document.querySelector(selector), {});
+    modal.hide();
+};
 
 export {
     randomId,
