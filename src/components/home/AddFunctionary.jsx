@@ -20,7 +20,7 @@ export const AddFunctionary = ({ functionaryTable }) => {
         used      : false
     };
 
-    const [values, setValues, handleInputChange, reset] = useForm(initialState);
+    const {values, handleInputChange, reset} = useForm(initialState);
 
     const handleSaveInfo = async (e) => {
         e.preventDefault();

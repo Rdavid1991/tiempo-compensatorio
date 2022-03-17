@@ -1,7 +1,12 @@
 /* globals $*/
 import React, { useEffect, useState } from "react";
+import { showModal } from "src/helper";
+import db from "src/helper/db";
+import { confirmAlert, errorAlert, successAlert } from "src/utils/Alerts";
 import { AddFunctionary } from "./AddFunctionary";
-import { RenderFunctionaryTable } from "./functions/ActionFunctionaryTable";
+import EditFunctionary from "./EditFunctionary";
+import FunctionaryHeader from "./fragments/FunctionaryHeader";
+import { RenderFunctionaryTable, RefreshFunctionaryTable } from "./functions/ActionFunctionaryTable";
 // import db from "../../helper/db";
 // import { ajax } from "./helper/ajax";
 // import { employTable } from "./helper/employTable";
@@ -12,28 +17,45 @@ import { RenderFunctionaryTable } from "./functions/ActionFunctionaryTable";
 
 export const HomeTable = () => {
 
-   const [table, setTable] = useState({});
+    const [table, setTable] = useState({});
+    const [indexId, setIndexId] = useState("");
 
     useEffect(() => {
         setTable(RenderFunctionaryTable());
         $(".pagination").addClass("pagination-sm");
     }, []);
 
-    //const [indexId, setIndexId] = useState(""); * elementos para la web
+    const handleDelete = async (target) => {
+
+        const { isConfirmed } = await confirmAlert("¿Desea borrar el registro?");
+
+        if (isConfirmed) {
+            const isDeleted = await db().dropEmploy(target.dataset.index);
+            if (isDeleted) {
+                var tr = target.closest("tr");
+                tr.classList.add("animate__animated", "animate__backOutLeft");
+                onanimationend = async (e) => {
+                    if (e.animationName === "backOutLeft" && Boolean(target.closest("#functionaries"))) {
+                        await successAlert("El registro a sido borrado");
+                        RefreshFunctionaryTable(table);
+                    }
+                };
+            } else {
+                errorAlert("No se pudo borrar el registro");
+            }
+        }
+
+    };
 
     const handlerActions = async ({ target }) => {
-
         switch (target.dataset.click) {
             case "delete":
-                /* await db().dropEmploy(target.dataset.index);
-                table.current.clear().rows.add(ajax().data).draw();
-                table.current.columns.adjust().draw(); */
+                handleDelete(target);
                 break;
             case "edit":
-                //setIndexId(target.dataset.index); * elementos para la web
-                //ipcRenderer.send("edit-employ",["open", target.dataset.index]);
+                setIndexId(target.dataset.index);
+                showModal("#functionaryEdit");
                 break;
-
             default:
                 break;
         }
@@ -43,29 +65,10 @@ export const HomeTable = () => {
         <>
             <div className="animate__animated animate__bounce animate__fadeIn" style={{ animationFillMode: "backwards" }} >
 
-                {
-                    //elementos para la web
-                    /* <EditEmploy
-                        indexId={indexId}
-                        table={table}
-                    />*/
-                }
-
-                <h1>Registro de tiempo compensatorio</h1>
-                <h2>Lista de funcionarios</h2>
-
-                <button
-                    type="button"
-                    className="btn btn-sm btn-primary"
-                    data-bs-toggle="modal" 
-                    data-bs-target="#addFunctionary"
-                >
-                    <i className="fas fa-plus"></i>
-                    Nuevo funcionario
-                </button>
+                <FunctionaryHeader/>
 
                 <div className="mt-5">
-                    <table id="example" className="table table-sm table-striped" style={{ width: "100%" }} onClick={handlerActions}>
+                    <table id="functionaries" className="table table-sm table-striped" style={{ width: "100%" }} onClick={handlerActions}>
                         <thead >
                             <tr>
                                 <th>Nombre</th>
@@ -81,6 +84,9 @@ export const HomeTable = () => {
             </div>
             <AddFunctionary
                 functionaryTable={table}
+            />
+            <EditFunctionary
+                indexId={indexId}
             />
         </>
     );

@@ -33,7 +33,7 @@ export const RenderFunctionaryTable = () => {
         );
     };
 
-    return window.$("#example").DataTable({
+    return window.$("#functionaries").DataTable({
         language    : { ...dataTableSpanish },
         "aaData"    : ajax().data,
         "retrieve"  : true,

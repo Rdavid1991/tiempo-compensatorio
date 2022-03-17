@@ -15,14 +15,14 @@ const TimeEditTime = props => {
         end  : ""
     };
 
-    const [editEmployTime, setEditEmployTime, handleInputChange, reset] = useForm(initialState);
+    const { values, setValues, handleInputChange, reset} = useForm(initialState);
 
     useEffect(() => {
         const employ = db().getOneEmploy(employeeKey);
         if (employ.time.length > 0) {
-            setEditEmployTime({
+            setValues({
                 day  : employ.time[id].day,
-                start: employ.time[id].start,
+                start: employ.time[id].start, 
                 end  : employ.time[id].end
             });
         }
@@ -30,7 +30,7 @@ const TimeEditTime = props => {
 
     const handleInfoSave = async (e) => {
         e.preventDefault();
-        const response = await db().update(id, employeeKey, editEmployTime);
+        const response = await db().update(id, employeeKey, values);
         if (response) {
             reset();
             hideModal("#timeEditModal");
@@ -42,7 +42,7 @@ const TimeEditTime = props => {
             <div className="modal-dialog">
                 <div className="modal-content">
                     <div className="modal-header">
-                        <h5 className="modal-title" id="exampleModalLabel">Editar tiempo de - {moment(editEmployTime.day).format("ddd LL")}</h5>
+                        <h5 className="modal-title" id="exampleModalLabel">Editar tiempo de - {moment(values.day).format("ddd LL")}</h5>
                         <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <form
@@ -58,7 +58,7 @@ const TimeEditTime = props => {
                                     id="day"
                                     onChange={handleInputChange}
                                     name="day"
-                                    value={editEmployTime.day}
+                                    value={values.day}
                                     required
                                 />
                             </div>
@@ -69,7 +69,7 @@ const TimeEditTime = props => {
                                     className="form-control form-control-sm"
                                     id="start"
                                     onChange={handleInputChange}
-                                    value={editEmployTime.start}
+                                    value={values.start}
                                     name="start"
                                     required
                                 />
@@ -81,7 +81,7 @@ const TimeEditTime = props => {
                                     className="form-control form-control-sm"
                                     id="end"
                                     onChange={handleInputChange}
-                                    value={editEmployTime.end}
+                                    value={values.end}
                                     name="end"
                                     required
                                 />

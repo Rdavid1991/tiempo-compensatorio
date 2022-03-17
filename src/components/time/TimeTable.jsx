@@ -14,6 +14,7 @@ import TimeHeader from "./TimeHeader";
 import { RefreshNotUsedTable, RenderTimeTableNotUsed, RenderTimeTableUsed } from "./function/ActionTimeTable";
 import TimeEditTime from "./TimeEditTime";
 import { showModal } from "src/helper";
+import { confirmAlert, errorAlert, successAlert } from "src/utils/Alerts";
 // import { ipcRendererEvent } from "./helper/ipcRendererEvent";
 //const { $, bootstrap, require } = window;
 
@@ -43,10 +44,25 @@ export const TimeTable = () => {
     }, []);
 
     const handleDelete = async (target, index, key) => {
-        const isDeleted = await localDB.drop(target, index, key);
-        if (isDeleted) {
-            RefreshNotUsedTable(key, timeTable.notUsed);
+
+        const { isConfirmed } = await confirmAlert("¿Desea borrar el registro?");
+
+        if (isConfirmed) {
+            const isDeleted = await localDB.drop(target, index, key);
+            if (isDeleted) {
+                var tr = target.closest("tr");
+                tr.classList.add("animate__animated", "animate__backOutLeft");
+                onanimationend = async (e) => {
+                    if (e.animationName === "backOutLeft" && Boolean(target.closest("#notUsed"))) {
+                        await successAlert("El registro a sido borrado");
+                        RefreshNotUsedTable(key, timeTable.notUsed);
+                    }
+                };
+            } else {
+                errorAlert("No se pudo borrar el registro");
+            }
         }
+
     };
 
     // eslint-disable-next-line no-extra-boolean-cast
@@ -67,7 +83,7 @@ export const TimeTable = () => {
                 break;
             case "delete":
                 setIndexData(target.dataset.index);
-                handleDelete(target,indexData, employeeKey);  
+                handleDelete(target, indexData, employeeKey);
                 break;
             case "useTime":
                 // ipcRenderer.send("use-time", {

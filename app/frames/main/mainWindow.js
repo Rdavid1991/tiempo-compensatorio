@@ -1,8 +1,9 @@
 
-const {menuTemplate} = require("./menuTemplate");
+const { menuTemplate } = require("./menuTemplate");
 const path = require("path");
 const { BrowserWindow, Menu, screen, ipcMain, dialog } = require("electron");
 const fs = require("fs");
+const { autoUpdater } = require("electron-updater");
 
 exports.mainWindow = () => {
 
@@ -23,12 +24,17 @@ exports.mainWindow = () => {
     });
 
     window.loadURL("http://localhost:3000");
-    
+
     Menu.setApplicationMenu(Menu.buildFromTemplate(menuTemplate(window)));
     mainEvents(window);
 
-    window.on("ready-to-show",() => {
+    window.on("ready-to-show", () => {
+        autoUpdater.checkForUpdatesAndNotify();
         window.show();
+    });
+
+    autoUpdater.on("update-available", () => {
+        autoUpdater.quitAndInstall();
     });
 
     return window;
@@ -36,9 +42,9 @@ exports.mainWindow = () => {
 
 const mainEvents = (win) => {
     ipcMain.on("export", (event, data) => {
-    
+
         dialog.showSaveDialog(win, { filters: [{ name: "TIEMPO COMPENSATORIO", extensions: ["json"] }] }).then((fileName) => {
-    
+
             if (!fileName.canceled) {
                 fs.writeFile(fileName.filePath, data, function (err) {
                     if (err) {
