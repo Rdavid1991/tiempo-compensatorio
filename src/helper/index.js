@@ -3,6 +3,10 @@
 /*global bootstrap */
 import moment from "moment";
 
+/**
+ * Genera ID aleatorio para manejo de base de datos
+ * @returns {string}
+ */
 const randomId = () => {
     const str = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
     let ranId = "";
@@ -27,12 +31,23 @@ const compareDiffTime = (start, end) => {
     return duration.hours() < 0 ? false : true;
 };
 
+/**
+ * Comparar la duración de tiempo mas antiguo vs mas reciente. 
+ * @param {string} olderTime cadena de texto en formato tiempo con el tiempo mas antiguo máximo 24:00
+ * @param {string} lessTime cadena de texto en formato tiempo con el tiempo mas reciente mínimo 00:00
+ * @returns {boolean}
+ */
 const compareDurationTime = (olderTime, lessTime) => {
     const older = moment.duration(olderTime, "hh:mm").asMilliseconds();
     const less = moment.duration(lessTime, "hh:mm").asMilliseconds();
     return older > less ? true : false;
 };
 
+/**
+ * Transformar milisegundos en tiempo legible para humanos
+ * @param {number|string} milliseconds tiempo en milisegundos
+ * @returns {string}
+ */
 const timeToHumanize = (milliseconds) => {
     if (milliseconds > 0) {
 
@@ -258,7 +273,7 @@ const dataTableSpanish = {
 };
 
 /**
-    * Convierte los numeros en string de horas ejemplo: 1 en 1:00, 1.25 en 1:25 
+    * Convierte los números en string de horas ejemplo: 1 en 1:00, 1.25 en 1:25 
     * @param {number|string} time 
     * @returns {String} Texto en hora ejemplo entrada 1, salida 1:00
     */
@@ -289,6 +304,12 @@ const timeToString = (time) => {
     return timeStr;
 };
 
+/**
+ * Restar tiempo 
+ * @param {string} leftover cadena en formato tiempo, tiempo mas antiguo
+ * @param {string} used cadena en formato tiempo, tiempo mas qe se va a restar 
+ * @returns {string}
+ */
 const substractTime = (leftover, used) => {
     let leftStr = timeToString(leftover);
     let usedStr = timeToString(used);
