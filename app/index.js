@@ -1,4 +1,5 @@
-const { dialog, app, ipcMain, } = require("electron");
+const { dialog, app, ipcMain } = require("electron");
+const { autoUpdater } = require("electron-updater");
 const { addEmployWindow, editEmployWindow } = require("./frames/employ");
 const { mainWindow } = require("./frames/main/mainWindow");
 const { editEmployTime, useEmployTime, addEmployTime } = require("./frames/time");
@@ -116,3 +117,8 @@ function createWindow() {
 }
 
 app.whenReady().then(createWindow);
+
+app.on("window-all-closed", () => {
+    autoUpdater.quitAndInstall();
+});
+

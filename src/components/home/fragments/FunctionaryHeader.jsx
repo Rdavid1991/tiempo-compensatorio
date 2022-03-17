@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 const FunctionaryHeader = props => {
     return (
         <React.Fragment>
-            <h1>Registro de tiempo compensatorio</h1>
+            <h1>Registro de tiempo compensatorio, Funciona</h1>
             <h2>Lista de funcionarios</h2>
 
             <button

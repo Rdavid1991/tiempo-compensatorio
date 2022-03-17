@@ -23,18 +23,18 @@ exports.mainWindow = () => {
         },
     });
 
-    window.loadURL("http://localhost:3000");
+    if (process.env.ELECTRON_ENV === "DEV") {
+        window.loadURL("http://localhost:3000");
+    } else {
+        window.loadFile(path.join(__dirname, "/../../../build/index.html"));
+    }
 
     Menu.setApplicationMenu(Menu.buildFromTemplate(menuTemplate(window)));
     mainEvents(window);
 
-    window.on("ready-to-show", () => {
-        autoUpdater.checkForUpdatesAndNotify();
+    window.once("ready-to-show", async () => {
+        autoUpdater.checkForUpdatesAndNotify("Hay una nueva version disponible, se instalara en el proximo reinicio");
         window.show();
-    });
-
-    autoUpdater.on("update-available", () => {
-        autoUpdater.quitAndInstall();
     });
 
     return window;
