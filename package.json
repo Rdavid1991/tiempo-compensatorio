@@ -1,6 +1,6 @@
 {
   "name": "tiempo-compensatorio",
-  "version": "0.1.9",
+  "version": "0.1.4",
   "private": false,
   "repository": {
     "type": "git",
@@ -23,7 +23,7 @@
   "main": "./app/index.js",
   "scripts": {
     "start-electron": "set \"ELECTRON_ENV=DEV\" && electron .",
-    "build-windows": "set \"ELECTRON_ENV=PROD\" && electron-builder --publish always",
+    "build-windows": " react-scripts build && set \"ELECTRON_ENV=PROD\" && electron-builder -c.publish.token=%GH_TOKEN% --publish always",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -45,8 +45,7 @@
       "main": "./app/index.js"
     },
     "publish": {
-      "provider": "github",
-      "token": "%GH_TOKEN%"
+      "provider": "github"
     }
   },
   "eslintConfig": {
