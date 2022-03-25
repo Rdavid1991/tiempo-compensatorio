@@ -65,7 +65,7 @@ export const HomeTable = () => {
         <>
             <div className="animate__animated animate__bounce animate__fadeIn" style={{ animationFillMode: "backwards" }} >
 
-                <FunctionaryHeader/>
+                <FunctionaryHeader />
 
                 <div className="mt-5">
                     <table id="functionaries" className="table table-sm table-striped" style={{ width: "100%" }} onClick={handlerActions}>
@@ -86,6 +86,7 @@ export const HomeTable = () => {
                 functionaryTable={table}
             />
             <EditFunctionary
+                functionaryTable={table}
                 indexId={indexId}
             />
         </>

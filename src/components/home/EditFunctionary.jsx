@@ -3,13 +3,15 @@ import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { useForm } from "src/hooks/useForm";
 import db from "../../helper/db";
+import { Modal } from "src/utils/Modal";
+import { RefreshFunctionaryTable } from "./functions/ActionFunctionaryTable";
 
 const initialState = {
     name      : "",
     department: ""
 };
 
-const EditFunctionary = ({indexId}) => {
+const EditFunctionary = ({indexId, functionaryTable}) => {
 
     const { values, setValues, handleInputChange, reset } = useForm(initialState);
 
@@ -26,6 +28,8 @@ const EditFunctionary = ({indexId}) => {
     const handlerInfoSave = async (e) => {
         e.preventDefault();
         await db().updateEmploy(indexId, values);
+        RefreshFunctionaryTable(functionaryTable);
+        Modal.hide("#functionaryEdit");
         reset();
     };
 

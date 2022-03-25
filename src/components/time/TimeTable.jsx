@@ -11,10 +11,12 @@ import db from "../../helper/db";
 import TimeTableUsed from "./TimeTableUsed";
 import TimeTableNotUsed from "./TimeTableNotUsed";
 import TimeHeader from "./TimeHeader";
-import { RefreshNotUsedTable, RenderTimeTableNotUsed, RenderTimeTableUsed } from "./function/ActionTimeTable";
+import { RefreshNotUsedTable, RefreshUsedTable, RenderTimeTableNotUsed, RenderTimeTableUsed } from "./function/ActionTimeTable";
 import TimeEditTime from "./TimeEditTime";
 import { showModal } from "src/helper";
 import { confirmAlert, errorAlert, successAlert } from "src/utils/Alerts";
+import { Modal } from "src/utils/Modal";
+import { UseTime } from "./UseTime";
 // import { ipcRendererEvent } from "./helper/ipcRendererEvent";
 //const { $, bootstrap, require } = window;
 
@@ -24,7 +26,6 @@ const localDB = db();
 moment.locale("es");
 export const TimeTable = () => {
 
-    const notUsedTable = useRef();
     const { employeeKey } = useParams();
 
     const [timeTable, setTimeTable] = useState({
@@ -77,34 +78,33 @@ export const TimeTable = () => {
 
         switch (target.dataset.click) {
             case "details":
-                setIndexData(target.dataset.index);
-                var details = new bootstrap.Modal(document.querySelector("#details"), {});
-                details.show();
+                Modal.show("#details");
                 break;
             case "delete":
-                setIndexData(target.dataset.index);
                 handleDelete(target, indexData, employeeKey);
                 break;
             case "useTime":
-                // ipcRenderer.send("use-time", {
-                //     command: "open",
-                //     id     : target.dataset.index,
-                //     employeeKey,
-                // });
+                Modal.show("#useTime");
                 break;
             case "editTime":
-                setIndexData(target.dataset.index);
-                showModal("#timeEditModal");
+                Modal.show("#timeEditModal");
                 break;
             default:
                 break;
         }
+        setIndexData(target.dataset.index);
+        const { notUsed, used} = timeTable;
+        RefreshNotUsedTable(employeeKey, notUsed);
+        RefreshUsedTable(employeeKey, used);
     };
 
     return (
 
         < div className="animate__animated animate__bounce animate__fadeIn" style={{ animationFillMode: "backwards" }}>
-
+            <UseTime
+                employeeKey={employeeKey}
+                id={indexData}
+            />
             <TimeEditTime
                 employeeKey={employeeKey}
                 id={indexData}

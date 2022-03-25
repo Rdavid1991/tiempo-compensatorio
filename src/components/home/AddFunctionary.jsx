@@ -1,5 +1,6 @@
 import moment from "moment";
 import React from "react";
+import { Modal } from "src/utils/Modal";
 import Swal from "sweetalert2";
 import { compareDiffTime } from "../../helper";
 import db from "../../helper/db";
@@ -13,7 +14,7 @@ export const AddFunctionary = ({ functionaryTable }) => {
         department: "",
         day       : "",
         start     : "16:00",
-        end       : "",
+        end       : "18:00",
         hourTotal : 0,
         hourLeft  : 0,
         hourUsed  : 0,
@@ -27,6 +28,7 @@ export const AddFunctionary = ({ functionaryTable }) => {
         if (compareDiffTime(values.start, values.end)) {
             await db().insert(values);
             RefreshFunctionaryTable(functionaryTable);
+            Modal.hide("#addFunctionary");
             reset();
         } else {
             Swal.fire(

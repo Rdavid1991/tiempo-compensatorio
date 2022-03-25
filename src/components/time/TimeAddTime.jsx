@@ -6,6 +6,7 @@ import { compareDiffTime } from "../../helper";
 //import { ajaxEmploy } from './helper/ajaxEmploy';
 import { useParams } from "react-router-dom";
 import { RefreshNotUsedTable } from "./function/ActionTimeTable";
+import { Modal } from "src/utils/Modal";
 
 //const { ipcRenderer } = window.require("electron");
 
@@ -18,7 +19,7 @@ const TimeAddTime = props => {
     const initialState = {
         day  : "",
         start: "16:00",
-        end  : "",
+        end  : "18:00",
         used : false
     };
 
@@ -69,6 +70,7 @@ const TimeAddTime = props => {
                 timer            : 1000
             }).then(() => {
                 RefreshNotUsedTable(employeeKey, timeTable.notUsed);
+                Modal.hide("#functionaryAddTime");
             });
         } else {
             Swal.fire(
