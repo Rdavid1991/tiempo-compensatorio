@@ -2,7 +2,6 @@ import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { Modal } from "src/utils/Modal";
 import db from "../../helper/db";
-import { RefreshNotUsedTable } from "./function/ActionTimeTable";
 import { handlerFunctions } from "./function/handlerFunctions";
 
 const initialState = {
@@ -10,7 +9,7 @@ const initialState = {
     dateOfUse: ""
 };
 
-export const UseTime = ({ employeeKey, id } ) => {
+export const UseTime = ({ employeeKey, id, timeTable } ) => {
 
     const { handlerUsedTime, handlerUseHours } = handlerFunctions(employeeKey);
     const [usedTime, setUsedTime] = useState(initialState);
@@ -18,7 +17,7 @@ export const UseTime = ({ employeeKey, id } ) => {
 
     useEffect(() => {
         const employ = db().getOneEmploy(employeeKey);
-        setDateFrom(employ.time[id].day);
+        setDateFrom(employ.time[id]?.day);
     }, [id]);
 
     return (
@@ -36,7 +35,7 @@ export const UseTime = ({ employeeKey, id } ) => {
                         if (response) {
                             Modal.hide("#useTime");
                             setUsedTime(initialState);
-                            RefreshNotUsedTable(employeeKey);
+                            timeTable.notUsed.ajax.reload();
                         }
                     }}>
                         <div className="card-body">

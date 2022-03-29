@@ -56,7 +56,7 @@ export const TimeTable = () => {
                 onanimationend = async (e) => {
                     if (e.animationName === "backOutLeft" && Boolean(target.closest("#notUsed"))) {
                         await successAlert("El registro a sido borrado");
-                        RefreshNotUsedTable(key, timeTable.notUsed);
+                        timeTable.notUsed.ajax.reload();
                     }
                 };
             } else {
@@ -66,10 +66,7 @@ export const TimeTable = () => {
 
     };
 
-    // eslint-disable-next-line no-extra-boolean-cast
-
     /**
-     * 
      * @param {React.ChangeEvent<HTMLInputElement>} e 
      */
     const handleActionTable = (e) => {
@@ -93,15 +90,16 @@ export const TimeTable = () => {
                 break;
         }
         setIndexData(target.dataset.index);
-        const { notUsed, used} = timeTable;
-        RefreshNotUsedTable(employeeKey, notUsed);
-        RefreshUsedTable(employeeKey, used);
+        const { notUsed, used } = timeTable;
+        notUsed.ajax.reload();
+        used.ajax.reload();
     };
 
     return (
 
         < div className="animate__animated animate__bounce animate__fadeIn" style={{ animationFillMode: "backwards" }}>
             <UseTime
+                timeTable={timeTable}
                 employeeKey={employeeKey}
                 id={indexData}
             />
@@ -114,17 +112,17 @@ export const TimeTable = () => {
             <div className="mt-3">
                 <ul className="nav nav-tabs" id="myTab" role="tablist">
                     <li className="nav-item" role="presentation">
-                        <button className="btn-sm nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#NotUsedPane" type="button" role="tab" aria-controls="home" aria-selected="true">Horas disponibles</button>
+                        <button className="btn-sm nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#NotUsedPane" type="button">Horas disponibles</button>
                     </li>
                     <li className="nav-item" role="presentation">
-                        <button className="btn-sm nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#usedPane" type="button" role="tab" aria-controls="profile" aria-selected="false">Horas usadas</button>
+                        <button className="btn-sm nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#usedPane" type="button">Horas usadas</button>
                     </li>
                 </ul>
                 <div className="tab-content mt-4" id="myTabContent" onClick={handleActionTable}>
-                    <div className="tab-pane fade show active" id="NotUsedPane" role="tabpanel" aria-labelledby="home-tab">
+                    <div className="tab-pane fade show active" id="NotUsedPane">
                         <TimeTableNotUsed />
                     </div>
-                    <div className="tab-pane fade" id="usedPane" role="tabpanel" aria-labelledby="profile-tab">
+                    <div className="tab-pane fade" id="usedPane" role="tabpanel">
                         <TimeTableUsed />
                     </div>
                 </div>

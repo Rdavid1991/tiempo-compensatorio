@@ -4,7 +4,6 @@ import PropTypes from "prop-types";
 import { useForm } from "src/hooks/useForm";
 import db from "../../helper/db";
 import { Modal } from "src/utils/Modal";
-import { RefreshFunctionaryTable } from "./functions/ActionFunctionaryTable";
 
 const initialState = {
     name      : "",
@@ -28,7 +27,7 @@ const EditFunctionary = ({indexId, functionaryTable}) => {
     const handlerInfoSave = async (e) => {
         e.preventDefault();
         await db().updateEmploy(indexId, values);
-        RefreshFunctionaryTable(functionaryTable);
+        functionaryTable.ajax.reload();
         Modal.hide("#functionaryEdit");
         reset();
     };

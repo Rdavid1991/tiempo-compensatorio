@@ -46,8 +46,10 @@ const ActionTableButton = ({ index }) => {
 export const RenderTimeTableUsed = (functionaryKey) => {
 
     return $("#used").DataTable({
-        "language"  : { ...dataTableSpanish },
-        "aaData"    : ajaxEmploy(functionaryKey).used().data,
+        "language": { ...dataTableSpanish },
+        "ajax"    : function (data, callback, settings) {
+            callback(ajaxEmploy(functionaryKey).used());
+        },
         "columnDefs": [
             {
                 targets: [0],
@@ -70,8 +72,10 @@ export const RenderTimeTableUsed = (functionaryKey) => {
 export const RenderTimeTableNotUsed = (functionaryKey) => {
 
     return $("#notUsed").DataTable({
-        "language"  : { ...dataTableSpanish },
-        "aaData"    : ajaxEmploy(functionaryKey).notUsed().data,
+        "language": { ...dataTableSpanish },
+        "ajax"    : function (data, callback, settings) {
+            callback(ajaxEmploy(functionaryKey).notUsed());
+        },
         "columnDefs": [
             {
                 targets: [0],
@@ -113,7 +117,7 @@ export const RenderTimeTableNotUsed = (functionaryKey) => {
                     );
                 }
             },
-       
+
             {
                 targets: [6],
                 render : (index) => {
@@ -127,20 +131,3 @@ export const RenderTimeTableNotUsed = (functionaryKey) => {
         ]
     });
 };
-
-
-/**
- * 
- * @param {String} employeeKey 
- * @param {Object} table 
- */
-export const RefreshNotUsedTable = (employeeKey, table) => {
-    table.clear().rows.add(ajaxEmploy(employeeKey).notUsed().data).draw();
-    table.columns.adjust().draw();
-};
-
-export const RefreshUsedTable = (employeeKey, table) => {
-    table.clear().rows.add(ajaxEmploy(employeeKey).used().data).draw();
-    table.columns.adjust().draw();
-};
-

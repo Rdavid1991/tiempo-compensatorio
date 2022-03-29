@@ -8,8 +8,6 @@ import { useParams } from "react-router-dom";
 import { RefreshNotUsedTable } from "./function/ActionTimeTable";
 import { Modal } from "src/utils/Modal";
 
-//const { ipcRenderer } = window.require("electron");
-
 const TimeAddTime = props => {
 
     const { timeTable } = props;
@@ -69,7 +67,7 @@ const TimeAddTime = props => {
                 showConfirmButton: false,
                 timer            : 1000
             }).then(() => {
-                RefreshNotUsedTable(employeeKey, timeTable.notUsed);
+                timeTable.notUsed.ajax.reload();
                 Modal.hide("#functionaryAddTime");
             });
         } else {

@@ -6,7 +6,7 @@ import { confirmAlert, errorAlert, successAlert } from "src/utils/Alerts";
 import { AddFunctionary } from "./AddFunctionary";
 import EditFunctionary from "./EditFunctionary";
 import FunctionaryHeader from "./fragments/FunctionaryHeader";
-import { RenderFunctionaryTable, RefreshFunctionaryTable } from "./functions/ActionFunctionaryTable";
+import { RenderFunctionaryTable } from "./functions/ActionFunctionaryTable";
 // import db from "../../helper/db";
 // import { ajax } from "./helper/ajax";
 // import { employTable } from "./helper/employTable";
@@ -37,7 +37,7 @@ export const HomeTable = () => {
                 onanimationend = async (e) => {
                     if (e.animationName === "backOutLeft" && Boolean(target.closest("#functionaries"))) {
                         await successAlert("El registro a sido borrado");
-                        RefreshFunctionaryTable(table);
+                        table.ajax.reload();
                     }
                 };
             } else {

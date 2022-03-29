@@ -17,8 +17,6 @@ export const ajaxEmploy = (employeeKey) => {
                 usedInMilliseconds = moment.duration(__info.time[i].hourUsed, "hours").asMilliseconds();
                 leftOverInMilliseconds = moment.duration(__info.time[i].hourLeft, "hours").asMilliseconds();
 
-                console.log(totalInMilliseconds);
-
                 source.data.push([
                     `${i}|${moment(__info.time[i].day).format("dddd LL")}|${moment(__info.time[i].day).format("YYYYMMDD")}`,
                     {

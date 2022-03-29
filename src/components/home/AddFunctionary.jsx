@@ -5,7 +5,6 @@ import Swal from "sweetalert2";
 import { compareDiffTime } from "../../helper";
 import db from "../../helper/db";
 import { useForm } from "../../hooks/useForm";
-import { RefreshFunctionaryTable } from "./functions/ActionFunctionaryTable";
 
 export const AddFunctionary = ({ functionaryTable }) => {
 
@@ -27,7 +26,7 @@ export const AddFunctionary = ({ functionaryTable }) => {
         e.preventDefault();
         if (compareDiffTime(values.start, values.end)) {
             await db().insert(values);
-            RefreshFunctionaryTable(functionaryTable);
+            functionaryTable.ajax.reload();
             Modal.hide("#addFunctionary");
             reset();
         } else {

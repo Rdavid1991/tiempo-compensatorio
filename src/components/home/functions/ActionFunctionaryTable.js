@@ -12,7 +12,7 @@ export const RenderFunctionaryTable = () => {
         );
     };
 
-    const ButtonActionsFunctionary = ({id}) => {
+    const ButtonActionsFunctionary = ({ id }) => {
         return (
             <>
                 <button
@@ -34,9 +34,11 @@ export const RenderFunctionaryTable = () => {
     };
 
     return window.$("#functionaries").DataTable({
-        language    : { ...dataTableSpanish },
-        "aaData"    : ajax().data,
-        "retrieve"  : true,
+        language: { ...dataTableSpanish },
+        "ajax"  : function (data, callback, settings) {
+            callback(ajax());
+        }
+        ,
         "columnDefs": [
             {
                 targets: [0],
@@ -62,9 +64,4 @@ export const RenderFunctionaryTable = () => {
             }
         ]
     });
-};
-
-export const RefreshFunctionaryTable = (table) => {
-    table.clear().rows.add(ajax().data).draw();
-    table.columns.adjust().draw();
 };
