@@ -1,47 +1,47 @@
-import React ,{ MouseEvent, useEffect, useState } from "react";
+import React, { MouseEvent, useEffect, useState } from "react";
 import { useParams } from "react-router";
 import moment from "moment";
 import "moment/locale/es-us";
-// import { DetailsTime } from "./DetailsTime";
-import db from "../../helper/db";
 import TimeTableUsed from "./TimeTableUsed";
 import TimeTableNotUsed from "./TimeTableNotUsed";
 import TimeHeader from "./TimeHeader";
 import { RenderTimeTableNotUsed, RenderTimeTableUsed } from "./function/ActionTimeTable";
-
-// import { ipcRendererEvent } from "./helper/ipcRendererEvent";
 import { modalShow } from "../../utils/Modal";
-import { TimeTableStateSchema } from "src/interfaces";
-//const { $, bootstrap, require } = window;
+import { TimeTableStateSchema } from "src/utils/interfaces";
+import TimeEditTime from "./TimeEditTime";
+import { UseTime } from "./UseTime";
+import { DetailsTime } from "./DetailsTime";
+import MonthSelector from "../fragments/MonthSelector";
+import { MonthContext } from "src/context";
 
-//const { ipcRenderer } = require("electron");
-
-const localDB = db();
 moment.locale("es");
 
-
-
-const initialTimeTableState : TimeTableStateSchema = {
+const initialTimeTableState: TimeTableStateSchema = {
     notUsed : $().DataTable(),
     used    : $().DataTable(),
 };
 
 export const TimeTable = () => {
 
-    const { employeeKey  } = useParams();
+    const { employeeKey } = useParams() as { employeeKey: string };
 
+    const [monthSelected, setMonthSelected] = useState<number>(new Date().getMonth());
     const [timeTable, setTimeTable] = useState<TimeTableStateSchema>(initialTimeTableState);
-    const [indexData, setIndexData] = useState(0);
+    const [id, setId] = useState<number>(0);
     const [data, setData] = useState(JSON.parse(localStorage.getItem(employeeKey as string) as string));
 
     useEffect(() => {
+
+        timeTable.notUsed.destroy(); 
+        timeTable.used.destroy(); 
+
         setTimeTable({
-            notUsed : RenderTimeTableNotUsed(employeeKey as string),
-            used    : RenderTimeTableUsed(employeeKey as string),
+            notUsed : RenderTimeTableNotUsed(employeeKey as string, monthSelected),
+            used    : RenderTimeTableUsed(employeeKey as string, monthSelected),
         });
 
         $(".pagination").addClass("pagination-sm");
-    }, []);
+    }, [monthSelected]);
 
     // const handleDelete = async (target, index, key) => {
 
@@ -65,16 +65,16 @@ export const TimeTable = () => {
 
     // };
 
-    const handleActionTable = (e :MouseEvent<HTMLDivElement>) => {
+    const handleActionTable = (e: MouseEvent<HTMLDivElement>) => {
 
-        const { currentTarget } = e;
+        const button = e.target as HTMLButtonElement;
 
-        switch (currentTarget.dataset.click) {
+        switch (button.dataset.click) {
         case "details":
             modalShow("#details");
             break;
         case "delete":
-            // handleDelete(target, indexData, employeeKey);
+            // handleDelete(target, id, employeeKey);
             break;
         case "useTime":
             modalShow("#useTime");
@@ -85,7 +85,7 @@ export const TimeTable = () => {
         default:
             break;
         }
-        //setIndexData(currentTarget.dataset.index as string);
+        setId(Number.parseInt(button.dataset.index as string));
         const { notUsed, used } = timeTable;
         notUsed.ajax.reload();
         used.ajax.reload();
@@ -93,17 +93,17 @@ export const TimeTable = () => {
 
     return (
 
+
         < div className="animate__animated animate__bounce animate__fadeIn" style={{ animationFillMode: "backwards" }}>
-            {/* {<UseTime
-                timeTable={timeTable}
-                employeeKey={employeeKey}
-                id={indexData}
-            />
-            <TimeEditTime
-                employeeKey={employeeKey}
-                id={indexData}
-            />} */}
-            <TimeHeader name={data.name} timeTable={timeTable} />
+            <UseTime {...{ employeeKey, id, timeTable }} />
+            <TimeEditTime {...{ employeeKey, id }} />
+            <MonthContext.Provider value={{
+                monthSelected,
+                setMonthSelected
+            }}>
+                <TimeHeader  {...{ name: data.name, timeTable }} />
+            </MonthContext.Provider>
+            <DetailsTime {...{ employeeKey, id }} />
 
             <div className="mt-3">
                 <ul className="nav nav-tabs" id="myTab" role="tablist">

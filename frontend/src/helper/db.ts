@@ -2,8 +2,8 @@
 import moment from "moment";
 import Swal from "sweetalert2";
 import { compareDiffTime, compareDurationTime, randomId, substractTime } from ".";
-import { FunctionarySchema, FunctionarySourceSchema, TimeEditSchema } from "../interfaces";
-import { FunctionaryEditFormSchema, FunctionaryAddFormSchema } from "../interfaces/index";
+import { FunctionarySchema, FunctionarySourceSchema, TimeEditSchema } from "../utils/interfaces";
+import { FunctionaryEditFormSchema, FunctionaryAddFormSchema } from "../utils/interfaces/index";
 
 /* eslint-disable no-prototype-builtins */
 

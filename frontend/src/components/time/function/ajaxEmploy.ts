@@ -1,9 +1,9 @@
 import moment from "moment";
-import { FunctionarySourceSchema } from "src/interfaces";
+import { FunctionarySourceSchema } from "src/utils/interfaces";
 import { timeToHumanize } from "../../../helper";
-import { AjaxData } from "../../../interfaces/index";
+import { AjaxData } from "../../../utils/interfaces/index";
 
-export const ajaxEmploy = (employeeKey : string) => {
+export const ajaxEmploy = (employeeKey : string, month : number) => {
 
     const __info = JSON.parse(
         localStorage.getItem(employeeKey) as string
@@ -15,7 +15,7 @@ export const ajaxEmploy = (employeeKey : string) => {
         let totalInMilliseconds, usedInMilliseconds, leftOverInMilliseconds;
         for (let i = 0; i < __info.time.length; i++) {
 
-            if (state === __info.time[i].used) {
+            if (state === __info.time[i].used && new Date(`${__info.time[i].day} ${__info.time[i].start}`).getMonth() === month) {
 
                 totalInMilliseconds = moment.duration(__info.time[i].hourTotal, "hours").asMilliseconds();
                 usedInMilliseconds = moment.duration(__info.time[i].hourUsed, "hours").asMilliseconds();

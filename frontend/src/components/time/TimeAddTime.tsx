@@ -6,7 +6,7 @@ import { compareDiffTime } from "../../helper";
 //import { ajaxEmploy } from './helper/ajaxEmploy';
 import { useParams } from "react-router-dom";
 //import { RefreshNotUsedTable } from "./function/ActionTimeTable";
-import { TimeTableStateSchema } from "../../interfaces/index";
+import { TimeTableStateSchema } from "../../utils/interfaces/index";
 import { modalHide } from "../../utils/Modal";
 import { ChangeEvent } from "react";
 

@@ -2,6 +2,8 @@
 import Swal from "sweetalert2";
 import moment from "moment";
 import { substractTime, timeToString } from "../../../helper";
+import { UseTimeSchema } from "src/utils/interfaces";
+import { ChangeEvent, Dispatch } from "react";
 
 export const handlerFunctions = (employeeKey : string) => {
 
@@ -31,16 +33,10 @@ export const handlerFunctions = (employeeKey : string) => {
     };
 
     return {
-        handlerUsedTime: ({ target }, setUsedTime, usedTime) => {
-            setUsedTime({
-                ...usedTime,
-                [target.name]: target.value
-            });
-        },
 
-        handlerUseHours: async (index, usedTime) => {
+        handlerUseHours: async (index : number, usedTime: UseTimeSchema ) => {
 
-            const data = JSON.parse(localStorage.getItem(employeeKey));
+            const data = JSON.parse(localStorage.getItem(employeeKey) as string);
 
             if (compareDiffTime(data.time[index].hourLeft, usedTime.hourToUse)) {
                 await Swal.fire(
@@ -66,16 +62,25 @@ export const handlerFunctions = (employeeKey : string) => {
                 localStorage.setItem(employeeKey, JSON.stringify(data));
 
                 await Swal.fire({
-                    position          : "top-end",
                     icon              : "success",
-                    title             : `Se ${parseInt(usedTime.hourToUse) === 1 ? "ha" : "han"} descontado ${usedTime.hourToUse} ${moment.duration(timeToString(usedTime.hourToUse)).asHours() === 1 ? "hora" : "horas"} de ${data.name}`,
+                    position          : "top-end",
                     showConfirmButton : false,
-                    timer             : 2000
+                    timer             : 2000,
+                    title             : `Se ${parseInt(usedTime.hourToUse) === 1 ? "ha" : "han"} descontado ${usedTime.hourToUse} ${moment.duration(timeToString(usedTime.hourToUse)).asHours() === 1 ? "hora" : "horas"} de ${data.name}`,
                 });
 
                 return true;
             }
+        },
+        handlerUsedTime: ({ target } : ChangeEvent<HTMLInputElement>, setUsedTime : Dispatch<React.SetStateAction<UseTimeSchema>>, usedTime : UseTimeSchema) => {
+
+            setUsedTime({
+                ...usedTime,
+                [target.name]: target.value
+            });
         }
+
+       
     };
 };
 

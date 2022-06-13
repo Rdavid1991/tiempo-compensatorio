@@ -17,7 +17,7 @@ export const Main = () => {
         show           : false,
         webPreferences : {
             contextIsolation : false,
-            preload          : path.join(__dirname, "../../preload/preload.js"),
+            //preload          : path.join(__dirname, "../../preload/preload.js"),
             webgl            : false
         },
         width: (width * 0.8),
@@ -26,7 +26,7 @@ export const Main = () => {
     if (process.env.ELECTRON_ENV === "DEV") {
         window.loadURL("http://localhost:3000");
     } else {
-        window.loadFile(path.join(__dirname, "/../../../build/index.html"));
+        window.loadFile(path.join(__dirname, "/../../views/index.html"));
     }
 
     Menu.setApplicationMenu(Menu.buildFromTemplate(menuTemplate(window)));

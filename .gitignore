@@ -11,6 +11,7 @@
 # production
 /**/build
 /**/dist
+/**/views
 
 # misc
 .DS_Store

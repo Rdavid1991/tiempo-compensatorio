@@ -3,7 +3,7 @@ import React from "react";
 import { renderToString } from "react-dom/server";
 import { ajaxEmploy } from "./ajaxEmploy";
 import { dataTableSpanish } from "src/helper";
-import { AjaxData } from "src/interfaces";
+import { AjaxData } from "src/utils/interfaces";
 
 
 interface PropsOpenDetails {
@@ -51,12 +51,12 @@ const ActionTableButton = ({ index } :{index : number}) => {
 
 };
 
-export const RenderTimeTableUsed = (functionaryKey : string) => {
+export const RenderTimeTableUsed = (functionaryKey : string , month : number) => {
 
     return $("#used").DataTable({
         
         "ajax": function (data, callback) {
-            callback(ajaxEmploy(functionaryKey).used());
+            callback(ajaxEmploy(functionaryKey, month).used());
         },
         "columnDefs": [
             {
@@ -65,17 +65,32 @@ export const RenderTimeTableUsed = (functionaryKey : string) => {
                     return renderToString(<OpenDetails {...{ data, dateOrder, index}}/>);
                 },
                 targets: [0],
-            }
+            },
+            {
+                
+                render: (item) => {
+                    const { humanize, brute } = item;
+                    return renderToString(<ColumnsCustomOrder {...{brute,humanize}}/>);
+                },
+                targets: [1],
+            },
+            {
+                render: (item) => {
+                    const { humanize, brute } = item;
+                    return renderToString(<ColumnsCustomOrder {...{brute,humanize}}/>);
+                },
+                targets: [2],
+            },
         ],
         "language": { ...dataTableSpanish },
     });
 };
 
-export const RenderTimeTableNotUsed = (functionaryKey : string) => {
+export const RenderTimeTableNotUsed = (functionaryKey : string, month : number) => {
 
     return $("#notUsed").DataTable({
         ajax: (data, callback) => {
-            callback(ajaxEmploy(functionaryKey).notUsed());
+            callback(ajaxEmploy(functionaryKey, month).notUsed());
         },
         
         "columnDefs": [
@@ -91,10 +106,7 @@ export const RenderTimeTableNotUsed = (functionaryKey : string) => {
                 
                 render: (item) => {
                     const { humanize, brute } = item;
-
-                    return renderToString(
-                        <ColumnsCustomOrder {...{brute,humanize}}/>
-                    );
+                    return renderToString(<ColumnsCustomOrder {...{brute,humanize}}/>);
                 },
                 targets: [1],
             },

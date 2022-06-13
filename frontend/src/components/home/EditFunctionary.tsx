@@ -2,7 +2,7 @@
 import React, { FormEvent, useEffect } from "react";
 import { useForm } from "src/hooks/useForm";
 import db from "../../helper/db";
-import { FunctionaryEditFormSchema } from "src/interfaces";
+import { FunctionaryEditFormSchema } from "src/utils/interfaces";
 import { modalHide } from "../../utils/Modal";
 
 const initialState : FunctionaryEditFormSchema = {

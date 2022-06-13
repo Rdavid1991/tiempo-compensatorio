@@ -2,7 +2,7 @@ import moment from "moment";
 import React, { useEffect, useState } from "react";
 import db from "../../helper/db";
 import { handlerFunctions } from "./function/handlerFunctions";
-import { TimeTableStateSchema } from "../../interfaces/index";
+import { TimeTableStateSchema, UseTimeSchema } from "../../utils/interfaces/index";
 import { modalHide } from "../../utils/Modal";
 
 interface PropsUseTime {
@@ -11,7 +11,7 @@ interface PropsUseTime {
     timeTable : TimeTableStateSchema;
 }
 
-const initialState = {
+const initialState : UseTimeSchema = {
     dateOfUse : "",
     hourToUse : "",
 };
@@ -19,7 +19,7 @@ const initialState = {
 export const UseTime = ({ employeeKey , id, timeTable } : PropsUseTime ) => {
 
     const { handlerUsedTime, handlerUseHours } = handlerFunctions(employeeKey);
-    const [usedTime, setUsedTime] = useState(initialState);
+    const [usedTime, setUsedTime] = useState<UseTimeSchema>(initialState);
     const [dateFrom, setDateFrom] = useState("");
 
     useEffect(() => {
@@ -43,6 +43,7 @@ export const UseTime = ({ employeeKey , id, timeTable } : PropsUseTime ) => {
                             modalHide("#useTime");
                             setUsedTime(initialState);
                             timeTable.notUsed.ajax.reload();
+                            timeTable.used.ajax.reload();
                         }
                     }}>
                         <div className="card-body">

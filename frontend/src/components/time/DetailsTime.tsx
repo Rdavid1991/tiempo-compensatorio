@@ -1,24 +1,35 @@
 import moment from "moment";
 import React, { useEffect, useState } from "react";
+import { FunctionarySourceSchema, UsedHistorySchema } from "src/utils/interfaces";
 import { timeToHumanize } from "../../helper";
 import db from "../../helper/db";
 
+interface UsedHistoryState {
+    day: string,
+    usedHourHistory: Array<UsedHistorySchema>,
+}
+
 const initialState = {
-    usedHourHistory: [],
-    day            : ""
+    day             : "",
+    usedHourHistory : [],
 };
 
-export const DetailsTime = ({ employeeKey, id }) => {
+interface PropsDetailsTime {
+    employeeKey: string;
+    id: number;
+}
 
-    const [data, setUsedHistory] = useState(initialState);
+export const DetailsTime = ({ employeeKey, id }: PropsDetailsTime) => {
+
+    const [data, setUsedHistory] = useState<UsedHistoryState>(initialState);
 
     useEffect(() => {
-        const employ = db().getOneEmploy(employeeKey);
+        const employ = db().getOneEmploy(employeeKey) as FunctionarySourceSchema;
         setUsedHistory({
-            usedHourHistory: employ.time[id].usedHourHistory,
-            day            : employ.time[id].day
+            day             : employ.time[id].day as string,
+            usedHourHistory : employ.time[id].usedHourHistory as Array<UsedHistorySchema>,
         });
-    }, [id,employeeKey]);
+    }, [id, employeeKey]);
 
     return (
         <div className="modal fade" id="details" data-bs-backdrop="static" data-bs-keyboard="false">
@@ -40,10 +51,18 @@ export const DetailsTime = ({ employeeKey, id }) => {
                         {data.usedHourHistory.length > 0 ? data.usedHourHistory.map((item, index) => (
                             <div className="row g-2 mt-1" key={index}>
                                 <div className="col-6">
-                                    <div className="p-1 border border-dark rounded bg-dark">{moment(item.date).format("ddd LL")}</div>
+                                    <div
+                                        className="p-1 border border-dark rounded bg-dark"
+                                    >
+                                        {moment(item.date).format("ddd LL")}
+                                    </div>
                                 </div>
                                 <div className="col-6">
-                                    <div className="p-1 border border-dark rounded bg-dark">{timeToHumanize(moment.duration(item.hours, "hours").asMilliseconds())}</div>
+                                    <div
+                                        className="p-1 border border-dark rounded bg-dark"
+                                    >
+                                        {timeToHumanize(moment.duration(item.hours, "hours").asMilliseconds())}
+                                    </div>
                                 </div>
                             </div>
                         )) : "No hay nada que mostrar"}

@@ -3,7 +3,7 @@
       "target": "ES2020",
       "module": "CommonJS",
       "moduleResolution": "node",
-      "sourceMap": false,
+      "sourceMap": true,
       "emitDecoratorMetadata": true,
       "experimentalDecorators": true,
       "removeComments": false,

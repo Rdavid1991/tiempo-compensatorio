@@ -2,35 +2,49 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import TimeAddTime from "./TimeAddTime";
-import { TimeTableStateSchema } from "../../interfaces/index";
+import { TimeTableStateSchema } from "../../utils/interfaces/index";
+import MonthSelector from "../fragments/MonthSelector";
 
-interface PropsTimeHeader{
-     name : string; 
-     timeTable : TimeTableStateSchema;
+interface PropsTimeHeader {
+    name: string;
+    timeTable: TimeTableStateSchema;
 }
 
-const TimeHeader = ( { name, timeTable } : PropsTimeHeader) => {
+const TimeHeader = ({ name, timeTable }: PropsTimeHeader) => {
 
     return (
         <div>
-            <h2>Funcionario: {name}</h2>
-            <Link
-                to="/"
-                className="btn btn-sm btn-primary"
-            >
-                <i className="fas fa-arrow-left"></i>
-                Atrás
-            </Link>
+            <div className="row">
+                <h2>Funcionario: {name}</h2>
+            </div>
+            <div className="row">
+                <div className="col-1">
+                    <Link
+                        to="/"
+                        className="btn btn-sm btn-primary"
+                    >
+                        <i className="fas fa-arrow-left"></i>
+                        Atrás
+                    </Link>
+                </div>
+                <div className="col-2">
+                    <button
+                        className="btn btn-sm btn-success mx-3"
+                        data-bs-toggle="modal"
+                        data-bs-target="#functionaryAddTime"
+                    >
+                        <i className="fas fa-plus"></i>
+                        Agregar hora
+                    </button>
 
-            <button
-                className="btn btn-sm btn-success mx-3"
-                data-bs-toggle="modal"
-                data-bs-target="#functionaryAddTime"
-            >
-                <i className="fas fa-plus"></i>
-                Agregar hora
-            </button>
-            <TimeAddTime {...{timeTable}} />
+                </div>
+                <div className="col">
+                    <MonthSelector />
+                </div>
+            </div>
+
+            <TimeAddTime {...{ timeTable }} />
+
         </div>
     );
 };

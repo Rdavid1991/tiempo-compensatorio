@@ -1,11 +1,15 @@
 {
-  "name": "backend",
-  "version": "1.0.0",
+  "name": "tiempo_compensatorio",
+  "version": "1.0.1",
   "description": "",
   "main": "./dist/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Rdavid1991/tiempo-compensatorio.git"
+  },
   "scripts": {
     "start-electron": "set \"ELECTRON_ENV=DEV\" && tsc && electron .",
-    "build-windows": " react-scripts build && set \"ELECTRON_ENV=PROD\" && electron-builder -c.publish.token=%GH_TOKEN% --publish always",
+    "build-windows": "set \"ELECTRON_ENV=PROD\" && tsc && electron-builder -c.publish.token=%GH_TOKEN% --publish always", 
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -15,8 +19,28 @@
     "@typescript-eslint/eslint-plugin": "^5.27.1",
     "@typescript-eslint/parser": "^5.27.1",
     "electron": "19.0.4",
+    "electron-builder": "^23.0.3",
     "eslint": "8.17.0",
     "typescript": "4.7.3"
+  },
+  "build": {
+    "directories": {
+      "output": "build"
+    },
+    "win": {
+      "asar" : false
+    },
+    "files": [
+      "./dist/**/*",
+      "./views/**/*",
+      "*.map"
+    ],
+    "extraMetadata": {
+      "main": "./dist/index.js"
+    },
+    "publish": {
+      "provider": "github"
+    }
   },
   "dependencies": {
     "electron-updater": "5.0.1"

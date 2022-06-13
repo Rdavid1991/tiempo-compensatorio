@@ -1,14 +1,30 @@
 {
 	"folders": [
 		{
-			"path": "backend"
-		},
-		{
+			"name": "frontend",
 			"path": "frontend"
 		},
 		{
+			"name": "backend",
+			"path": "backend"
+		},
+		{
+			"name": "e2e",
+			"path": "e2e"
+		},
+		{
+			"name": "tiempo-compensatorio",
 			"path": "."
 		}
 	],
-	"settings": {}
+	"settings": {
+		"cSpell.words": [
+			"datatables",
+			"substract",
+			"sweetalert"
+		],
+		"material-icon-theme.folders.associations": {
+			"fragments" : "Context"
+		}
+	}
 }

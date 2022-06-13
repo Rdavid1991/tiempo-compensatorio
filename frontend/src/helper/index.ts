@@ -1,6 +1,5 @@
-/* eslint-disable no-case-declarations */
+/* eslint-disable sort-keys */
 /* eslint-disable no-useless-escape */
-/*global bootstrap */
 import moment from "moment";
 
 /**
@@ -280,6 +279,7 @@ const dataTableSpanish = {
 const timeToString = (time : string) => {
     let timeStr = "";
     let timeArray : Array<string>;
+    let digit= "";
 
     if (new RegExp("\\.").test(time)) {
         timeArray = time.toString().split(".");
@@ -294,7 +294,7 @@ const timeToString = (time : string) => {
         timeStr = `${timeArray[0]}:00`;
         break;
     case 2:
-        const digit = timeArray[1].toString().length === 1 ? `0${timeArray[1]}` : timeArray[1];
+        digit = timeArray[1].toString().length === 1 ? `0${timeArray[1]}` : timeArray[1];
         timeStr = `${timeArray[0]}:${digit}`;
         break;
     default:

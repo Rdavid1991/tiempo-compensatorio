@@ -3,7 +3,7 @@ import React, { FormEvent, useEffect } from "react";
 import PropTypes from "prop-types";
 import db from "../../helper/db";
 import { useForm } from "src/hooks/useForm";
-import { TimeEditSchema } from "src/interfaces";
+import { TimeEditSchema } from "src/utils/interfaces";
 import { modalHide } from "src/utils/Modal";
 
 interface PropsTimeEditTime {

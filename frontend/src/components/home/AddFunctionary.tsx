@@ -7,7 +7,7 @@ import Swal from "sweetalert2";
 import { compareDiffTime } from "../../helper";
 import db from "../../helper/db";
 import { useForm } from "../../hooks/useForm";
-import { FunctionaryAddFormSchema } from "../../interfaces";
+import { FunctionaryAddFormSchema } from "../../utils/interfaces";
 
 interface Props {
     functionaryTable : DataTables.DataTables
