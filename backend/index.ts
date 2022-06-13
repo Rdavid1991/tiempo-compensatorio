@@ -24,5 +24,8 @@ app.whenReady().then(createWindow);
 
 app.on("window-all-closed", () => {
     autoUpdater.quitAndInstall();
+
+    app.quit();
 });
+
 

@@ -118,7 +118,7 @@ document.addEventListener("DOMContentLoaded", () => {
     ipcRenderer.on("import", (e, d) => {
         const importData = JSON.parse(d);
         let dataLoaded = true;
-        localStorage.clear();
+        //localStorage.clear();
         for (const element of importData) {
             if(compareKeyJson(element) && element.data && element.key){
                 if (element.key === "style"){
@@ -128,7 +128,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             }else{
                 dataLoaded = false;
-                localStorage.clear();
+                //localStorage.clear();
                 break;
             }
         }

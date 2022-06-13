@@ -53,9 +53,7 @@ export const HomeTable = () => {
         case "delete":
             //handleDelete(target);
             break;
-        case "edit":
-            console.log("llega");
-            
+        case "edit":       
             setIndexId(currentTarget.dataset.index as string);
             modalShow("#functionaryEdit");
             break;
