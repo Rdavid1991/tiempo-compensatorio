@@ -1,23 +1,23 @@
 /* eslint-disable no-prototype-builtins */
 /* eslint-disable no-extra-boolean-cast */
 /* eslint-disable no-case-declarations */
-const { ipcRenderer } = require("electron");
+import { ipcRenderer } from "electron";
 
-window.setSaveData = (data) => {
-  ipcRenderer.send("save-data",data);
+const setSaveData = (data) => {
+    ipcRenderer.send("save-data",data);
 };
 
 const applyTheme = (theme) => {
 
-    const themeElements = document.querySelectorAll("[class^='theme']");
-    themeElements.forEach((element) => {
+    const themeElements = document.querySelectorAll("[class^='theme']") ;
+    themeElements.forEach((element : HTMLLinkElement) => {
         if (!!element.className.match(theme)) {
             element.disabled = false;
         }
     });
 
     setTimeout(() => {
-        themeElements.forEach((element) => {
+        themeElements.forEach((element : HTMLLinkElement) => {
             if (!!!element.className.match(theme)) {
                 element.disabled = true;
             }
@@ -27,13 +27,13 @@ const applyTheme = (theme) => {
     localStorage.setItem("style", theme);
 };
 
-const compareKeyJson = (json) =>{
+const compareKeyJson = (json : any) =>{
 
     const __schemaFunctionary = JSON.stringify(["name","department","time"]);
     const __schemaTime = JSON.stringify(["day","start","end","hourTotal","hourUsed","hourLeft","used","usedHourHistory",]);
 
     if (JSON.stringify(Object.keys(Object.values(json)[1])) === __schemaFunctionary) {
-        for (const time of Object.values(json)[1].time) {
+        for (const time of Object.values<any>(json)[1].time) {
             if (JSON.stringify(Object.keys(time)) !== __schemaTime) {
                 return false;
             }
@@ -98,7 +98,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     ipcRenderer.on("request", () => {
 
-        let __data = [];
+        const __data = [];
         let data;
 
         for (const key in localStorage) {
@@ -116,13 +116,16 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     ipcRenderer.on("import", (e, d) => {
+        
+        console.log("🚀 ~ file: preload.ts ~ line 143 ~ ipcRenderer.on ~ d", d);
+
         const importData = JSON.parse(d);
         let dataLoaded = true;
         //localStorage.clear();
         for (const element of importData) {
             if(compareKeyJson(element) && element.data && element.key){
                 if (element.key === "style"){
-                    localStorage.setItem(element.key, JSON.stringify(element.data).replaceAll("\"",""));
+                    localStorage.setItem(element.key, (JSON.stringify(element.data as string) as string).replaceAll("\"",""));
                 }else{
                     localStorage.setItem(element.key, JSON.stringify(element.data));
                 }
@@ -139,4 +142,6 @@ document.addEventListener("DOMContentLoaded", () => {
             ipcRenderer.send("load-backup-fail", "fail");
         }
     });
+    
+   
 });

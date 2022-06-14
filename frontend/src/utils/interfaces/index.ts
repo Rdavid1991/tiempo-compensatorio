@@ -10,7 +10,7 @@ export interface FunctionarySchema {
     day        : string,
     department : string,
     end        : string,
-    hourLeft   : number,
+    hourLeft   : string,
     hourTotal  : number,
     hourUsed   : number,
     name       : string,
@@ -43,7 +43,8 @@ export interface UseTimeSchema {
     hourToUse : string;
 }
 
-export interface MontContextSchema {
+export interface HeaderTimeContextSchema {
+    employeeKey: string;
     monthSelected: number;
     setMonthSelected : Dispatch<SetStateAction<number>>
 }

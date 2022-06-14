@@ -5,7 +5,7 @@ import { modalShow } from "src/utils/Modal";
 // import { confirmAlert, errorAlert, successAlert } from "src/utils/Alerts";
 // import { showModal } from "../../helper";
 import { AddFunctionary } from "./AddFunctionary";
-import EditFunctionary from "./EditFunctionary"; 
+import EditFunctionary from "./EditFunctionary";
 
 import { RenderFunctionaryTable } from "./functions/ActionFunctionaryTable";
 // import db from "../../helper/db";
@@ -50,23 +50,23 @@ export const HomeTable = () => {
 
     const handlerActions = async ({ currentTarget }: MouseEvent<HTMLElement>) => {
         switch (currentTarget.dataset.click) {
-        case "delete":
-            //handleDelete(target);
-            break;
-        case "edit":       
-            setIndexId(currentTarget.dataset.index as string);
-            modalShow("#functionaryEdit");
-            break;
-        default:
-            break;
+            case "delete":
+                //handleDelete(target);
+                break;
+            case "edit":
+                setIndexId(currentTarget.dataset.index as string);
+                modalShow("#functionaryEdit");
+                break;
+            default:
+                break;
         }
     };
 
     return (
         <>
-            <div 
-                className="animate__animated animate__bounce animate__fadeIn" 
-                style={{ animationFillMode: "backwards" }} 
+            <div
+                className="animate__animated animate__bounce animate__fadeIn"
+                style={{ animationFillMode: "backwards" }}
             >
 
                 <h1>Registro de tiempo compensatorio, Funciona</h1>
@@ -75,17 +75,17 @@ export const HomeTable = () => {
                 <button
                     type="button"
                     className="btn btn-sm btn-primary"
-                    onClick={()=> modalShow("#addFunctionary")}
+                    onClick={() => modalShow("#addFunctionary")}
                 >
                     <i className="fas fa-plus"></i>
                     Nuevo funcionario
                 </button>
 
                 <div className="mt-5">
-                    <table 
-                        id="functionaries" 
-                        className="table table-sm table-striped" 
-                        style={{ width: "100%" }}  onClick={handlerActions}
+                    <table
+                        id="functionaries"
+                        className="table table-sm table-striped"
+                        style={{ width: "100%" }} onClick={handlerActions}
                     >
                         <thead >
                             <tr>
@@ -100,8 +100,8 @@ export const HomeTable = () => {
                     </table>
                 </div>
             </div>
-            <AddFunctionary {...{functionaryTable}} />
-            <EditFunctionary  {...{functionaryTable, indexId}}/> 
+            <AddFunctionary {...{ functionaryTable }} />
+            <EditFunctionary  {...{ functionaryTable, indexId }} />
         </>
     );
 };

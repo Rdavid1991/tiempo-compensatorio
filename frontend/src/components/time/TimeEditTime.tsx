@@ -18,11 +18,16 @@ const initialState : TimeEditSchema = {
 };
 
 const TimeEditTime = ({employeeKey, id}: PropsTimeEditTime) => {
+    console.log("🚀 ~ file: TimeEditTime.tsx ~ line 21 ~ TimeEditTime ~ id", id);
 
     const { values, setValues, handleInputChange, reset} = useForm<TimeEditSchema>(initialState);
 
     useEffect(() => {
         const employ = db().getOneEmploy(employeeKey);
+        console.log("🚀 ~ file: TimeEditTime.tsx ~ line 26 ~ useEffect ~ employ", employ);
+
+        
+
         if (employ.time.length > 0) {
             setValues({
                 day   : employ.time[id].day,

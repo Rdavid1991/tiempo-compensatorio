@@ -15,7 +15,7 @@ export const ajaxEmploy = (employeeKey : string, month : number) => {
         let totalInMilliseconds, usedInMilliseconds, leftOverInMilliseconds;
         for (let i = 0; i < __info.time.length; i++) {
 
-            if (state === __info.time[i].used && new Date(`${__info.time[i].day} ${__info.time[i].start}`).getMonth() === month) {
+            if (state === __info.time[i].used && (new Date(`${__info.time[i].day} ${__info.time[i].start}`).getMonth() === month || month===12 )) {
 
                 totalInMilliseconds = moment.duration(__info.time[i].hourTotal, "hours").asMilliseconds();
                 usedInMilliseconds = moment.duration(__info.time[i].hourUsed, "hours").asMilliseconds();
@@ -38,6 +38,7 @@ export const ajaxEmploy = (employeeKey : string, month : number) => {
                 ]);
             }
         }
+        console.log("🚀 ~ file: ajaxEmploy.ts ~ line 43 ~ sourceData ~ source", source);
         return source;
     };
 

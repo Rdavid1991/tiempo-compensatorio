@@ -1,5 +1,5 @@
 {
-  "name": "tiempo_compensatorio",
+  "name": "tiempo-compensatorio",
   "version": "1.0.1",
   "description": "",
   "main": "./dist/index.js",
@@ -9,7 +9,7 @@
   },
   "scripts": {
     "start-electron": "set \"ELECTRON_ENV=DEV\" && tsc && electron .",
-    "build-windows": "set \"ELECTRON_ENV=PROD\" && tsc && electron-builder -c.publish.token=%GH_TOKEN% --publish always", 
+    "build-windows": "powershell.exe ./script.ps1 && set \"ELECTRON_ENV=PROD\" && tsc && electron-builder -c.publish.token=%GH_TOKEN% --publish always", 
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -28,7 +28,8 @@
       "output": "build"
     },
     "win": {
-      "asar" : false
+      "asar" : false,
+      "target" : "portable"
     },
     "files": [
       "./dist/**/*",

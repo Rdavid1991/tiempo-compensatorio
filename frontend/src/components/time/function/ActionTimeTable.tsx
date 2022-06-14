@@ -100,7 +100,8 @@ export const RenderTimeTableNotUsed = (functionaryKey : string, month : number) 
                     const [index, data, dateOrder] = item.split("|");
                     return renderToString(<OpenDetails {...{data,dateOrder,index}}/>);
                 },
-                targets: [0],
+                targets : [0],
+                width   : "250px",
             },
             {
                 

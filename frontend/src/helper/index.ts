@@ -290,15 +290,15 @@ const timeToString = (time : string) => {
     }
 
     switch (timeArray.length) {
-    case 1:
-        timeStr = `${timeArray[0]}:00`;
-        break;
-    case 2:
-        digit = timeArray[1].toString().length === 1 ? `0${timeArray[1]}` : timeArray[1];
-        timeStr = `${timeArray[0]}:${digit}`;
-        break;
-    default:
-        break;
+        case 1:
+            timeStr = `${timeArray[0]}:00`;
+            break;
+        case 2:
+            digit = timeArray[1].toString().length === 1 ? `0${timeArray[1]}` : timeArray[1];
+            timeStr = `${timeArray[0]}:${digit}`;
+            break;
+        default:
+            break;
     }
 
     return timeStr;

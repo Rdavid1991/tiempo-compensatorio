@@ -20,15 +20,18 @@ interface PropsDetailsTime {
 }
 
 export const DetailsTime = ({ employeeKey, id }: PropsDetailsTime) => {
+    console.log("🚀 ~ file: DetailsTime.tsx ~ line 23 ~ DetailsTime ~ id", id);
 
     const [data, setUsedHistory] = useState<UsedHistoryState>(initialState);
 
     useEffect(() => {
         const employ = db().getOneEmploy(employeeKey) as FunctionarySourceSchema;
-        setUsedHistory({
-            day             : employ.time[id].day as string,
-            usedHourHistory : employ.time[id].usedHourHistory as Array<UsedHistorySchema>,
-        });
+        if (employ.time.length > 0) {
+            setUsedHistory({
+                day             : employ.time[id].day as string,
+                usedHourHistory : employ.time[id].usedHourHistory as Array<UsedHistorySchema>,
+            });
+        }
     }, [id, employeeKey]);
 
     return (

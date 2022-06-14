@@ -17,7 +17,7 @@ module.exports = {
     ],
     "rules": {
         "@typescript-eslint/no-shadow" : ["error"],
-        "indent"                       : ["error", 4, { "offsetTernaryExpressions": true }],
+        "indent"                       : ["error", 4, { "SwitchCase": 1 ,"offsetTernaryExpressions": true }],
         "key-spacing"                  : [
             "warn",
             {

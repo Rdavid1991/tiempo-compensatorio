@@ -17,11 +17,16 @@ export const Main = () => {
         show           : false,
         webPreferences : {
             contextIsolation : false,
-            //preload          : path.join(__dirname, "../../preload/preload.js"),
+            preload          : path.join(__dirname, "/preload.js"),
             webgl            : false
         },
         width: (width * 0.8),
     });
+
+    const ruta =window.webContents.session.storagePath;
+    console.log("🚀 ~ file: main.ts ~ line 27 ~ Main ~ ruta", ruta);
+
+    
 
     if (process.env.ELECTRON_ENV === "DEV") {
         window.loadURL("http://localhost:3000");

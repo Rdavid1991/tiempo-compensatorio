@@ -1,7 +1,8 @@
 import { createContext } from "react";
-import { MontContextSchema } from "src/utils/interfaces";
+import { HeaderTimeContextSchema } from "src/utils/interfaces";
 
-export const MonthContext = createContext<Partial<MontContextSchema>>({
+export const HeaderTimeContext = createContext<Partial<HeaderTimeContextSchema>>({
+    employeeKey      : undefined,
     monthSelected    : undefined,
     setMonthSelected : undefined
 });

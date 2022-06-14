@@ -19,7 +19,7 @@ export const AddFunctionary = ({ functionaryTable } : Props) => {
         day        : "",
         department : "",
         end        : "18:00",
-        hourLeft   : 0,
+        hourLeft   : "0",
         hourTotal  : 0,
         hourUsed   : 0,
         name       : "",

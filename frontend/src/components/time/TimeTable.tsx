@@ -11,8 +11,7 @@ import { TimeTableStateSchema } from "src/utils/interfaces";
 import TimeEditTime from "./TimeEditTime";
 import { UseTime } from "./UseTime";
 import { DetailsTime } from "./DetailsTime";
-import MonthSelector from "../fragments/MonthSelector";
-import { MonthContext } from "src/context";
+import { HeaderTimeContext } from "src/context";
 
 moment.locale("es");
 
@@ -32,9 +31,11 @@ export const TimeTable = () => {
 
     useEffect(() => {
 
-        timeTable.notUsed.destroy(); 
-        timeTable.used.destroy(); 
-
+        setTimeTable({
+            notUsed : timeTable.notUsed.destroy(),
+            used    : timeTable.used.destroy(),
+        });
+        
         setTimeTable({
             notUsed : RenderTimeTableNotUsed(employeeKey as string, monthSelected),
             used    : RenderTimeTableUsed(employeeKey as string, monthSelected),
@@ -42,6 +43,8 @@ export const TimeTable = () => {
 
         $(".pagination").addClass("pagination-sm");
     }, [monthSelected]);
+
+
 
     // const handleDelete = async (target, index, key) => {
 
@@ -69,40 +72,43 @@ export const TimeTable = () => {
 
         const button = e.target as HTMLButtonElement;
 
-        switch (button.dataset.click) {
-        case "details":
-            modalShow("#details");
-            break;
-        case "delete":
-            // handleDelete(target, id, employeeKey);
-            break;
-        case "useTime":
-            modalShow("#useTime");
-            break;
-        case "editTime":
-            modalShow("#timeEditModal");
-            break;
-        default:
-            break;
+        if (button.dataset.click) {
+
+            switch (button.dataset.click) {
+                case "details":
+                    modalShow("#details");
+                    break;
+                case "delete":
+                    // handleDelete(target, id, employeeKey);
+                    break;
+                case "useTime":
+                    modalShow("#useTime");
+                    break;
+                case "editTime":
+                    modalShow("#timeEditModal");
+                    break;
+                default:
+                    break;
+            }
+            setId(Number.parseInt(button.dataset.index as string));
+            const { notUsed, used } = timeTable;
+            notUsed.ajax.reload();
+            used.ajax.reload();
         }
-        setId(Number.parseInt(button.dataset.index as string));
-        const { notUsed, used } = timeTable;
-        notUsed.ajax.reload();
-        used.ajax.reload();
     };
 
     return (
 
-
         < div className="animate__animated animate__bounce animate__fadeIn" style={{ animationFillMode: "backwards" }}>
             <UseTime {...{ employeeKey, id, timeTable }} />
             <TimeEditTime {...{ employeeKey, id }} />
-            <MonthContext.Provider value={{
+            <HeaderTimeContext.Provider value={{
+                employeeKey,
                 monthSelected,
                 setMonthSelected
             }}>
                 <TimeHeader  {...{ name: data.name, timeTable }} />
-            </MonthContext.Provider>
+            </HeaderTimeContext.Provider>
             <DetailsTime {...{ employeeKey, id }} />
 
             <div className="mt-3">

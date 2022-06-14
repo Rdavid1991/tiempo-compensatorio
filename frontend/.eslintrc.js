@@ -23,7 +23,7 @@ module.exports = {
     "rules": {
         "@typescript-eslint/no-shadow"       : ["error"],
         "@typescript-eslint/no-var-requires" : 0,
-        "indent"                             : ["error", 4, { "offsetTernaryExpressions": true }],
+        "indent"                             : ["warn", 4, { "SwitchCase": 1 , "offsetTernaryExpressions": true}],
         "jsx-quotes"                         : ["warn", "prefer-double"],
         "key-spacing"                        : [
             "warn",

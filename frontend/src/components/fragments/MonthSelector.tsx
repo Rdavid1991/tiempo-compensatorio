@@ -1,6 +1,6 @@
 import React, { ChangeEvent, Dispatch, SetStateAction, useContext, useEffect, useRef, useState } from "react";
-import { MontContextSchema } from "src/utils/interfaces";
-import { MonthContext } from "../../context/index";
+import { HeaderTimeContextSchema } from "src/utils/interfaces";
+import { HeaderTimeContext } from "../../context/index";
 
 interface MonthSelectorState {
     number: number;
@@ -9,7 +9,7 @@ interface MonthSelectorState {
 
 const MonthSelector = () => {
 
-    const { monthSelected, setMonthSelected } = useContext<Partial<MontContextSchema>>(MonthContext);
+    const { monthSelected, setMonthSelected } = useContext<Partial<HeaderTimeContextSchema>>(HeaderTimeContext);
 
 
     const [monthCollection, setMonthCollection] = useState<Array<MonthSelectorState>>();
@@ -19,7 +19,7 @@ const MonthSelector = () => {
         const date = new Date();
         const collection: Array<MonthSelectorState> = [];
 
-        for (let i = 0; i < 11; i++) {
+        for (let i = 0; i < 12; i++) {
 
             date.setMonth(i);
 
@@ -50,14 +50,17 @@ const MonthSelector = () => {
                     className="form-control-sm form-control "
                     onChange={handleMonthChange}
                 >
+                    <option value={12}>Todo</option>
                     {
                         monthCollection?.map((month, index) => {
-                            return <option
-                                key={index}
-                                value={month.number}
-                            >
-                                {month.name}
-                            </option>;
+                            return (
+                                <option
+                                    key={index}
+                                    value={month.number}
+                                >
+                                    {`${month.name.charAt(0).toUpperCase()}${month.name.substring(1)}`}
+                                </option>
+                            );
                         })
                     }
                 </select>

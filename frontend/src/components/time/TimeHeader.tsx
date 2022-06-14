@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import TimeAddTime from "./TimeAddTime";
 import { TimeTableStateSchema } from "../../utils/interfaces/index";
 import MonthSelector from "../fragments/MonthSelector";
+import UseToTotal from "../fragments/UseToTotal";
 
 interface PropsTimeHeader {
     name: string;
@@ -40,6 +41,9 @@ const TimeHeader = ({ name, timeTable }: PropsTimeHeader) => {
                 </div>
                 <div className="col">
                     <MonthSelector />
+                </div>
+                <div className="col">
+                    <UseToTotal />
                 </div>
             </div>
 
