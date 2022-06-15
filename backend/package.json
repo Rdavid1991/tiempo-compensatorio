@@ -9,18 +9,18 @@
   },
   "scripts": {
     "start-electron": "set \"ELECTRON_ENV=DEV\" && tsc && electron .",
-    "build-windows": "powershell.exe ./script.ps1 && set \"ELECTRON_ENV=PROD\" && tsc && electron-builder -c.publish.token=%GH_TOKEN% --publish always", 
+    "build-windows": "powershell.exe ./script.ps1 && set \"ELECTRON_ENV=PROD\" && tsc && electron-builder -c.publish.token=%GH_TOKEN% --publish always",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "npm:install": "npm i"
+    "npm:install": "npm i -E"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^5.27.1",
-    "@typescript-eslint/parser": "^5.27.1",
+    "@typescript-eslint/eslint-plugin": "5.28.0",
+    "@typescript-eslint/parser": "5.28.0",
     "electron": "19.0.4",
-    "electron-builder": "^23.0.3",
+    "electron-builder": "23.0.3",
     "eslint": "8.17.0",
     "typescript": "4.7.3"
   },
@@ -29,8 +29,8 @@
       "output": "build"
     },
     "win": {
-      "asar" : false,
-      "target" : "portable"
+      "asar": false,
+      "target": "portable"
     },
     "files": [
       "./dist/**/*",
