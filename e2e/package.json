@@ -4,12 +4,16 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "cypress open"
+    "test": "cypress open",
+    "npm:install": "npm i -E"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "cypress": "^10.1.0"
+    "cypress": "10.1.0"
+  },
+  "devDependencies": {
+    "typescript": "4.7.3"
   }
 }
