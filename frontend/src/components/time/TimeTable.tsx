@@ -7,7 +7,7 @@ import TimeTableNotUsed from "./TimeTableNotUsed";
 import TimeHeader from "./TimeHeader";
 import { RenderTimeTableNotUsed, RenderTimeTableUsed } from "./function/ActionTimeTable";
 import { modalShow } from "../../utils/Modal";
-import { TimeTableStateSchema } from "src/utils/interfaces";
+import { FilterStateSchema, TimeTableStateSchema } from "src/utils/interfaces";
 import TimeEditTime from "./TimeEditTime";
 import { UseTime } from "./UseTime";
 import { DetailsTime } from "./DetailsTime";
@@ -20,11 +20,16 @@ const initialTimeTableState: TimeTableStateSchema = {
     used    : $().DataTable(),
 };
 
+
 export const TimeTable = () => {
 
     const { employeeKey } = useParams() as { employeeKey: string };
 
-    const [monthSelected, setMonthSelected] = useState<number>(new Date().getMonth());
+    const [filter, setFilter] = useState<FilterStateSchema>({
+        month : new Date().getMonth(),
+        year  : new Date().getFullYear()
+    });
+
     const [timeTable, setTimeTable] = useState<TimeTableStateSchema>(initialTimeTableState);
     const [id, setId] = useState<number>(0);
     const [data, setData] = useState(JSON.parse(localStorage.getItem(employeeKey as string) as string));
@@ -35,14 +40,14 @@ export const TimeTable = () => {
             notUsed : timeTable.notUsed.destroy(),
             used    : timeTable.used.destroy(),
         });
-        
+
         setTimeTable({
-            notUsed : RenderTimeTableNotUsed(employeeKey as string, monthSelected),
-            used    : RenderTimeTableUsed(employeeKey as string, monthSelected),
+            notUsed : RenderTimeTableNotUsed(employeeKey as string, filter),
+            used    : RenderTimeTableUsed(employeeKey as string, filter),
         });
 
         $(".pagination").addClass("pagination-sm");
-    }, [monthSelected]);
+    }, [filter.month, filter.year]);
 
 
 
@@ -104,8 +109,9 @@ export const TimeTable = () => {
             <TimeEditTime {...{ employeeKey, id }} />
             <HeaderTimeContext.Provider value={{
                 employeeKey,
-                monthSelected,
-                setMonthSelected
+                filter,
+                setFilter,
+                timeTable
             }}>
                 <TimeHeader  {...{ name: data.name, timeTable }} />
             </HeaderTimeContext.Provider>

@@ -4,6 +4,7 @@ import { renderToString } from "react-dom/server";
 import { ajaxEmploy } from "./ajaxEmploy";
 import { dataTableSpanish } from "src/helper";
 import { AjaxData } from "src/utils/interfaces";
+import { FilterStateSchema } from "../../../utils/interfaces/index";
 
 
 interface PropsOpenDetails {
@@ -51,12 +52,12 @@ const ActionTableButton = ({ index } :{index : number}) => {
 
 };
 
-export const RenderTimeTableUsed = (functionaryKey : string , month : number) => {
+export const RenderTimeTableUsed = (functionaryKey : string , filter : FilterStateSchema) => {
 
     return $("#used").DataTable({
         
         "ajax": function (data, callback) {
-            callback(ajaxEmploy(functionaryKey, month).used());
+            callback(ajaxEmploy(functionaryKey, filter).used());
         },
         "columnDefs": [
             {
@@ -86,11 +87,11 @@ export const RenderTimeTableUsed = (functionaryKey : string , month : number) =>
     });
 };
 
-export const RenderTimeTableNotUsed = (functionaryKey : string, month : number) => {
+export const RenderTimeTableNotUsed = (functionaryKey : string, filter : FilterStateSchema) => {
 
     return $("#notUsed").DataTable({
         ajax: (data, callback) => {
-            callback(ajaxEmploy(functionaryKey, month).notUsed());
+            callback(ajaxEmploy(functionaryKey, filter).notUsed());
         },
         
         "columnDefs": [

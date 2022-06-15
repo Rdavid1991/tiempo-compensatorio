@@ -43,8 +43,13 @@ export interface UseTimeSchema {
     hourToUse : string;
 }
 
+export interface FilterStateSchema {
+    month: number;
+    year: number;
+}
 export interface HeaderTimeContextSchema {
     employeeKey: string;
-    monthSelected: number;
-    setMonthSelected : Dispatch<SetStateAction<number>>
+    filter: FilterStateSchema;
+    setFilter : Dispatch<SetStateAction<FilterStateSchema>>
+    timeTable : TimeTableStateSchema
 }
