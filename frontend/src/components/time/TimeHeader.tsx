@@ -5,6 +5,7 @@ import TimeAddTime from "./TimeAddTime";
 import { TimeTableStateSchema } from "../../utils/interfaces/index";
 import MonthSelector from "../fragments/MonthSelector";
 import UseToTotal from "../fragments/UseToTotal";
+import { modalShow } from "src/utils/Modal";
 
 interface PropsTimeHeader {
     name: string;
@@ -31,8 +32,9 @@ const TimeHeader = ({ name, timeTable }: PropsTimeHeader) => {
                 <div className="col-2">
                     <button
                         className="btn btn-sm btn-success mx-3"
-                        data-bs-toggle="modal"
-                        data-bs-target="#functionaryAddTime"
+                        onClick={()=>{
+                            modalShow("#functionaryAddTime");
+                        }}
                     >
                         <i className="fas fa-plus"></i>
                         Agregar hora
