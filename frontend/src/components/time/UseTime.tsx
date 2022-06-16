@@ -1,22 +1,24 @@
 import moment from "moment";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import db from "../../helper/db";
 import { handlerFunctions } from "./function/handlerFunctions";
 import { TimeTableStateSchema, UseTimeSchema } from "../../utils/interfaces/index";
 import { modalHide } from "../../utils/Modal";
+import { HeaderTimeContext } from "src/context";
 
 interface PropsUseTime {
-    employeeKey : string;
-    id :number;
-    timeTable : TimeTableStateSchema;
+    employeeKey: string;
+    id: number;
 }
 
-const initialState : UseTimeSchema = {
+const initialState: UseTimeSchema = {
     dateOfUse : "",
     hourToUse : "",
 };
 
-export const UseTime = ({ employeeKey , id, timeTable } : PropsUseTime ) => {
+export const UseTime = ({ employeeKey, id }: PropsUseTime) => {
+
+    const { timeTable, reloadData } = useContext(HeaderTimeContext);
 
     const { handlerUsedTime, handlerUseHours } = handlerFunctions(employeeKey);
     const [usedTime, setUsedTime] = useState<UseTimeSchema>(initialState);
@@ -28,7 +30,7 @@ export const UseTime = ({ employeeKey , id, timeTable } : PropsUseTime ) => {
     }, [id]);
 
     return (
-        <div className="modal fade" id="useTime">
+        <div className="modal fade" id="useTime" data-bs-backdrop="static">
             <div className="modal-dialog">
                 <div className="modal-content">
                     <div className="modal-header">
@@ -42,11 +44,12 @@ export const UseTime = ({ employeeKey , id, timeTable } : PropsUseTime ) => {
                         if (response) {
                             modalHide("#useTime");
                             setUsedTime(initialState);
-                            timeTable.notUsed.ajax.reload();
-                            timeTable.used.ajax.reload();
+                            timeTable?.notUsed.ajax.reload();
+                            timeTable?.used.ajax.reload();
+                            if (reloadData) reloadData();
                         }
                     }}>
-                        <div className="card-body">
+                        <div className="modal-body">
 
                             <div className="mb-3">
                                 <label htmlFor="hourToUse" className="form-label">Horas a usar</label>

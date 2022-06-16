@@ -1,28 +1,25 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React,{ useContext } from "react";
 import { Link } from "react-router-dom";
 import TimeAddTime from "./TimeAddTime";
-import { TimeTableStateSchema } from "../../utils/interfaces/index";
 import MonthSelector from "../fragments/MonthSelector";
 import UseToTotal from "../fragments/UseToTotal";
 import { modalShow } from "src/utils/Modal";
+import { HeaderTimeContext } from "src/context";
 
-interface PropsTimeHeader {
-    name: string;
-    timeTable: TimeTableStateSchema;
-}
 
-const TimeHeader = ({ name, timeTable }: PropsTimeHeader) => {
+const TimeHeader = () => {
+
+    const { data } = useContext(HeaderTimeContext);
 
     return (
         <div>
 
             <div className="row">
                 <div className="col-5">
-                    <div className="card">
+                    <div className="card h-100" title="title">
                         <div className="card-body">
                             <div className="row">
-                                <h2>Funcionario: {name}</h2>
+                                <h2>Funcionario: {data?.name}</h2>
                                 <div className="row">
                                     <div className="col-3">
                                         <Link
@@ -50,7 +47,7 @@ const TimeHeader = ({ name, timeTable }: PropsTimeHeader) => {
                     </div>
                 </div>
                 <div className="col">
-                    <div className="card">
+                    <div className="card h-100" title="filter">
                         <div className="card-body">
                             <MonthSelector />
                         </div>
@@ -61,7 +58,7 @@ const TimeHeader = ({ name, timeTable }: PropsTimeHeader) => {
                 </div>
             </div>
 
-            <TimeAddTime {...{ timeTable }} />
+            <TimeAddTime />
 
         </div>
     );

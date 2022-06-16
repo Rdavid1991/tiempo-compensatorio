@@ -2,7 +2,6 @@ import moment from "moment";
 import React, { FormEvent, useContext, useEffect, useRef, useState } from "react";
 import { HeaderTimeContext } from "src/context";
 import { timeToHumanize, timeToString } from "src/helper";
-import db from "src/helper/db";
 import { FunctionarySourceSchema } from "src/utils/interfaces";
 import { modalShow } from "src/utils/Modal";
 import { UsedHistorySchema } from "../../utils/interfaces/index";
@@ -25,18 +24,17 @@ const UseToTotal = () => {
         timeToUse : ""
     });
 
-    const { employeeKey, timeTable } = useContext(HeaderTimeContext);
+    const { data, employeeKey, timeTable, reloadData } = useContext(HeaderTimeContext);
     const [total, setTotal] = useState(0);
 
     useEffect(() => {
-
-        const data = db().getOneEmploy(employeeKey as string) as FunctionarySourceSchema;
+        const source = {...data} as FunctionarySourceSchema;
         let totalInMilliseconds = 0;
-        data.time.map((item) => {
+        source.time.map((item) => {
             totalInMilliseconds += moment.duration(item.hourLeft, "hours").asMilliseconds();
         });
         setTotal(totalInMilliseconds);
-    }, []);
+    }, [data]);
 
     const useFromTotalTime = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -50,13 +48,13 @@ const UseToTotal = () => {
             return;
         }
 
-        const data = db().getOneEmploy(employeeKey as string) as FunctionarySourceSchema;
+        const source = { ...data } as FunctionarySourceSchema;
 
-        for (let i = 0; i < data.time.length; i++) {
+        for (let i = 0; i < source.time.length; i++) {
 
-            if (!data.time[i].used) {
+            if (!source.time[i].used) {
 
-                const strTimeLeft = timeToString(data.time[i].hourLeft as string);
+                const strTimeLeft = timeToString(source.time[i].hourLeft as string);
 
                 timeLeft = moment.duration(strTimeLeft).asMilliseconds();
 
@@ -65,22 +63,22 @@ const UseToTotal = () => {
 
                 if (resultLeft <= 0) {
 
-                    (data.time[i].usedHourHistory as Array<UsedHistorySchema>).push({
+                    (source.time[i].usedHourHistory as Array<UsedHistorySchema>).push({
                         "date"  : values.dateOfUse,
-                        "hours" : data.time[i].hourLeft as string
+                        "hours" : source.time[i].hourLeft as string
                     });
 
-                    data.time[i].hourLeft = "0";
-                    data.time[i].used = true;
+                    source.time[i].hourLeft = "0";
+                    source.time[i].used = true;
 
                     if (resultLeft === 0) break;
                 } else {
-                    (data.time[i].usedHourHistory as Array<UsedHistorySchema>).push({
+                    (source.time[i].usedHourHistory as Array<UsedHistorySchema>).push({
                         "date"  : values.dateOfUse,
                         "hours" : timeToString((timeLeft - resultLeft).toString())
                     });
 
-                    data.time[i].hourLeft = moment.utc(resultLeft).format("H:mm");
+                    source.time[i].hourLeft = moment.utc(resultLeft).format("H:mm");
 
                     break;
                 }
@@ -95,8 +93,12 @@ const UseToTotal = () => {
 
         timeTable?.notUsed.ajax.reload();
         timeTable?.used.ajax.reload();
-        
+
+        if (reloadData) reloadData();
     };
+
+    console.log("recarga");
+    
 
     const openModalUseTotalTime = () => {
         modalShow(`#${useTotalTimeModal}`);
@@ -104,7 +106,7 @@ const UseToTotal = () => {
 
     return (
         <>
-            <div className="card w-100">
+            <div className="card w-100 h-100" title="use-total">
                 <div className="card-body">
 
                     <div className="row">
@@ -200,4 +202,4 @@ const UseToTotal = () => {
     );
 };
 
-export default React.memo(UseToTotal);
+export default UseToTotal;

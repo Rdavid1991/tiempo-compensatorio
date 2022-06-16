@@ -11,8 +11,8 @@ export interface FunctionarySchema {
     department : string,
     end        : string,
     hourLeft   : string,
-    hourTotal  : number,
-    hourUsed   : number,
+    hourTotal  : string,
+    hourUsed   : string,
     name       : string,
     start      : string,
     used       : boolean
@@ -50,6 +50,8 @@ export interface FilterStateSchema {
 export interface HeaderTimeContextSchema {
     employeeKey: string;
     filter: FilterStateSchema;
+    reloadData : ()=> void;
     setFilter : Dispatch<SetStateAction<FilterStateSchema>>
-    timeTable : TimeTableStateSchema
+    timeTable : TimeTableStateSchema;
+    data : FunctionarySourceSchema
 }

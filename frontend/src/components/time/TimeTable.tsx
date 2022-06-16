@@ -1,4 +1,4 @@
-import React, { MouseEvent, useEffect, useState } from "react";
+import React, { MouseEvent, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router";
 import moment from "moment";
 import "moment/locale/es-us";
@@ -7,7 +7,7 @@ import TimeTableNotUsed from "./TimeTableNotUsed";
 import TimeHeader from "./TimeHeader";
 import { RenderTimeTableNotUsed, RenderTimeTableUsed } from "./function/ActionTimeTable";
 import { modalShow } from "../../utils/Modal";
-import { FilterStateSchema, TimeTableStateSchema } from "src/utils/interfaces";
+import { FilterStateSchema, FunctionarySourceSchema, TimeTableStateSchema } from "src/utils/interfaces";
 import TimeEditTime from "./TimeEditTime";
 import { UseTime } from "./UseTime";
 import { DetailsTime } from "./DetailsTime";
@@ -20,19 +20,22 @@ const initialTimeTableState: TimeTableStateSchema = {
     used    : $().DataTable(),
 };
 
-
 export const TimeTable = () => {
 
     const { employeeKey } = useParams() as { employeeKey: string };
 
+    const timeTableData = (): FunctionarySourceSchema => JSON.parse(localStorage.getItem(employeeKey as string) as string);
+    const initialDataState = useRef<FunctionarySourceSchema>(timeTableData()).current;
+
+
     const [filter, setFilter] = useState<FilterStateSchema>({
-        month : new Date().getMonth(),
+        month : 100, //100 para que se seleccione la opción todo
         year  : new Date().getFullYear()
     });
 
     const [timeTable, setTimeTable] = useState<TimeTableStateSchema>(initialTimeTableState);
     const [id, setId] = useState<number>(0);
-    const [data, setData] = useState(JSON.parse(localStorage.getItem(employeeKey as string) as string));
+    const [data, setData] = useState<typeof initialDataState>(initialDataState);
 
     useEffect(() => {
 
@@ -102,18 +105,27 @@ export const TimeTable = () => {
         }
     };
 
+    const reloadData = () => {
+        console.log("se llamo");
+        
+        setData(timeTableData());
+    };
+
     return (
 
         < div className="animate__animated animate__bounce animate__fadeIn" style={{ animationFillMode: "backwards" }}>
-            <UseTime {...{ employeeKey, id, timeTable }} />
-            <TimeEditTime {...{ employeeKey, id }} />
+
             <HeaderTimeContext.Provider value={{
+                data,
                 employeeKey,
                 filter,
+                reloadData,
                 setFilter,
-                timeTable
+                timeTable,
             }}>
-                <TimeHeader  {...{ name: data.name, timeTable }} />
+                <TimeHeader />
+                <UseTime {...{ employeeKey, id }} />
+                <TimeEditTime {...{ employeeKey, id }} />
             </HeaderTimeContext.Provider>
             <DetailsTime {...{ employeeKey, id }} />
 
