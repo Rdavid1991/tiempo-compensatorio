@@ -1,5 +1,5 @@
 
-import React, { FormEvent, useEffect } from "react";
+import React, { Dispatch, FormEvent, useEffect } from "react";
 import { useForm } from "src/hooks/useForm";
 import db from "../../helper/db";
 import { FunctionaryEditFormSchema } from "src/utils/interfaces";
@@ -12,10 +12,11 @@ const initialState : FunctionaryEditFormSchema = {
 
 interface Props {
     indexId: string;
+    setIndexId : Dispatch<React.SetStateAction<string>> ;
     functionaryTable: DataTables.DataTables
 }
 
-const EditFunctionary = ({indexId, functionaryTable} : Props) => {
+const EditFunctionary = ({indexId, functionaryTable, setIndexId} : Props) => {
 
     const { values, setValues, handleInputChange, reset } = useForm<FunctionaryEditFormSchema>(initialState);
 
@@ -32,6 +33,7 @@ const EditFunctionary = ({indexId, functionaryTable} : Props) => {
         functionaryTable.ajax.reload();
         modalHide("#functionaryEdit");
         reset();
+        setIndexId("");
     };
 
     return (

@@ -48,7 +48,7 @@ export const HomeTable = () => {
 
     }; */
 
-    const handlerActions = async (e : MouseEvent<HTMLElement>) => {
+    const handlerActions = async (e: MouseEvent<HTMLElement>) => {
 
         const target = e.target as HTMLButtonElement;
 
@@ -104,7 +104,7 @@ export const HomeTable = () => {
                 </div>
             </div>
             <AddFunctionary {...{ functionaryTable }} />
-            <EditFunctionary  {...{ functionaryTable, indexId }} />
+            <EditFunctionary  {...{ functionaryTable, indexId, setIndexId }} />
         </>
     );
 };
