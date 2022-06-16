@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "cypress open",
-    "npm:install": "npm i -E"
+    "npm:install": "npm i"
   },
   "keywords": [],
   "author": "",
@@ -14,6 +14,7 @@
     "cypress": "10.1.0"
   },
   "devDependencies": {
+    "eslint": "^8.17.0",
     "typescript": "4.7.3"
   }
 }
