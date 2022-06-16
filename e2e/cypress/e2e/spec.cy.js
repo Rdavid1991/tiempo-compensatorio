@@ -1,8 +1,6 @@
 /// <reference types="Cypress"/>
 /* global cy, describe, it, afterEach, beforeEach */
 
-
-
 describe('Creación y edición de funcionario', () => {
 
     let storage = "";
