@@ -47,7 +47,7 @@ const EditFunctionary = ({indexId, functionaryTable} : Props) => {
                         id="editEmployTimeForm"
                         onSubmit={handlerInfoSave}
                     >
-                        <div className="card-body">
+                        <div className="modal-body">
                             <div className="mb-3">
                                 <label htmlFor="name" className="form-label">Nombre</label>
                                 <input

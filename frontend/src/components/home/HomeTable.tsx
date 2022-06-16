@@ -48,13 +48,16 @@ export const HomeTable = () => {
 
     }; */
 
-    const handlerActions = async ({ currentTarget }: MouseEvent<HTMLElement>) => {
-        switch (currentTarget.dataset.click) {
+    const handlerActions = async (e : MouseEvent<HTMLElement>) => {
+
+        const target = e.target as HTMLButtonElement;
+
+        switch (target.dataset.click) {
             case "delete":
                 //handleDelete(target);
                 break;
             case "edit":
-                setIndexId(currentTarget.dataset.index as string);
+                setIndexId(target.dataset.index as string);
                 modalShow("#functionaryEdit");
                 break;
             default:
