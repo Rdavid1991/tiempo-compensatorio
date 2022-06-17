@@ -27,7 +27,7 @@
 	},
 	"Cypress function": {
 		"scope": "javascript,typescript",
-		"prefix": "cy",
+		"prefix": "cyg",
 		"body": [
 			"cy.get($1)"
 		],
@@ -35,9 +35,26 @@
 	},
 	"Cypress jquery": {
 		"scope": "javascript,typescript",
-		"prefix": "$cy",
+		"prefix": "cy$$",
 		"body": [
 			"cy.$$($1)"
+		],
+		"description": "Log output to console"
+	},
+	"Cypress log": {
+		"scope": "javascript,typescript",
+		"prefix": "cyl",
+		"body": [
+			"cy.log(\"🚀🚀🚀**$1**🚀🚀🚀\")"
+		],
+		"description": "Log output to console"
+	},
+
+	"Cypress log var": {
+		"scope": "javascript,typescript",
+		"prefix": "cylv",
+		"body": [
+			"cy.log(`❗❗❗** ${$1} **❗❗❗`)"
 		],
 		"description": "Log output to console"
 	},
