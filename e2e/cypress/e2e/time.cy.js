@@ -170,7 +170,7 @@ describe('Creación y edición de funcionario', () => {
 
                 let ye = date.toLocaleDateString([], { year: 'numeric' })
 
-                const monthRandom = String(Math.trunc(Math.random() * 11) + 1)
+                const monthRandom = String(Math.trunc(Math.random() * 9) + 3)
                 let mo = monthRandom.length > 1 ? monthRandom : `0${monthRandom}`
 
                 const dayRandom = String(Math.trunc(Math.random() * 30) + 1)
@@ -224,9 +224,8 @@ describe('Creación y edición de funcionario', () => {
             cy.get(cy.$$(modal).find("button[type=\"submit\"]"))
                 .click()
 
-            /**
-             * Verificar total de horas restantes
-             */
+        
+            cy.log("🚀 Verificar total de horas restantes")
             cy.get("[title=\"use-total\"]").should("contain.text", "5 horas 45 minutos")
         })
     })
