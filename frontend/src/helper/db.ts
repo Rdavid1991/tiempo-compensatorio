@@ -84,7 +84,6 @@ const db = () => {
                 )
             );
 
-            // eslint-disable-next-line no-prototype-builtins
             if (localStorage.hasOwnProperty(employeeKey)) {
 
                 const info = JSON.parse(localStorage.getItem(employeeKey)as string);
@@ -141,7 +140,7 @@ const db = () => {
 
     };
 
-    const dropTime = async (target:string, indexData : number, employeeKey : string) => {
+    const dropTime = async (indexData : number, employeeKey : string) => {
 
         if (localStorage.hasOwnProperty(employeeKey)) {
 

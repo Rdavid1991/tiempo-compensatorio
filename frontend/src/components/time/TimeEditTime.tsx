@@ -1,10 +1,11 @@
 import moment from "moment";
-import React, { FormEvent, useEffect } from "react";
+import React, { FormEvent, useContext, useEffect } from "react";
 import PropTypes from "prop-types";
 import db from "../../helper/db";
 import { useForm } from "src/hooks/useForm";
 import { TimeEditSchema } from "src/utils/interfaces";
 import { modalHide } from "src/utils/Modal";
+import { HeaderTimeContext } from "src/context";
 
 interface PropsTimeEditTime {
     employeeKey : string;
@@ -18,16 +19,13 @@ const initialState : TimeEditSchema = {
 };
 
 const TimeEditTime = ({employeeKey, id}: PropsTimeEditTime) => {
-    console.log("🚀 ~ file: TimeEditTime.tsx ~ line 21 ~ TimeEditTime ~ id", id);
+
+    const {reloadData, timeTable} = useContext(HeaderTimeContext);
 
     const { values, setValues, handleInputChange, reset} = useForm<TimeEditSchema>(initialState);
 
     useEffect(() => {
         const employ = db().getOneEmploy(employeeKey);
-        console.log("🚀 ~ file: TimeEditTime.tsx ~ line 26 ~ useEffect ~ employ", employ);
-
-        
-
         if (employ.time.length > 0) {
             setValues({
                 day   : employ.time[id].day,
@@ -43,11 +41,14 @@ const TimeEditTime = ({employeeKey, id}: PropsTimeEditTime) => {
         if (response) {
             reset();
             modalHide("#timeEditModal");
+            timeTable?.notUsed.ajax.reload();
+            timeTable?.used.ajax.reload();
+            if (reloadData) reloadData();
         }
     };
 
     return (
-        <div className="modal fade" id="timeEditModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div className="modal fade" id="timeEditModal" data-bs-backdrop="static" aria-hidden="true">
             <div className="modal-dialog">
                 <div className="modal-content">
                     <div className="modal-header">

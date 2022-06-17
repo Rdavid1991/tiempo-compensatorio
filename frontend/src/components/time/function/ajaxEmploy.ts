@@ -42,7 +42,7 @@ export const ajaxEmploy = (employeeKey : string, filter : FilterStateSchema) => 
                 ]);
             }
         }
-        console.log("🚀 ~ file: ajaxEmploy.ts ~ line 43 ~ sourceData ~ source", source);
+        
         return source;
     };
 

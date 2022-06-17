@@ -6,7 +6,7 @@ export const modalHide = (selector: string) => {
     const modalElement = document.querySelector(selector);
 
     if (modalElement !== null) {
-        console.log({modalElement});
+        ({modalElement});
         Modal.getOrCreateInstance(modalElement)?.hide();
     }
 };

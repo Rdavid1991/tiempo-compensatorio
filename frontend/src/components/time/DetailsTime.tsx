@@ -20,7 +20,7 @@ interface PropsDetailsTime {
 }
 
 export const DetailsTime = ({ employeeKey, id }: PropsDetailsTime) => {
-    console.log("🚀 ~ file: DetailsTime.tsx ~ line 23 ~ DetailsTime ~ id", id);
+    
 
     const [data, setUsedHistory] = useState<UsedHistoryState>(initialState);
 

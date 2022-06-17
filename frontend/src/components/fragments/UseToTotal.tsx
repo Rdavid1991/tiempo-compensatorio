@@ -109,7 +109,7 @@ const UseToTotal = () => {
         if (reloadData) reloadData();
     };
 
-    console.log("recarga");
+    ("recarga");
     
 
     const openModalUseTotalTime = () => {
