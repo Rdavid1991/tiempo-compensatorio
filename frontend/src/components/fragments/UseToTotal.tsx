@@ -31,7 +31,7 @@ const UseToTotal = () => {
         const source = {...data} as FunctionarySourceSchema;
         let totalInMilliseconds = 0;
         source.time.map((item) => {
-            totalInMilliseconds += moment.duration(item.hourLeft, "hours").asMilliseconds();
+            totalInMilliseconds += moment.duration(timeToString(item.hourLeft as string)).asMilliseconds();
         });
         setTotal(totalInMilliseconds);
     }, [data]);
@@ -59,7 +59,11 @@ const UseToTotal = () => {
                 timeLeft = moment.duration(strTimeLeft).asMilliseconds();
 
                 resultLeft = timeLeft - timeToUse;
-                timeToUse = resultLeft <= 0 ? timeToUse + resultLeft : timeToUse - resultLeft;
+
+                if (resultLeft <= 0) {
+                    
+                    timeToUse = timeToUse - timeLeft;
+                }
 
                 if (resultLeft <= 0) {
 
@@ -68,6 +72,10 @@ const UseToTotal = () => {
                         "hours" : source.time[i].hourLeft as string
                     });
 
+                    const currentHourLeft = moment.duration(timeToString(source.time[i].hourLeft as string)).asMilliseconds();
+                    const currentHourUsed = moment.duration(timeToString(source.time[i].hourUsed as string)).asMilliseconds();
+
+                    source.time[i].hourUsed = moment.utc(currentHourUsed + currentHourLeft).format("H:mm");
                     source.time[i].hourLeft = "0";
                     source.time[i].used = true;
 
@@ -75,10 +83,14 @@ const UseToTotal = () => {
                 } else {
                     (source.time[i].usedHourHistory as Array<UsedHistorySchema>).push({
                         "date"  : values.dateOfUse,
-                        "hours" : timeToString((timeLeft - resultLeft).toString())
+                        "hours" : timeToString((moment.utc(timeLeft - resultLeft).format("H:mm")).toString())
                     });
 
+                    const currentHourUsed = moment.duration(timeToString(source.time[i].hourUsed as string)).asMilliseconds();
+
+                    source.time[i].hourUsed = timeToString((moment.utc(currentHourUsed + (timeLeft - resultLeft)).format("H:mm")).toString());
                     source.time[i].hourLeft = moment.utc(resultLeft).format("H:mm");
+                
 
                     break;
                 }
@@ -86,7 +98,7 @@ const UseToTotal = () => {
 
 
         }
-        localStorage.setItem(employeeKey as string, JSON.stringify(data));
+        localStorage.setItem(employeeKey as string, JSON.stringify(source));
 
         modalHide(`#${useTotalTimeModal}`);
         successAlert("Tiempo usado");

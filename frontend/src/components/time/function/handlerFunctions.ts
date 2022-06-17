@@ -5,32 +5,34 @@ import { substractTime, timeToString } from "../../../helper";
 import { UseTimeSchema } from "src/utils/interfaces";
 import { ChangeEvent, Dispatch } from "react";
 
-export const handlerFunctions = (employeeKey : string) => {
 
-    /**
+/**
      * Evalúa si el tiempo a usar es mayor al tiempo restante
      * @param leftover Valor menor, con formato hora ejemplo: 12:00
      * @param used Valor mayor, con formato hora ejemplo: 12:00
      * @returns 
      */
-    const compareDiffTime = (leftover: string, used: string): boolean => {
-        const leftStr = timeToString(leftover);
-        const usedStr = timeToString(used);
-        return moment.duration(leftStr).asMinutes() < moment.duration(usedStr).asMinutes() ? true : false;
-    };
+export const compareDiffTime = (leftover: string, used: string): boolean => {
+    const leftStr = timeToString(leftover);
+    const usedStr = timeToString(used);
+    return moment.duration(leftStr).asMinutes() < moment.duration(usedStr).asMinutes() ? true : false;
+};
 
-    const addTime = (leftover : string, used : string) => {
-        const leftStr = leftover;
-        const usedStr = timeToString(used);
+export const addTime = (leftover : string, used : string) => {
+    const leftStr = leftover;
+    const usedStr = timeToString(used);
 
-        const leftMinutes = moment.duration(leftStr).asMinutes();
-        const usedMinutes = moment.duration(usedStr).asMinutes();
+    const leftMinutes = moment.duration(leftStr).asMinutes();
+    const usedMinutes = moment.duration(usedStr).asMinutes();
 
-        const timeResult = moment.duration(leftMinutes + usedMinutes, "minutes").asMilliseconds();
+    const timeResult = moment.duration(leftMinutes + usedMinutes, "minutes").asMilliseconds();
 
 
-        return moment.utc(timeResult).format("H:mm");
-    };
+    return moment.utc(timeResult).format("H:mm");
+};
+
+export const handlerFunctions = (employeeKey : string) => {
+
 
     return {
 
