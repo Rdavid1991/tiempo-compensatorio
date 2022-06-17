@@ -87,7 +87,6 @@ describe('Creación y edición de funcionario', () => {
         cy.get("tr > :nth-child(1)").should("contain.text", "Cypress")
     })
 
-
     it('Ir a tiempo acumulado del funcionario', () => {
 
         /**
@@ -105,7 +104,7 @@ describe('Creación y edición de funcionario', () => {
         cy.get("h2").should("contain.text", `Funcionario: Cypress`)
     })
 
-    it.skip('Usar tiempo de un dia', () => {
+    it('Usar tiempo de un dia', () => {
 
         /**
          * Validar que se puede abrir el modal para uso de tiempo
@@ -158,7 +157,7 @@ describe('Creación y edición de funcionario', () => {
         })
     })
 
-    it.skip('Verificar tiempo usado y tiempo restante', () => {
+    it('Verificar tiempo usado y tiempo restante', () => {
 
         /**
          * TODO: Verificar tiempo restante en header
@@ -179,7 +178,7 @@ describe('Creación y edición de funcionario', () => {
         })
     })
 
-    it.skip('Usar tiempo del total', () => {
+    it('Usar tiempo del total', () => {
 
         /**
          * TODO: Agregar horas de 5 días
@@ -200,6 +199,7 @@ describe('Creación y edición de funcionario', () => {
                 cy.get(cy.$$(modal)).should("have.class", "show")
                 cy.wait(1000)
                 cy.get(cy.$$(modal)).should("have.attr", "data-bs-backdrop", "static")
+                cy.get(cy.$$(modal).find(".modal-title")).should("have.text", "Agregar hora")
 
                 let ye = date.toLocaleDateString([], { year: 'numeric' })
 
@@ -288,17 +288,20 @@ describe('Creación y edición de funcionario', () => {
 
     it('Editar tiempo', () => {
 
-        let hour;
+        let hoursRemaining;
+        let hoursTotal;
         /**
          * Abrir modal de edición de tiempo
          */
         cy.log("🚀🚀🚀**Presionar botón editar tiempo para abrir modal**🚀🚀🚀")
-        cy.get("#notUsed > tbody > tr").then((row) => {
+        cy.get("#notUsed > tbody > tr:nth-child(1)").then((row) => {
 
             const regex = /(\d+)/
-            hour = cy.$$(row).find(":nth-child(6)").text().match(regex)[0]
+            hoursRemaining = cy.$$(row).find(":nth-child(6)").text().match(regex)[0]
+            hoursTotal = cy.$$(row).find(":nth-child(4)").text().match(regex)[0]
 
-            cy.log(`❗❗❗** ${hour} **❗❗❗`)
+            cy.log(`❗❗❗** Hora restante ${hoursRemaining} **❗❗❗`)
+            cy.log(`❗❗❗** Hora total ${hoursTotal} **❗❗❗`)
 
             cy.get(cy.$$(row).find(":nth-child(7) > [data-click=\"editTime\"]")).click()
         })
@@ -344,12 +347,35 @@ describe('Creación y edición de funcionario', () => {
         cy.get("#notUsed > tbody > tr").then((row) => {
 
             const regex = /(\d+)/
-            const currentHour = cy.$$(row).find(":nth-child(6)").text().match(regex)[0]
+            const currentHourRemaining = cy.$$(row).find(":nth-child(6)").text().match(regex)[0]
+            const currentHourTotal = cy.$$(row).find(":nth-child(4)").text().match(regex)[0]
 
-            cy.log(`❗❗❗** ${currentHour} **❗❗❗`)
+            cy.log(`❗❗❗** Hora restante actual${currentHourRemaining} **❗❗❗`)
+            cy.log(`❗❗❗** Hora total actual${currentHourTotal} **❗❗❗`)
 
-            cy.wrap(currentHour).should("eq", `${+hour + 1}`)
+            cy.wrap(currentHourRemaining).should("eq", `${+hoursRemaining + 1}`)
+            cy.wrap(currentHourTotal).should("eq", `${+hoursTotal + 1}`)
         })
     })
 
+    it('Borrar tiempo', () => {
+
+        /**
+         * TODO: Borrar tiempo
+         * - Hacer click en botón borrar 
+         */
+        cy.log("🚀🚀🚀**Hacer click en botón borrar**🚀🚀🚀")
+        cy.get("#notUsed > tbody > tr:nth-child(1)").then((row) => {
+            cy.get(cy.$$(row).find(":nth-child(7) > [data-click=\"delete\"]")).click()
+        })
+
+
+        /**
+         * TODO: Validar popup de confirmación
+         */
+        cy.log("🚀🚀🚀**Validar popup de confirmación**🚀🚀🚀")
+        cy.get(".swal2-container").then((modal) => {
+            cy.get(cy.$$(modal).find("button.swal2-confirm")).click()
+        })
+    })
 })
