@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "cypress open",
+    "cy:open": "cypress open",
+    "cy:run:electron": "cypress run --browser electron",
     "npm:install": "npm i"
   },
   "keywords": [],

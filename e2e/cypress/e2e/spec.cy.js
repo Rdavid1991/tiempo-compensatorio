@@ -27,7 +27,7 @@ describe('Creación y edición de funcionario', () => {
     })
 
     it('passes', () => {
-        cy.visit("http://localhost:3000")
+        cy.visit("/")
     })
 
     it("Crear funcionario", () => {

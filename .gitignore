@@ -12,6 +12,8 @@
 /**/build
 /**/dist
 /**/views
+/**/videos
+/**/screenshots
 
 # misc
 .DS_Store

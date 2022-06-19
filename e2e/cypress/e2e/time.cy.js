@@ -2,7 +2,7 @@
 
 /* global cy, describe, it, afterEach, beforeEach */
 
-describe('Creación y edición de funcionario', () => {
+describe('Manejo del tiempo compensatorio del funcionario', () => {
 
     let storage = "";
     let dataIdentifier = "";
@@ -29,7 +29,7 @@ describe('Creación y edición de funcionario', () => {
     })
 
     it('Ir a tiempo compensatorio', () => {
-        cy.visit("http://localhost:3000")
+        cy.visit("/")
     })
 
     it("Crear funcionario", () => {
