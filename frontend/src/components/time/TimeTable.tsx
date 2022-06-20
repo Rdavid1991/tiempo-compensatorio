@@ -36,7 +36,9 @@ export const TimeTable = () => {
     });
 
     const [timeTable, setTimeTable] = useState<TimeTableStateSchema>(initialTimeTableState);
-    const [id, setId] = useState<number>(0);
+
+    const [action, setAction] = useState<HTMLButtonElement>();
+
     const [data, setData] = useState<typeof initialDataState>(initialDataState);
 
     useEffect(() => {
@@ -54,9 +56,33 @@ export const TimeTable = () => {
         $(".pagination").addClass("pagination-sm");
     }, [filter.month, filter.year]);
 
+    useEffect(() => {
+
+        switch (action?.dataset.click) {
+            case "details":
+                modalShow("#details");
+                break;
+            case "delete":
+                handleDelete();
+                break;
+            case "useTime":
+                modalShow("#useTime");
+                break;
+            case "editTime":
+                modalShow("#timeEditModal");
+                break;
+            default:
+                break;
+        }
+        const { notUsed, used } = timeTable;
+        notUsed.ajax.reload();
+        used.ajax.reload();
+
+    }, [action]);
 
 
-    const handleDelete = async (target: HTMLButtonElement, index: number, key: string) => {
+
+    const handleDelete = async () => {
 
         // Sobre escritura de interface de filas de tabla
         // _DT_RowIndex - Propiedad de data table
@@ -67,21 +93,22 @@ export const TimeTable = () => {
         const { isConfirmed } = await confirmAlert("¿Desea borrar el registro?");
 
         if (isConfirmed) {
-            const isDeleted = await db().drop(index, key);
+            const isDeleted = await db().drop(Number(action?.dataset.index), employeeKey);
             if (isDeleted) {
 
                 //Obtener la posición de la fila a borrar
-                const rowIndex = (target.closest("tr") as HTMLDataTableRowElement | null)?._DT_RowIndex as number;
+                const rowIndex = (action?.closest("tr") as HTMLDataTableRowElement | null)?._DT_RowIndex as number;
 
-                const tr = document.querySelector(`#notUsed > tbody > :nth-child(${rowIndex+1})`);
+                const tr = document.querySelector(`#notUsed > tbody > :nth-child(${rowIndex + 1})`);
 
                 if (tr) tr.classList.add("animate__animated", "animate__backOutLeft");
 
                 onanimationend = async (e) => {
-                    
-                    if (e.animationName === "backOutLeft" &&  (e.target as HTMLDataTableRowElement).closest("#notUsed")) {
+
+                    if (e.animationName === "backOutLeft" && (e.target as HTMLDataTableRowElement).closest("#notUsed")) {
                         await successAlert("El registro a sido borrado");
                         timeTable.notUsed.ajax.reload();
+                        reloadData();
                     }
                 };
             } else {
@@ -91,34 +118,10 @@ export const TimeTable = () => {
     };
 
     const handleActionTable = (e: MouseEvent<HTMLDivElement>) => {
-
         const button = e.target as HTMLButtonElement;
-        button.innerText = "Test";
-
-        if (button.dataset.click) {
-
-            switch (button.dataset.click) {
-                case "details":
-                    modalShow("#details");
-                    break;
-                case "delete":
-                    handleDelete(button, id, employeeKey);
-                    break;
-                case "useTime":
-                    modalShow("#useTime");
-                    break;
-                case "editTime":
-                    modalShow("#timeEditModal");
-                    break;
-                default:
-                    break;
-            }
-            setId(Number.parseInt(button.dataset.index as string));
-            const { notUsed, used } = timeTable;
-            notUsed.ajax.reload();
-            used.ajax.reload();
-        }
+        setAction(button);
     };
+
 
     const reloadData = () => {
         setData(timeTableData());
@@ -137,10 +140,10 @@ export const TimeTable = () => {
                 timeTable,
             }}>
                 <TimeHeader />
-                <UseTime {...{ employeeKey, id }} />
-                <TimeEditTime {...{ employeeKey, id }} />
+                <UseTime {...{ employeeKey, id: Number(action?.dataset.index) | 0 }} />
+                <TimeEditTime {...{ employeeKey, id: Number(action?.dataset.index) | 0 }} />
             </HeaderTimeContext.Provider>
-            <DetailsTime {...{ employeeKey, id }} />
+            <DetailsTime {...{ employeeKey, id: Number(action?.dataset.index) | 0 }} />
 
             <div className="mt-3">
                 <ul className="nav nav-tabs" id="myTab" role="tablist">
