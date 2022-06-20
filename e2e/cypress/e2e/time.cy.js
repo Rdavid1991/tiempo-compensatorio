@@ -15,6 +15,15 @@ describe('Manejo del tiempo compensatorio del funcionario', () => {
                 Object.entries(storageParsed).map((entries) => {
                     const [key, value] = entries
                     win.localStorage.setItem(key, value)
+
+                    cy.log(`❗❗❗ **${key}** ❗❗❗`)
+
+                    JSON.parse(value).time.map((day, index) => {
+
+                        const { usedHourHistory, ...onlyDay } = day;
+
+                        cy.log(`❗❗❗ **${index} 👉 ${JSON.stringify(onlyDay)}** ❗❗❗`)
+                    })
                 })
             })
         }
@@ -360,13 +369,29 @@ describe('Manejo del tiempo compensatorio del funcionario', () => {
 
     it('Borrar tiempo', () => {
 
+        cy.log("🚀🚀🚀**Verificar datos antes de borrar**🚀🚀🚀")
+        cy.window().then((win) => {
+            if (win.localStorage.length > 0) {
+                Object.entries(win.localStorage).map((entries) => {
+                    const [key, value] = entries
+                    cy.log(`❗❗❗ **${key}** ❗❗❗`)
+                    JSON.parse(value).time.map((day, index) => {
+                        const { usedHourHistory, ...onlyDay } = day;
+                        cy.log(`❗❗❗ **${index} 👉 ${JSON.stringify(onlyDay)}** ❗❗❗`)
+                    })
+                })
+            }
+        })
+
         /**
          * TODO: Borrar tiempo
          * - Hacer click en botón borrar 
          */
         cy.log("🚀🚀🚀**Hacer click en botón borrar**🚀🚀🚀")
-        cy.get("#notUsed > tbody > tr:nth-child(1)").then((row) => {
-            cy.get(cy.$$(row).find(":nth-child(7) > [data-click=\"delete\"]")).click()
+        cy.get("#notUsed > tbody > tr").contains("no tiene tiempo").then((row) => {
+            const indexToDelete = cy.$$(row).parent().find(":nth-child(7) > [data-click=\"delete\"]").data("index");
+            cy.log(`❗❗❗ **Dato a borrar 👉 Index: ${indexToDelete}** ❗❗❗`)
+            cy.get(cy.$$(row).parent().find(":nth-child(7) > [data-click=\"delete\"]")).click()
         })
 
 
@@ -377,5 +402,29 @@ describe('Manejo del tiempo compensatorio del funcionario', () => {
         cy.get(".swal2-container").then((modal) => {
             cy.get(cy.$$(modal).find("button.swal2-confirm")).click()
         })
+
+        cy.log("🚀🚀🚀**Datos despues de borrar**🚀🚀🚀")
+        cy.window().then((win) => {
+            if (win.localStorage.length > 0) {
+                Object.entries(win.localStorage).map((entries) => {
+                    const [key, value] = entries
+
+                    cy.log(`❗❗❗ **${key}** ❗❗❗`)
+
+                    JSON.parse(value).time.map((day, index) => {
+
+                        const { usedHourHistory, ...onlyDay } = day;
+
+                        cy.log(`❗❗❗ **${index} 👉 ${JSON.stringify(onlyDay)}** ❗❗❗`)
+                    })
+                })
+            }
+        })
+
+        /**
+         * TODO: Validar total de horas restantes
+         */
+        cy.log("🚀🚀🚀 ***Verificar horas restantes*** 🚀🚀🚀")
+        cy.get("[title=\"use-total\"]").should("contain.text", "4 horas 45 minutos")
     })
 })

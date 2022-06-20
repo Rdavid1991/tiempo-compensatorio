@@ -45,7 +45,7 @@
 		"scope": "javascript,typescript",
 		"prefix": "cyl",
 		"body": [
-			"cy.log(\"🚀🚀🚀**$1**🚀🚀🚀\")"
+			"cy.log(\"🚀🚀🚀 **$1** 🚀🚀🚀\")"
 		],
 		"description": "Log output to console"
 	},
@@ -54,7 +54,7 @@
 		"scope": "javascript,typescript",
 		"prefix": "cylv",
 		"body": [
-			"cy.log(`❗❗❗** ${$1} **❗❗❗`)"
+			"cy.log(`❗❗❗ **${$1}** ❗❗❗`)"
 		],
 		"description": "Log output to console"
 	},
