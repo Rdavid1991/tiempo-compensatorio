@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import TimeAddTime from "./TimeAddTime";
 import MonthSelector from "../fragments/MonthSelector";
 import UseToTotal from "../fragments/UseToTotal";
-import { modalShow } from "src/utils/Modal";
+import { modalShow } from "src/utils/functions/actionModal";
 import { HeaderTimeContext } from "src/context";
 
 

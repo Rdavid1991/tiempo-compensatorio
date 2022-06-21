@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import db from "../../helper/db";
 import { useForm } from "src/hooks/useForm";
 import { TimeEditSchema } from "src/utils/interfaces";
-import { modalHide } from "src/utils/Modal";
+import { modalHide } from "src/utils/functions/actionModal";
 import { HeaderTimeContext } from "src/context";
 
 interface PropsTimeEditTime {

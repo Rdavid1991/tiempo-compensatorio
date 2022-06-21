@@ -6,13 +6,13 @@ import TimeTableUsed from "./TimeTableUsed";
 import TimeTableNotUsed from "./TimeTableNotUsed";
 import TimeHeader from "./TimeHeader";
 import { RenderTimeTableNotUsed, RenderTimeTableUsed } from "./function/ActionTimeTable";
-import { modalShow } from "../../utils/Modal";
+import { modalShow } from "../../utils/functions/actionModal";
 import { FilterStateSchema, FunctionarySourceSchema, TimeTableStateSchema } from "src/utils/interfaces";
 import TimeEditTime from "./TimeEditTime";
 import { UseTime } from "./UseTime";
 import { DetailsTime } from "./DetailsTime";
 import { HeaderTimeContext } from "src/context";
-import { confirmAlert, errorAlert, successAlert } from "src/utils/Alerts";
+import { confirmAlert, errorAlert, successAlert } from "src/utils/functions/Alerts";
 import db from "src/helper/db";
 
 moment.locale("es");
@@ -100,7 +100,6 @@ export const TimeTable = () => {
                 const rowIndex = (action?.closest("tr") as HTMLDataTableRowElement | null)?._DT_RowIndex as number;
 
                 const tr = document.querySelector(`#notUsed > tbody > :nth-child(${rowIndex + 1})`);
-
                 if (tr) tr.classList.add("animate__animated", "animate__backOutLeft");
 
                 onanimationend = async (e) => {
@@ -125,6 +124,7 @@ export const TimeTable = () => {
 
     const reloadData = () => {
         setData(timeTableData());
+        setAction(undefined);
     };
 
     return (

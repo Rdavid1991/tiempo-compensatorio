@@ -3,37 +3,30 @@ import React, { Dispatch, FormEvent, useEffect } from "react";
 import { useForm } from "src/hooks/useForm";
 import db from "../../helper/db";
 import { FunctionaryEditFormSchema } from "src/utils/interfaces";
-import { modalHide } from "../../utils/Modal";
+import { modalHide } from "../../utils/functions/actionModal";
 
-const initialState : FunctionaryEditFormSchema = {
+const initialState: FunctionaryEditFormSchema = {
     department : "",
     name       : "",
 };
 
-interface Props {
-    indexId: string;
-    setIndexId : Dispatch<React.SetStateAction<string>> ;
-    functionaryTable: DataTables.DataTables
-}
-
-const EditFunctionary = ({indexId, functionaryTable, setIndexId} : Props) => {
+const EditFunctionary = ({ id, functionaryTable }: { id: string, functionaryTable: DataTables.DataTables }) => {
 
     const { values, setValues, handleInputChange, reset } = useForm<FunctionaryEditFormSchema>(initialState);
 
     useEffect(() => {
-        const response = db().getOneEmploy(indexId) as FunctionaryEditFormSchema;
+        const response = db().getOneEmploy(id) as FunctionaryEditFormSchema;
         if (response) {
             setValues(response);
         }
-    }, [indexId]);
+    }, [id]);
 
-    const handlerInfoSave = async (e : FormEvent<HTMLFormElement>) => {
+    const handlerInfoSave = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        await db().updateEmploy(indexId, values);
-        functionaryTable.ajax.reload();
+        await db().updateEmploy(id, values);
         modalHide("#functionaryEdit");
         reset();
-        setIndexId("");
+        functionaryTable.ajax.reload();
     };
 
     return (

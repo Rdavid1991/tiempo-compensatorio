@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useState } from "react";
 import db from "../../helper/db";
 import { handlerFunctions } from "./function/handlerFunctions";
 import { TimeTableStateSchema, UseTimeSchema } from "../../utils/interfaces/index";
-import { modalHide } from "../../utils/Modal";
+import { modalHide } from "../../utils/functions/actionModal";
 import { HeaderTimeContext } from "src/context";
 
 interface PropsUseTime {

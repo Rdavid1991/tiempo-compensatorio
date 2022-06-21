@@ -1,7 +1,7 @@
 import "./App.css";
 import React from "react";
 import { Route, Routes } from "react-router";
-import { HomeTable } from "./components/home/HomeTable";
+import { HomeTable } from "./pages/HomeTable";
 import { TimeTable } from "./components/time/TimeTable";
 
 function App() {

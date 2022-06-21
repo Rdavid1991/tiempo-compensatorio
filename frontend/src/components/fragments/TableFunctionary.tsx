@@ -1,10 +1,10 @@
 
 import React from "react";
 import { renderToString } from "react-dom/server";
-import { dataTableSpanish } from "../../../helper";
-import { ajax } from "./ajax";
+import { dataTableSpanish } from "../../helper";
+import { sourceDataFunctionary } from "../../utils/functions/sourceDataFunctionary";
 
-const ButtonActionsFunctionary = ({id} :{id :string} ) => {
+const ButtonActionsFunctionary = ({ id }: { id: string }) => {
     return (
         <>
             <button
@@ -29,7 +29,7 @@ const ButtonActionsFunctionary = ({id} :{id :string} ) => {
     );
 };
 
-const LinkToFunctionaryDetails = ({ index } : {index : Array<string>}) => {
+const LinkToFunctionaryDetails = ({ index }: { index: Array<string> }) => {
     return <a href={`#/employed/${index[0]}`} className="text-truncate">{index[1]}</a>;
 };
 
@@ -38,23 +38,23 @@ export const RenderFunctionaryTable = () => {
     return $("#functionaries").DataTable({
         language : { ...dataTableSpanish },
         "ajax"   : function (data, callback, settings) {
-            callback(ajax());
+            callback(sourceDataFunctionary());
         }
         ,
         "columnDefs": [
             {
-                render: function (data:string) {
+                render: function (data: string) {
                     const index = data.split("|");
                     return renderToString(
-                        <LinkToFunctionaryDetails {...{index}}/>
+                        <LinkToFunctionaryDetails {...{ index }} />
                     );
                 },
                 targets: [0],
             },
             {
-                render: (id : string) => {
+                render: (id: string) => {
                     const html = renderToString(
-                        <ButtonActionsFunctionary {...{id}} />
+                        <ButtonActionsFunctionary {...{ id }} />
                     );
                     return html;
                 },

@@ -1,8 +1,8 @@
 import moment from "moment";
-import { timeToHumanize } from "../../../helper";
-import db from "../../../helper/db";
+import { timeToHumanize } from "../../helper";
+import db from "../../helper/db";
 
-export const ajax = () => {
+export const sourceDataFunctionary = () => {
 
     const dbLocal = db();
 

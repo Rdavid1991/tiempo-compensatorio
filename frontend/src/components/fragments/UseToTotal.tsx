@@ -3,11 +3,11 @@ import React, { FormEvent, useContext, useEffect, useRef, useState } from "react
 import { HeaderTimeContext } from "src/context";
 import { timeToHumanize, timeToString } from "src/helper";
 import { FunctionarySourceSchema } from "src/utils/interfaces";
-import { modalShow } from "src/utils/Modal";
+import { modalShow } from "src/utils/functions/actionModal";
 import { UsedHistorySchema } from "../../utils/interfaces/index";
 import { useForm } from "../../hooks/useForm";
-import { errorAlert, successAlert } from "../../utils/Alerts";
-import { modalHide } from "../../utils/Modal";
+import { errorAlert, successAlert } from "../../utils/functions/Alerts";
+import { modalHide } from "../../utils/functions/actionModal";
 
 
 interface UseTotalStateSchema {
@@ -171,6 +171,7 @@ const UseToTotal = () => {
                                         id="timeToUse"
                                         onChange={handleInputChange}
                                         value={values.timeToUse}
+                                        required
                                     />
                                 </div>
                                 <div className="mb-3">

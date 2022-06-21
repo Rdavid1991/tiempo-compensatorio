@@ -1,6 +1,6 @@
 import moment from "moment";
 import React, { FormEvent } from "react";
-import { modalHide } from "src/utils/Modal";
+import { modalHide } from "src/utils/functions/actionModal";
 
 
 import Swal from "sweetalert2";
