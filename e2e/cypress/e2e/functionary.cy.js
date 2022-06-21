@@ -31,32 +31,7 @@ describe('Creación y edición de funcionario', () => {
     })
 
     it("Crear funcionario", () => {
-        cy.get("i.fa-plus").parent().click()
-
-        cy.get("#addFunctionary").then((modal) => {
-            cy.get(modal).should("be.visible")
-            cy.get(modal).should("have.class", "show")
-
-            //cy.get(modal).get("modal-title").should("have.text", "Agregar funcionario")
-
-            cy.get(modal).get('#name').type("Cypress")
-
-            const date = new Date();
-
-            let ye = date.toLocaleDateString([], { year: 'numeric' })
-            let mo = date.toLocaleDateString([], { month: '2-digit' })
-            let da = date.toLocaleDateString([], { day: '2-digit' })
-
-            cy.get(modal).get('#day').type(`${ye}-${mo}-${da}`)
-            cy.get('#addEmployForm > .modal-footer > button[type="submit"]').click()
-        })
-
-        cy.get("#addFunctionary").then((modal) => {
-            cy.get(modal).should("not.be.visible")
-            cy.get(modal).should("not.have.class", "show")
-        })
-
-        cy.get("tr > :nth-child(1)").should("contain.text", "Cypress")
+        cy.createFunctionary();
     })
 
     it("Editar funcionario", () => {
@@ -131,5 +106,29 @@ describe('Creación y edición de funcionario', () => {
                 .should("have.text", "Cerrar")
                 .click()
         })
+
+
+    })
+
+    it('Borrar funcionario', () => {
+        cy.get("#functionaries > tbody > tr:nth-child(1)").then((row) => {
+            cy.get(cy.$$(row).find(":nth-child(6) > button[data-click=\"delete\"]")).click()
+        })
+
+        /**
+         * TODO: Validar popup de confirmación
+         */
+        cy.log("🚀🚀🚀**Validar popup de confirmación**🚀🚀🚀")
+        cy.get(".swal2-container").then((modal) => {
+            cy.get(cy.$$(modal).find("button.swal2-confirm")).click()
+        })
+
+        cy.wait(2000)
+
+        /**
+         * TODO: Verificar que tabla este vacía
+         */
+        cy.log("🚀🚀🚀**Tabla debe estar vacía y mostrar mensaje**🚀🚀🚀")
+        const si = cy.get("#functionaries > tbody").should("contain.text", "Ningún dato disponible en esta tabla")
     })
 })

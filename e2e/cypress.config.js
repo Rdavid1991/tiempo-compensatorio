@@ -5,7 +5,7 @@ module.exports = defineConfig({
         setupNodeEvents(on, config) {
             // implement node event listeners here
         },   
-        videoCompression : false,   
+        videoCompression: 1,
         baseUrl          : "http://localhost:3000"  
     },
 });

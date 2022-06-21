@@ -12,5 +12,5 @@
     },
     "include": [
         "**/*.ts"
-, "cypress/e2e/spec.cy.js"    ]
+, "cypress/e2e/functionary.cy.js"    ]
 }

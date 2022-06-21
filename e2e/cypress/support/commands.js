@@ -23,3 +23,57 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+
+Cypress.Commands.add("createFunctionary", () => {
+    /**
+         * TODO: Abrir modal 
+         */
+    cy.log("🚀🚀🚀**Hacer click en botón nuevo funcionario**🚀🚀🚀")
+    cy.get("i.fa-plus")
+        .parent()
+        .should("have.text", "Nuevo funcionario")
+        .click()
+
+    /**
+     * TODO: Agregar funcionario
+     * - Verificar que el modal este visible
+     * - Esperar animación de modal
+     * - Verificar titulo del modal
+     * - Agregar nombre de funcionario
+     * - Agregar fecha de horas extras
+     * - Guardar funcionario
+     */
+    cy.log("🚀🚀🚀**Agregar funcionario**🚀🚀🚀")
+    cy.get("#addFunctionary").then((modal) => {
+        cy.get(cy.$$(modal)).should("have.class", "show")
+
+        cy.wait(1000)
+
+        cy.get(cy.$$(modal).find(".modal-title")).should("have.text", "Agregar funcionario")
+        cy.get(cy.$$(modal)).get('#name').type("Cypress")
+
+        const date = new Date();
+
+        let ye = date.toLocaleDateString([], { year: 'numeric' })
+        let mo = date.toLocaleDateString([], { month: '2-digit' })
+        let da = date.toLocaleDateString([], { day: '2-digit' })
+
+        cy.get(cy.$$(modal)).get('#day').type(`${ye}-${mo}-${da}`)
+        cy.get('#addEmployForm > .modal-footer > button[type="submit"]').click()
+    })
+
+    /**
+     * Verificar que el modal no esta visible
+     */
+    cy.log("🚀🚀🚀**Verificar que modal para agregar funcionario no este visible**🚀🚀🚀")
+    cy.get("#addFunctionary").then((modal) => {
+        cy.get(modal).should("not.be.visible")
+        cy.get(modal).should("not.have.class", "show")
+    })
+
+    /**
+     * Verificar que el funcionario este creado
+     */
+    cy.log("🚀🚀🚀**Verificar que el funcionario este creado**🚀🚀🚀")
+    cy.get("tr > :nth-child(1)").should("contain.text", "Cypress")
+})
